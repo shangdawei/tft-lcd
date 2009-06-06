@@ -1,6 +1,6 @@
-/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+/******************** (C) COPYRIGHT 2009 TEAM *********************************
 * File Name          : gptip.h
-* Author             : MCD Application Team
+* Author             : gxuliang@gmail.com
 * Version            : V0.1
 * Date               : 05/31/2009
 * Description        : 
@@ -11,11 +11,17 @@
 #ifndef _GPTIP_H_
 #define	_GPTIP_H_
 
-#define	MAX_LEN		1024
+#define	XDATA_MAX_LEN		1024
+/***------------------------------------*/
+#define	CMD_LEADER1			0xFF
+#define	CMD_LEADER2			0x5A
 
-typedef struct
+
+
+typedef struct	_GptHead
 {
-	vu16	head;
+	vu8		head_a;
+	vu8		head_b;
 	vu16	cmd;
 	vu8		ver;
 	vu16	devid;
@@ -30,8 +36,8 @@ typedef struct
 typedef struct
 {
 	GptHead head;
-	vu8		xdata[MAX_LEN];
-}Gptip, *pGptip;
+	vu8		xdata[XDATA_MAX_LEN];
+}GPTIP, *pGPTIP;
 
 #endif
 /******************************END OF FILE**************************************/

@@ -10,7 +10,9 @@
 #include "stm32f10x_lib.h"
 #include "platform_config.h"
 #include "gptip.h"
-
+#include "uart.h"
+#include "datadeal.h"
+   
 GPIO_InitTypeDef GPIO_InitStructure;
 ErrorStatus HSEStartUpStatus;
 
@@ -30,13 +32,24 @@ void Delay(vu32 nCount);
 *******************************************************************************/
 int main(void)
 {
-/*
-	Init_Timer();
-	Init_Uart();
-	Init_fpga();
-	Init_nandflash();
- */
-	vu8 i;
+	pGPTIP pGptip = &Gptip;
+//	Init_Timer();
+	SetupUSART();
+//	Init_fpga();
+//	Init_nandflash();
+ 
+
+	while(1)
+	{
+		/*从UART的缓冲区里读取一帧命令处理*/
+		if(ReadFromComBuf(pGptip) == 1)
+		{
+		   if(CRC_Check(pGptip) == 1)
+		   {
+		   		DealCmd(pGptip);
+		   }
+		}
+	}
 }
 
 
@@ -185,4 +198,6 @@ void assert_failed(u8* file, u32 line)
 #endif
 #endif
 
-/********************************************** xul *****END OF FILE****/
+/*********************************************************************************************************
+**                            End Of File
+********************************************************************************************************/
