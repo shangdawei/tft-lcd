@@ -20,6 +20,8 @@ File 3,1,<..\..\..\library2008\src\stm32f10x_usart.c><stm32f10x_usart.c>
 File 4,1,<D:\虚拟文件夹\tft-lcd\code\tft-lcd\src\stm32f10x_it.c><stm32f10x_it.c>
 File 5,5,<D:\虚拟文件夹\tft-lcd\code\tft-lcd\src\readme.txt><readme.txt>
 File 6,1,<..\..\src\uart.c><uart.c>
+File 6,1,<..\..\src\datadeal.c><datadeal.c>
+File 6,1,<..\..\src\flash.c><flash.c>
 
 
 Options 1,0,0  // Target 'STM3210E'

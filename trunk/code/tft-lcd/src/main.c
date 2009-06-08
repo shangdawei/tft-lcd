@@ -12,6 +12,8 @@
 #include "gptip.h"
 #include "uart.h"
 #include "datadeal.h"
+#include "fpga.h"
+#include "flash.h"
    
 GPIO_InitTypeDef GPIO_InitStructure;
 ErrorStatus HSEStartUpStatus;
@@ -35,8 +37,8 @@ int main(void)
 	pGPTIP pGptip = &Gptip;
 //	Init_Timer();
 	SetupUSART();
-//	Init_fpga();
-//	Init_nandflash();
+	Init_fpga();
+	Init_nandflash();
  
 
 	while(1)
