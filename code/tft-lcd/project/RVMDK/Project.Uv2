@@ -22,6 +22,7 @@ File 5,5,<D:\ÐéÄâÎÄ¼þ¼Ð\tft-lcd\code\tft-lcd\src\readme.txt><readme.txt>
 File 6,1,<..\..\src\uart.c><uart.c>
 File 6,1,<..\..\src\datadeal.c><datadeal.c>
 File 6,1,<..\..\src\flash.c><flash.c>
+File 6,1,<..\..\src\fpga.c><fpga.c>
 
 
 Options 1,0,0  // Target 'STM3210E'

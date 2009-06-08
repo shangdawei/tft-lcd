@@ -16,7 +16,7 @@
 #else
 #define	GLOBLE_FLASH
 #endif
-
+GLOBLE_FLASH void Init_nandflash(void);
 GLOBLE_FLASH void flash_erase(u32 sect_addr);
 GLOBLE_FLASH void flash_read(u8 *buf, u32 addr, u32 cnt);
 GLOBLE_FLASH int flash_write(u8 *buf, u32 addr, u32 cnt);
