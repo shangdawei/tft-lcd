@@ -44,11 +44,11 @@ int main(void)
 	while(1)
 	{
 		/*从UART的缓冲区里读取一帧命令处理*/
-		if(ReadFromComBuf(pGptip) == 1)
+		if(ReadFromComBuf(COM1, pGptip) == 1)
 		{
 		   if(CRC_Check(pGptip) == 1)
 		   {
-		   		DealCmd(pGptip);
+		   		DealCmd(COM1, pGptip);
 		   }
 		}
 	}

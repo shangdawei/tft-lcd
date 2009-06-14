@@ -11,6 +11,8 @@
 #ifndef _GPTIP_H_
 #define	_GPTIP_H_
 
+
+#define	GPTIP_THL			32
 #define	XDATA_MAX_LEN		1024
 /***------------------------------------*/
 #define	CMD_LEADER1			0xFF

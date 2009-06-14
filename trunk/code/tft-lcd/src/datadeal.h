@@ -17,6 +17,8 @@
 #define	GLOBLE_DATADEAL
 #endif
 
+#define		SYS_VER		0x0001
+
 enum GPT_CMD
 {
 	GPT_VER				= 0x0001,//查询版本
@@ -34,9 +36,45 @@ enum GPT_CMD
 };
 
 
+#define SUCCESS         0
+#define FAILURE        -1
+
+enum INTERFACE
+{
+	COM1		=	0,
+	COM2		=	1,
+	COM3		=	2,
+	USB			=	3,
+};
+
+typedef	struct	_VER_INFO
+{
+	u32		pcb_ver;
+	u32		fpga_ver;
+	u32		mcu_ver;
+	u8		sge;//显示特效
+}VER_INFO, *pVER_INFO;
+
+typedef	struct _PIC_INFO
+{
+	u16		id;
+	u32		size;
+	u32		addr;//保存在FLASH上的首地址
+}PIC_INFO, *pPIC_INFO;
+
+/*全局显示模式*/
+typedef	struct _PIC_SHOW
+{
+	u8	mode;//显示模式
+	u8	time;//切换时间
+	u16	id_l;//显示图片下限
+	u16	id_h;//显示图片上限
+}PIC_SHOW;
+
 GLOBLE_DATADEAL u8 CRC_Check(pGPTIP pGptip);
-GLOBLE_DATADEAL void DealCmd(pGPTIP pGptip);
-GLOBLE_DATADEAL void get_sys_info(pGPTIP pGptip);
+GLOBLE_DATADEAL void DealCmd(u8 COMx, pGPTIP pGptip);
+GLOBLE_DATADEAL void get_sys_info(u8 COMx, pGPTIP pGptip);
+GLOBLE_DATADEAL int cmd_send_ack(u8 COMx, void* data, u16 len);
 
 #endif
 /*********************************************************************************************************

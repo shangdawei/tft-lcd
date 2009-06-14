@@ -12,6 +12,10 @@
 #include "stm32f10x_lib.h"
 #include "gptip.h"
 #include "datadeal.h"
+#include "fpga.h"
+#include "uart.h"
+#include <stdio.h>
+#include <string.h>
 /**************CRC16***************/
 
 uc16 crc_ta[256]={ // X16+X12+X5+1 ÓàÊ½±í
@@ -108,12 +112,12 @@ u8 CRC_Check(pGPTIP pGptip)
 **              :   xul      ||          ||   2009/06/06  || Create this function
 **	----------------------------------------------------------------------------------------------
 ********************************************************************************************************/
-void DealCmd(pGPTIP pGptip)
+void DealCmd(u8 COMx, pGPTIP pGptip)
 {
 	switch(pGptip->head.cmd)
 	{
 		case GPT_VER:
-			get_sys_info(pGptip);
+			get_sys_info(COMx, pGptip);
 			break;
 		case GPT_TIME:
 			break;
@@ -135,10 +139,48 @@ void DealCmd(pGPTIP pGptip)
 **              :   xul      ||          ||   2009/06/08  || Create this function
 **	----------------------------------------------------------------------------------------------
 ********************************************************************************************************/
-void get_sys_info(pGPTIP pGptip)
+void get_sys_info(u8 COMx, pGPTIP pGptip)
 {
+		VER_INFO* sys_info = (VER_INFO*)&pGptip->head.data;
+		sprintf((char*)pGptip->xdata, "%s,%s", __DATE__, __TIME__);
+
+		sys_info->pcb_ver = read_fpga(PCB_VER);
+		sys_info->fpga_ver = read_fpga(FPGA_VER);
+		sys_info->mcu_ver = SYS_VER;
+		/*send ack*/
+		cmd_send_ack(COMx, pGptip, GPTIP_THL + strlen((char*)pGptip->xdata));
 		
 }
+/*******************************************************************************************************  
+**	$Function   :   cmd_send_ack
+**	----------------------------------------------------------------------------------------------
+**  Description :  	cmd_send_ack
+**	----------------------------------------------------------------------------------------------
+**  Argument    :   
+**	----------------------------------------------------------------------------------------------
+**  Return      :   
+**              :   
+**	----------------------------------------------------------------------------------------------
+**  History     : Modify by  ||    ID    ||     Date      ||     Contents
+**              :   xul      ||          ||   2009/06/13  || Create this function
+**	----------------------------------------------------------------------------------------------
+********************************************************************************************************/
+
+int cmd_send_ack(u8 COMx, void* data, u16 len)
+{
+	char*	p = data;
+	USART_TypeDef* p_com[4];
+	p_com[0] = USART1;
+	p_com[1] = USART2;
+	p_com[2] = USART3;
+	if(COMx < USB)
+	{/*Uart*/
+		SendLine(p_com[COMx], p, len);
+	}
+
+	return SUCCESS;
+}
+
 /*********************************************************************************************************
 **                            End Of File
 ********************************************************************************************************/
