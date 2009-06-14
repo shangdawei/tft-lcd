@@ -39,7 +39,7 @@ typedef		struct	 _stcBuf
 /* Globle variable ------------------------------------------------------------------*/
 GLOBLE_UART	GPTIP	Gptip;
 GLOBLE_UART	void SetupUSART(void);
-GLOBLE_UART	u8 ReadFromComBuf(pGPTIP pGptip);
+GLOBLE_UART	u8 ReadFromComBuf(u8 COMx, pGPTIP pGptip);
 GLOBLE_UART void SendLine(USART_TypeDef *USARTx, char* s, u16 len);
 GLOBLE_UART void Debug(USART_TypeDef *USARTx, char * format,...);
 

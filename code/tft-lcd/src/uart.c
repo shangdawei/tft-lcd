@@ -150,7 +150,7 @@ void URecvData(void)
 **              :   xul      ||          ||   2009/06/06  || Create this function
 **	----------------------------------------------------------------------------------------------
 ********************************************************************************************************/
-u8 ReadFromComBuf(pGPTIP pGptip)
+u8 ReadFromComBuf(u8 COMx, pGPTIP pGptip)
 {
 	P_stcBuf pRcvBuf = &UartRcvBuf;
 	static u8 sRxdSta = U0_RX_STA_LEADER1;			// ½ÓÊÕ×´Ì¬
