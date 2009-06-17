@@ -18,7 +18,14 @@
 #define	CMD_LEADER1			0xFF
 #define	CMD_LEADER2			0x5A
 
-
+enum CMD_MODE
+{
+	 	GET_REQUEST		= 0,
+		SET_REQUEST		= 1,
+		SET_ACK			= 2,
+		GET_ACK			= 3,
+		EVENT			= 4,
+};
 
 typedef struct	_GptHead
 {

@@ -71,10 +71,24 @@ typedef	struct _PIC_SHOW
 	u16	id_h;//œ‘ æÕº∆¨…œœﬁ
 }PIC_SHOW;
 
+typedef	struct	_TIME_ST
+{
+	u8	year;
+	u8	month;
+	u8	mday;
+	u8	wday;
+	u8	hour;
+	u8	min;
+	u8	sec;
+}TIME_ST, *pTIME_ST;
+
 GLOBLE_DATADEAL u8 CRC_Check(pGPTIP pGptip);
 GLOBLE_DATADEAL void DealCmd(u8 COMx, pGPTIP pGptip);
 GLOBLE_DATADEAL void get_sys_info(u8 COMx, pGPTIP pGptip);
 GLOBLE_DATADEAL int cmd_send_ack(u8 COMx, void* data, u16 len);
+GLOBLE_DATADEAL u16 get_chk_sum(pGPTIP pGptip, u16 len);
+GLOBLE_DATADEAL void set_cmd_type(pGPTIP pGptip, u8 type, u8 crc_fg, u16 len);
+
 
 #endif
 /*********************************************************************************************************
