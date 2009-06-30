@@ -1,43 +1,24 @@
 /******************** (C) COPYRIGHT 2009 TEAM *********************************
-* File Name          : fpag.h
+* File Name          : picture.h
 * Author             : gxuliang@gmail.com
 * Version            : V0.1
-* Date               : 06/08/2009
+* Date               : 06/30/2009
 * Description        : 
 ********************************************************************************
 *
 *
 *******************************************************************************/
+#ifndef _PICTURE_H_
+#define	_PICTURE_H_
 
-#ifndef		_FPGA_H_
-#define		_FPGA_H_
-
-#ifndef		_FPGA_C_
-#define		GLOBLE_FPGA		extern
+#ifndef	_PICTURE_C_
+#define	GLOBLE_PICTURE		extern
 #else
-#define		GLOBLE_FPGA
+#define	GLOBLE_PICTURE
 #endif
 
-enum FPGA_CMD
-{
-	PCB_VER		=	0x0000,
-	FPGA_VER	=	0x0001,
-	PIC_ADDR0	,//图片首地址
-	PIC_ADDR1	,
-	PIC_ADDR2	,
-	PIC_ADDR3	,
-	PIC_LEN0	,//图片长度
-	PIC_LEN1	,
-	PIC_PAR		,//显示参数
-	PIC_CMD		,//切换
+GLOBLE_PICTURE void download_pic(u8 COMx, pGPTIP pGptip);
 
-	NFH_STA		,//nandflash 状态(只读)
-	NFH_REQ		,//nandflash 操作请求
-};
-
-GLOBLE_FPGA void Init_fpga(void);
-GLOBLE_FPGA u16	read_fpga(u16 addr);
-GLOBLE_FPGA u8 write_fpga(u16 addr, u16 data);
 #endif
 /*********************************************************************************************************
 **                            End Of File
