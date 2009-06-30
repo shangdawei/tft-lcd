@@ -10,7 +10,7 @@
 *******************************************************************************/
 #ifndef _PICTURE_H_
 #define	_PICTURE_H_
-
+#include "gptip.h"
 #ifndef	_PICTURE_C_
 #define	GLOBLE_PICTURE		extern
 #else
@@ -18,6 +18,8 @@
 #endif
 
 GLOBLE_PICTURE void download_pic(u8 COMx, pGPTIP pGptip);
+GLOBLE_PICTURE void show_pic(u8 COMx, pGPTIP pGptip);
+
 
 #endif
 /*********************************************************************************************************

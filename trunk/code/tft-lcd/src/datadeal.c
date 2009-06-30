@@ -14,6 +14,7 @@
 #include "datadeal.h"
 #include "fpga.h"
 #include "uart.h"
+#include "picture.h"
 #include <stdio.h>
 #include <string.h>
 /**************CRC16***************/
