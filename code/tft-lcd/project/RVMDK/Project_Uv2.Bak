@@ -10,15 +10,15 @@ Group (IRQ)
 Group (Readme)
 Group (Function)
 
-File 1,1,<D:\虚拟文件夹\tft-lcd\code\tft-lcd\src\main.c><main.c>
+File 1,1,<D:\tft-lcd\code\tft-lcd\src\main.c><main.c>
 File 2,2,<.\cortexm3_macro.s><cortexm3_macro.s>
 File 2,2,<.\stm32f10x_vector.s><stm32f10x_vector.s>
 File 3,1,<..\..\..\library2008\src\stm32f10x_gpio.c><stm32f10x_gpio.c>
 File 3,1,<..\..\..\library2008\src\stm32f10x_flash.c><stm32f10x_flash.c>
 File 3,1,<..\..\..\library2008\src\stm32f10x_rcc.c><stm32f10x_rcc.c>
 File 3,1,<..\..\..\library2008\src\stm32f10x_usart.c><stm32f10x_usart.c>
-File 4,1,<D:\虚拟文件夹\tft-lcd\code\tft-lcd\src\stm32f10x_it.c><stm32f10x_it.c>
-File 5,5,<D:\虚拟文件夹\tft-lcd\code\tft-lcd\src\readme.txt><readme.txt>
+File 4,1,<D:\tft-lcd\code\tft-lcd\src\stm32f10x_it.c><stm32f10x_it.c>
+File 5,5,<D:\tft-lcd\code\tft-lcd\src\readme.txt><readme.txt>
 File 6,1,<..\..\src\uart.c><uart.c>
 File 6,1,<..\..\src\datadeal.c><datadeal.c>
 File 6,1,<..\..\src\flash.c><flash.c>
