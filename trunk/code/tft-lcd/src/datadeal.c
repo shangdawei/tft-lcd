@@ -161,6 +161,18 @@ void DealCmd(u8 COMx, pGPTIP pGptip)
 			else if(pGptip->head.type == SET_REQUEST)
 				set_sys_time(COMx, pGptip);
 			break;
+		case GPT_PIC_QUERY:/*Í¼Æ¬´«Êä*/
+			if(pGptip->head.type == GET_REQUEST)
+			{
+
+			}
+			else if(pGptip->head.type == SET_REQUEST)
+			{
+				download_pic(COMx, pGptip);
+			}
+			break;
+		case GPT_PIC_VIEW:
+			show_pic(COMx, pGptip);
 		default:
 			break;
 	}
