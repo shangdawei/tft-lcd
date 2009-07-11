@@ -165,11 +165,11 @@ void DealCmd(u8 COMx, pGPTIP pGptip)
 		case GPT_PIC_QUERY:/*Í¼Æ¬´«Êä*/
 			if(pGptip->head.type == GET_REQUEST)
 			{
-
+				pic_upload(COMx, pGptip);
 			}
 			else if(pGptip->head.type == SET_REQUEST)
 			{
-				download_pic(COMx, pGptip);
+				pic_download(COMx, pGptip);
 			}
 			break;
 		case GPT_PIC_VIEW:

@@ -17,7 +17,9 @@
 #define	GLOBLE_PICTURE
 #endif
 
-GLOBLE_PICTURE void download_pic(u8 COMx, pGPTIP pGptip);
+
+GLOBLE_PICTURE void pic_upload(u8 COMx, pGPTIP pGptip);
+GLOBLE_PICTURE void pic_download(u8 COMx, pGPTIP pGptip);
 GLOBLE_PICTURE void show_pic(u8 COMx, pGPTIP pGptip);
 
 
