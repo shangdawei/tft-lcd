@@ -1,3 +1,4 @@
+SET PATH=C:\Keil\ARM\BIN31\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\QuickTime\QTSystem\;C:\Cadence\SPB_15.2\tools\specctra\bin;C:\Cadence\SPB_15.2\tools\pcb\bin;C:\Cadence\SPB_15.2\tools\Capture;C:\Cadence\SPB_15.2\tools\fet\bin;C:\Cadence\SPB_15.2\tools\bin;C:\Cadence\SPB_15.2\tools\libutil\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Common Files\Thunder Network\KanKan\Codecs
 SET RVCT31INC=C:\Keil\ARM\RV31\INC
 SET RVCT31LIB=C:\Keil\ARM\RV31\LIB
 SET CPU_TYPE=STM32F101C6
