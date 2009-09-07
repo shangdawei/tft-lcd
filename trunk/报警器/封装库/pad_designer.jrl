@@ -1,0 +1,8 @@
+\t (00:00:00) pad_designer 15.2 p001 (v15-2-51A) i86
+\t (00:00:00) 
+
+\i (00:00:03) setwindow form.padedit
+\i (00:00:03) pse_open 
+\i (00:00:31) fillin "D:\Cadence\SPB_15.2\share\pcb\pcb_lib\symbols\pad62sq32d.pad"
+\i (00:00:31) cd "D:\Cadence\SPB_15.2\share\pcb\pcb_lib\symbols"
+\i (00:00:35) pse_exit

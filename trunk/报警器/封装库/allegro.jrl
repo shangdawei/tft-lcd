@@ -1,0 +1,28 @@
+\t (00:00:08) allegro 15.2 p003 (v15-2-51C) i86
+\t (00:00:08) 
+
+\t (00:00:09) Opening existing drawing...
+\t (00:00:10) Grids are drawn 40, 40 apart for enhanced viewability.
+\i (00:00:10) trapsize 9
+\i (00:00:10) trapsize 10
+\i (00:00:10) trapsize 10
+\i (00:00:18) open 
+\i (00:00:29) fillin "C:\Documents and Settings\Administrator\Desktop\db15_3rf.dra"
+\i (00:00:29) cd "C:\Documents and Settings\Administrator\Desktop"
+\t (00:00:29) Opening existing drawing...
+\i (00:00:29) trapsize 1836
+\e (00:02:06) Command not found: ~F
+\i (00:02:15) display param 
+\i (00:02:17) setwindow form.options
+\i (00:02:17) FORM options done  
+\i (00:02:46) setwindow pcb
+\i (00:02:46) show element 
+\i (00:02:49) pick grid 280.09 -93.29
+\t (00:02:49) last pick:  300.00  -100.00
+\i (00:04:02) setwindow text
+\i (00:04:02) close 
+\i (00:04:08) setwindow pcb
+\i (00:04:08) show measure 
+\i (00:04:13) show measure 
+\i (00:04:16) show element 
+\i (00:07:10) exit 
