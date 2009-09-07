@@ -1,0 +1,25 @@
+
+
+ *************************************************************************
+
+                   Drawing Name   74hc165n.dra
+
+ ..... start batch DRC at                     Thu Aug 27 11:28:18 2009 
+
+
+ ..... batch DRC requested for all elements 
+
+ ========= check shapes                       Thu Aug 27 11:28:18 2009
+ ========= check standalone pins              Thu Aug 27 11:28:18 2009
+ ========= check symbols (pins,lines,text)    Thu Aug 27 11:28:18 2009
+ ========= check nets                         Thu Aug 27 11:28:18 2009
+ ========= check standalone branches          Thu Aug 27 11:28:18 2009
+ ========= check standalone filled rectangles Thu Aug 27 11:28:18 2009
+ ========= check standalone lines             Thu Aug 27 11:28:18 2009
+ ========= check standalone text              Thu Aug 27 11:28:18 2009
+ ========= check standalone rectangles        Thu Aug 27 11:28:18 2009
+ ..... Total number of DRC errors 0 
+ ..... end batch DRC at                       Thu Aug 27 11:28:18 2009
+ *************************************************************************
+
+

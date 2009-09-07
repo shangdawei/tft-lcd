@@ -1,0 +1,25 @@
+
+
+ *************************************************************************
+
+                   Drawing Name   sop_20_test.dra
+
+ ..... start batch DRC at                     Wed Aug 26 16:28:21 2009 
+
+
+ ..... batch DRC requested for all elements 
+
+ ========= check shapes                       Wed Aug 26 16:28:21 2009
+ ========= check standalone pins              Wed Aug 26 16:28:21 2009
+ ========= check symbols (pins,lines,text)    Wed Aug 26 16:28:21 2009
+ ========= check nets                         Wed Aug 26 16:28:21 2009
+ ========= check standalone branches          Wed Aug 26 16:28:21 2009
+ ========= check standalone filled rectangles Wed Aug 26 16:28:21 2009
+ ========= check standalone lines             Wed Aug 26 16:28:21 2009
+ ========= check standalone text              Wed Aug 26 16:28:21 2009
+ ========= check standalone rectangles        Wed Aug 26 16:28:21 2009
+ ..... Total number of DRC errors 0 
+ ..... end batch DRC at                       Wed Aug 26 16:28:21 2009
+ *************************************************************************
+
+
