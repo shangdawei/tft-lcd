@@ -398,7 +398,7 @@
         </option>
         <option>
           <name>newCCIncludePaths</name>
-          <state>..\inc\</state>
+          <state>$PROJ_DIR$\inc\</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1925,6 +1925,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\src\key.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\src\led.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\src\main.c</name>
