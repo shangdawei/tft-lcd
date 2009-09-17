@@ -1935,6 +1935,9 @@
   <file>
     <name>$PROJ_DIR$\src\phone.c</name>
   </file>
+  <file>
+    <name>$PROJ_DIR$\src\voice.c</name>
+  </file>
 </project>
 
 
