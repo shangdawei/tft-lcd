@@ -4,36 +4,35 @@
 **         (c) Copyright 2009-2010, XXXX CO.LTD.
 **                                    All Rights Reserved
 **  ==========================================================================================
-**	File		: def.h
+**	File		: voice.h
 **  ==========================================================================================
 **	Description	: Application enter pointer
 **  ==========================================================================================
 **  History     : Modify by  ||    ID    ||     Date      ||     Contents
-**              :   xul      ||          ||   2009/09/14  || Create this file
+**              :   xul      ||          ||   2009/09/17  || Create this file
 **  ******************************************************************************************
 */
-#ifndef   _DEF_H_
-#define   _DEF_H_
-// Include I/O definition file
-#define  ENABLE_BIT_DEFINITIONS //don't del this line
-#include <ioavr.h>
-#include <intrinsics.h>
-//! type redefinition 
-typedef unsigned char           uint8;
-typedef unsigned short          uint16;
-typedef signed int              int32;
-typedef unsigned int            uint32;
 
-typedef signed char             int8;
+#ifndef _VIE_H_
+#define _VIE_H_
+#include "def.h"
 
-typedef signed int              bool;
-typedef unsigned long long      UQWORD;
-typedef long long               SQWORD;
 
-#define START   1
-#define STOP    0
+
+#define REC_DIR   DDRD
+#define REC_CTL   PORTD
+#define REC_PIN   (1<<PD6)
+
+#define PLAY_DIR   DDRD
+#define PLAY_CTL   PORTD
+#define PLAY_PIN   (1<<PD5)
+
+#define FT_DIR    DDRB
+#define FT_CTL    PORTB
+#define FT_PIN    (1<<PB7)
 
 #endif
 /*=============================================================================
 ==============================END OF THE FILE==================================
 ==============================================================================*/
+

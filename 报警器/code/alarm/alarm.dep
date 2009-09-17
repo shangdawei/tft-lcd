@@ -12,13 +12,13 @@
       <file>$PROJ_DIR$\src\main.c</file>
       <file>$PROJ_DIR$\src\phone.c</file>
       <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
-      <file>$PROJ_DIR$\Debug\Obj\phone.r90</file>
-      <file>$PROJ_DIR$\Debug\Obj\decode.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\key.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\phone.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\alarm.pbd</file>
-      <file>$PROJ_DIR$\Debug\Exe\alarm.d90</file>
       <file>$PROJ_DIR$\Debug\Obj\key.r90</file>
+      <file>$PROJ_DIR$\Debug\Exe\alarm.d90</file>
+      <file>$PROJ_DIR$\Debug\Obj\alarm.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\phone.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\key.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\decode.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\phone.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\decode.r90</file>
       <file>$PROJ_DIR$\inc\def.h</file>
       <file>$PROJ_DIR$\Debug\Obj\led.r90</file>
@@ -33,26 +33,21 @@
       <file>$PROJ_DIR$\inc\key.h</file>
       <file>$PROJ_DIR$\inc\led.h</file>
       <file>$PROJ_DIR$\inc\phone.h</file>
+      <file>$PROJ_DIR$\inc\voice.h</file>
+      <file>$PROJ_DIR$\src\voice.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\voice.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\voice.pbi</file>
     </outputs>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 12</file>
-        </tool>
-      </outputs>
-    </file>
     <file>
       <name>$PROJ_DIR$\src\key.c</name>
       <outputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 13</file>
+          <file> 7</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 9</file>
+          <file> 11</file>
         </tool>
       </outputs>
       <inputs>
@@ -98,7 +93,7 @@
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 8</file>
+          <file> 12</file>
         </tool>
       </outputs>
       <inputs>
@@ -140,7 +135,7 @@
       <outputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 7</file>
+          <file> 13</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -159,20 +154,52 @@
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\Debug\Obj\alarm.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 8 9 17 0 10</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
       <name>$PROJ_DIR$\Debug\Exe\alarm.d90</name>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 19 20 14 13 16 6 7 18</file>
+          <file> 19 20 14 7 16 6 13 30 18</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\alarm.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 12 11 17 0 10 31</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\voice.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 31</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 28 15 23 22 21 24</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28 15 23 22 21 24</file>
         </tool>
       </inputs>
     </file>

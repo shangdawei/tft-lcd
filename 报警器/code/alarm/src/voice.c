@@ -4,36 +4,66 @@
 **         (c) Copyright 2009-2010, XXXX CO.LTD.
 **                                    All Rights Reserved
 **  ==========================================================================================
-**	File		: def.h
+**	File		: voice.c
 **  ==========================================================================================
 **	Description	: Application enter pointer
 **  ==========================================================================================
 **  History     : Modify by  ||    ID    ||     Date      ||     Contents
-**              :   xul      ||          ||   2009/09/14  || Create this file
+**              :   xul      ||          ||   2009/09/17  || Create this file
 **  ******************************************************************************************
 */
-#ifndef   _DEF_H_
-#define   _DEF_H_
-// Include I/O definition file
-#define  ENABLE_BIT_DEFINITIONS //don't del this line
-#include <ioavr.h>
-#include <intrinsics.h>
-//! type redefinition 
-typedef unsigned char           uint8;
-typedef unsigned short          uint16;
-typedef signed int              int32;
-typedef unsigned int            uint32;
 
-typedef signed char             int8;
+#include "voice.h"
 
-typedef signed int              bool;
-typedef unsigned long long      UQWORD;
-typedef long long               SQWORD;
 
-#define START   1
-#define STOP    0
-
-#endif
+void voice_rec(bool i)
+{
+  REC_DIR |= REC_PIN;
+  if(i == START)
+    REC_CTL |= REC_PIN;
+  else
+    REC_CTL &= ~REC_PIN;
+}
+/*
+void voice_rec_stop(void)
+{
+  REC_DIR |= REC_PIN;
+  REC_CTL &= ~REC_PIN;
+}
+*/
+/*====================================================================*/
+void voice_play(bool i)
+{
+    PLAY_DIR |= PLAY_PIN;
+    if(i == START)
+      PLAY_CTL |= PLAY_PIN;
+    else
+      PLAY_CTL &= ~PLAY_PIN;
+}
+/*
+void voice_play_stop(void)
+{
+    PLAY_DIR |= PLAY_PIN;
+    PLAY_CTL &= ~PLAY_PIN;
+}
+*/
+/*====================================================================*/
+void FT_mode(bool i)
+{
+  FT_DIR |= FT_PIN;
+  if(i == START)
+  {
+     FT_CTL |= FT_PIN;
+     voice_rec(STOP);
+     voice_play(STOP);
+     //set PLAYE low
+  }
+  else
+  {
+     FT_CTL &= ~FT_PIN;
+  }
+}
 /*=============================================================================
 ==============================END OF THE FILE==================================
 ==============================================================================*/
+
