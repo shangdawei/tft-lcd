@@ -1924,6 +1924,9 @@
     <name>$PROJ_DIR$\src\decode.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\src\eeprom.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\src\key.c</name>
   </file>
   <file>
