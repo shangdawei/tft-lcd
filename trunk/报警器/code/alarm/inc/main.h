@@ -4,43 +4,44 @@
 **         (c) Copyright 2009-2010, XXXX CO.LTD.
 **                                    All Rights Reserved
 **  ==========================================================================================
-**	File		: main.c
+**	File		: main.h
 **  ==========================================================================================
 **	Description	: Application enter pointer
 **  ==========================================================================================
 **  History     : Modify by  ||    ID    ||     Date      ||     Contents
-**              :   xul      ||          ||   2009/09/14  || Create this file
+**              :   xul      ||          ||   2009/09/24  || Create this file
 **  ******************************************************************************************
 */
 
-#define _MAIN_C_
-
+#ifndef _MAIN_H_
+#define _MAIN_H_
 #include "def.h"
-#include "main.h"
 
-STWORK gWorkMode;
+#ifndef _MAIN_C_
+#define GLOBLE_MAIN extern
+#else
+#define GLOBLE_MAIN
+#endif
 
-
-
-int main(void)
-{
-	//init_devices();	//init devices
-
-	while(1)
-	{
-	//	key_scan();//key scan
-		
-		/*decode*/
-	//	if(recv_code() == 1)
-		{
-	//		decode_process();
-		}
-
-	//	watch_dog();
-	}
-}
+typedef struct {
+  bool alarm_md;//布防-1/撤防-0
+  bool bal_md;//断线报警功能 1-开启，0-关闭
+  bool sery_md;//密码保护功能 1-开启，0-关闭
+  bool al_sd_md;//0-无声报警，1-有声报警
+  bool re_al_sd_md;//遥控警号伴音 1-开启，0-关闭
+  uint8 beep_tm;//警笛鸣响时间
+  uint8 al_del_tm;//布防延时时间
+  uint8 re_ring_tm;//远程操作振铃次数设置
+  bool l_al;//有线防区 1-开启，0-关闭
+} STWORK;
 
 
+GLOBLE_MAIN STWORK gWorkMode;
+
+
+
+
+#endif
 /*=============================================================================
 ==============================END OF THE FILE==================================
 ==============================================================================*/
