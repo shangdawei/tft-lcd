@@ -15,6 +15,7 @@
 
 #ifndef _EEPROM_H_
 #define _EEPROM_H_
+#include "def.h"
 
 #ifndef _EEPROM_C_
 #define GLOGLE_EEPROM   extern
@@ -22,9 +23,18 @@
 #define GLOGLE_EEPROM
 #endif
 
+typedef struct {
+  uint8* phone_num;
+  uint8 len;
+} StPhSla;
+
+#define   PN_ADD    0x00
+#define   OTHER     (PN_ADD + sizeof(StPhSla)*6)
+
+
 GLOGLE_EEPROM void EEPROM_write(unsigned int uiAddress, unsigned char ucData);
 GLOGLE_EEPROM unsigned char EEPROM_read(unsigned int uiAddress);
-
+GLOGLE_EEPROM void phone_num_save(uint8 sn, uint8* num, uint8 len);
 
 #endif
 /*=============================================================================

@@ -33,6 +33,10 @@ typedef long long               SQWORD;
 #define START   1
 #define STOP    0
 
+#ifndef NULL
+#define NULL 0
+#endif
+
 #endif
 /*=============================================================================
 ==============================END OF THE FILE==================================
