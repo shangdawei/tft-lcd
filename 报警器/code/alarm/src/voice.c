@@ -13,16 +13,24 @@
 **  ******************************************************************************************
 */
 
+#define   _VIE_C_
 #include "voice.h"
 
+bool Rec_Flag = 0;
 
 void voice_rec(bool i)
 {
   REC_DIR |= REC_PIN;
   if(i == START)
+  {
+    Rec_Flag = 1;
     REC_CTL |= REC_PIN;
+  }
   else
+  {
+    Rec_Flag = 0;
     REC_CTL &= ~REC_PIN;
+  }
 }
 /*
 void voice_rec_stop(void)

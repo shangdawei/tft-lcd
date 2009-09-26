@@ -19,6 +19,156 @@
 #include "key.h"
 #include "eeprom.h"
 #include "main.h"
+#include "voice.h"
+#include <string.h>
+
+#define	MAX_CHAR	32
+#define PARTAB_SZ		(sizeof(KeyTable) / sizeof(PAR_TAB))
+static char key_char[MAX_CHAR]="";
+static KER_PAR key_par;
+const uint8 keyVal[] = {1,2,3,'F',4,5,6,'G',7,8,9,'H','*',0,'#','I','A','B','C'};
+//建立按键查找列表
+PAR_TAB KeyTable[] = {
+	{  REC_LWORD,   key_rec_set,},
+	{  SET_PNUM,    key_phone_num_set,},
+	{  BAL_OFF,     general_par_set,},
+	{  BAL_ON,     general_par_set,},
+	{  SERY_OFF,     general_par_set,},
+	{  SERY_ON,     general_par_set,},
+	{  AL_SD_OFF,     general_par_set,},
+	{  AL_SD_ON,     general_par_set,},
+	{  RE_AL_SD_OFF,     general_par_set,},
+	{  RE_AL_SD_ON,     general_par_set,},
+	{  BEEP_TIME,     general_par_set,},
+	{  AL_DELAY_TM,     general_par_set,},
+	{  RE_RING_TM,     general_par_set,},
+	{  L_AL_OFF,     general_par_set,},
+	{  L_AL_ON,     general_par_set,},
+     //   {  BAL_OFF,     general_par_set,},
+    //    {  BAL_OFF,     general_par_set,},
+};
+
+
+/*  $Function   :   key_process
+==  ==============================================================================================
+==  Description :   按键进程
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/09/26  || Create this function
+==  ===============================================================================================
+*/
+void key_process(void)
+{
+	uint8 val = 0xFF;
+	static bool flag = 0;
+	static uint8 cnt = 0;
+	val = key_read();
+	
+	if(val != 0xFF && Rec_Flag == 1)
+	{
+		voice_rec(STOP);
+		return ;
+	}
+
+	if(flag == 0)
+	{
+		switch(val)
+		{
+			case 'F':
+			case 'G':
+			case 'H':
+			case 'I':
+		TAG1:
+				flag = 1;
+				cnt = 0;
+				key_char[cnt++] = val;
+				break;
+			default:
+				return ;
+		}
+	}
+	else
+	{	
+		switch(val)
+		{
+			case 'F':
+			case 'G':
+			case 'H':
+			case 'I':
+				if(key_char[0] != val)
+					goto TAG1;
+
+				flag = 0;
+				key_char[cnt++] = val;
+				key_analyse(key_char, cnt);
+				cnt = 0;
+				break;	
+			default:
+				if(cnt >= MAX_CHAR)
+				{
+					//led show error
+					flag = 0;
+					cnt = 0;
+					return ;
+				}
+				key_char[cnt++] = val;
+				break;
+		}
+	}	
+}
+/*  $Function   :   key_analyse
+==  ==============================================================================================
+==  Description :   分析按键字符串
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/09/26  || Create this function
+==  ===============================================================================================
+*/
+void key_analyse(char *p, uint8 num)
+{
+	uint16 passwd = 0;
+	uint8 i;
+	switch(p[0])
+	{
+		case 'H'://录音
+			for(i = 1; i < (num -1); i++)
+				passwd |= (p[i] << (16 - i*4));
+			key_par.old_passwd = passwd;
+			strncpy(p, REC_LWORD, sizeof(REC_LWORD));
+			break;
+		case 'G'://设置
+
+			break;
+		case 'F'://编程
+
+			break;
+		case 'I'://清除
+
+			break;
+		default:
+			return ;
+
+	}
+
+	for(i = 0; i < PARTAB_SZ; i++)
+	{
+		if(strncmp(KeyTable[i].ParseStr, p, strlen(KeyTable[i].ParseStr)) == 0)
+		{
+			 KeyTable[i].ParseProc(&key_par);
+			 return ;
+		}
+	}
+}
 
 void init_key(void)
 {
@@ -69,7 +219,8 @@ void delay50us(uint32 n)
   }
 }
 
-uint8 key_scan(void)
+
+uint8 key_read(void)
 {
   uint8 i;
   uint8 val;
@@ -89,12 +240,6 @@ uint8 key_scan(void)
 }
 
 
-//建立按键查找列表
-PAR_TAB KeyTable[] = {
-	{  REC_LWORD,   key_rec_set,},
-	{  SET_PNUM,    key_phone_num_set,},
-	{  BAL_OFF,     key_bal_set,},
-};
 /*  $Function   :   key_rec_set
 ==  ==============================================================================================
 ==  Description :   录音留言
@@ -108,9 +253,14 @@ PAR_TAB KeyTable[] = {
 ==              :   xul      ||          ||   2009/09/24  || Create this function
 ==  ===============================================================================================
 */
-void key_rec_set(KER_PAR* i)
+void key_rec_set(KER_PAR* p)
 {
-  
+	if(p->old_passwd != gWorkMode.password)
+	{
+		//led show error
+		return ;
+	}
+	voice_rec(START);//开始录音
 }
 
 /*  $Function   :   key_phone_num_set
@@ -133,6 +283,7 @@ void key_phone_num_set(KER_PAR* p)
   
   phone_num_save(p->serial, p->phone_num, p->val);
 }
+#if 0
 /*  $Function   :   key_bal_set
 ==  ==============================================================================================
 ==  Description :   设置断线报警开启/关闭
@@ -151,11 +302,51 @@ void key_bal_set(KER_PAR* p)
   STWORK *p_mode = &gWorkMode;
   
   p_mode->bal_md = p->val;
+  phone_work_save(p_mode);
 }
-void aa()
+/*  $Function   :   sery_md_set
+==  ==============================================================================================
+==  Description :   密码保护功能开启/关闭
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/09/26  || Create this function
+==  ===============================================================================================
+*/
+void sery_md_set(KER_PAR* p)
 {
-  KeyTable[0].ParseProc(NULL);
+  STWORK *p_mode = &gWorkMode;
+  
+  p_mode->sery_md = p->val;
+  phone_work_save(p_mode);
 }
+#endif
+/*  $Function   :   general_par_set
+==  ==============================================================================================
+==  Description :   通用参数设置 开启/关闭
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/09/26  || Create this function
+==  ===============================================================================================
+*/
+void general_par_set(KER_PAR* p)
+{
+  STWORK *p_mode = &gWorkMode;
+  uint8 *pt = (uint8*)p_mode;
+  
+  pt[p->mode] =  p->val;
+  phone_work_save(p_mode);
+}
+
 /*=============================================================================
 ==============================END OF THE FILE==================================
 ==============================================================================*/

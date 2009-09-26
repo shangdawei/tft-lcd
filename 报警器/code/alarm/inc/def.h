@@ -26,7 +26,7 @@ typedef unsigned int            uint32;
 
 typedef signed char             int8;
 
-typedef signed int              bool;
+typedef unsigned char              bool;
 typedef unsigned long long      UQWORD;
 typedef long long               SQWORD;
 

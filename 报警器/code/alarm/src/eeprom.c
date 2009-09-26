@@ -16,6 +16,8 @@
 #define _EEPROM_C_
 #include "def.h"
 #include "eeprom.h"
+#include <string.h>
+
 
 void EEPROM_write(unsigned int uiAddress, unsigned char ucData)
 {
@@ -63,7 +65,7 @@ void phone_num_save(uint8 sn, uint8* num, uint8 len)
   StPhSla st_phone;
   uint8 i;
   uint8 *p=(uint8*)(&st_phone);
-  st_phone.phone_num = num;
+  memcpy(st_phone.phone_num, num, len);
   st_phone.len = len;
   
   
@@ -73,6 +75,29 @@ void phone_num_save(uint8 sn, uint8* num, uint8 len)
   }
 }
 
+/*  $Function   :   phone_work_save
+==  ==============================================================================================
+==  Description :   工作参数保存到eeprom
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/09/26  || Create this function
+==  ===============================================================================================
+*/
+void phone_work_save(STWORK *p_mode)
+{
+  uint8 i;
+  uint8 *p = (uint8*)p_mode;
+  for(i = 0; i < sizeof(STWORK); i++)
+  {
+    if(p[i] != EEPROM_read(STWORK_ADD + i))
+      EEPROM_write(STWORK_ADD + i, p[i]);
+  }
+}
 /*=============================================================================
 ==============================END OF THE FILE==================================
 ==============================================================================*/

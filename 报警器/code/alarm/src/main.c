@@ -17,6 +17,8 @@
 
 #include "def.h"
 #include "main.h"
+#include "key.h"
+#include "decode.h"
 
 STWORK gWorkMode;
 
@@ -28,12 +30,12 @@ int main(void)
 
 	while(1)
 	{
-	//	key_scan();//key scan
+		key_process();//key process
 		
 		/*decode*/
 	//	if(recv_code() == 1)
 		{
-	//		decode_process();
+			decode_process();
 		}
 
 	//	watch_dog();
