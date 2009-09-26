@@ -23,6 +23,9 @@
 #define GLOBLE_MAIN
 #endif
 
+#define ALARM_ON  1
+#define ALARM_OFF  0
+
 typedef struct {
   bool alarm_md;//布防-1/撤防-0
   bool bal_md;//断线报警功能 1-开启，0-关闭
@@ -33,8 +36,19 @@ typedef struct {
   uint8 al_del_tm;//布防延时时间
   uint8 re_ring_tm;//远程操作振铃次数设置
   bool l_al;//有线防区 1-开启，0-关闭
+  
+  uint16 password;
 } STWORK;
 
+#define BAL_MD  1
+#define SERY_MD 2
+#define AL_SD_MD  3
+#define RE_AL_SD_MD 4
+#define BEEP_TM_MD  5
+#define AL_DEL_TM_MD  6
+#define RE_RING_TM_MD 7
+#define L_AL_MD   8
+#define REC_MD    0x10
 
 GLOBLE_MAIN STWORK gWorkMode;
 

@@ -42,6 +42,9 @@
       <file>$PROJ_DIR$\Debug\Obj\eeprom.r90</file>
       <file>$PROJ_DIR$\inc\main.h</file>
       <file>$PROJ_DIR$\inc\eeprom.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
+      <file>$PROJ_DIR$\inc\decode.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\string.h</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\src\eeprom.c</name>
@@ -58,11 +61,11 @@
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 17 25 24 23 26 36</file>
+          <file> 17 25 24 23 26 36 35 39 37</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 17 25 24 23 26 36</file>
+          <file> 17 25 24 23 26 36 35 39 37</file>
         </tool>
       </inputs>
     </file>
@@ -81,11 +84,11 @@
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 17 25 24 23 26 27 36 35</file>
+          <file> 17 25 24 23 26 27 36 35 30 39 37</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 17 25 24 23 26 27 36 35</file>
+          <file> 17 25 24 23 26 27 36 35 30 39 37</file>
         </tool>
       </inputs>
     </file>
@@ -104,11 +107,11 @@
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 17 25 24 23 26</file>
+          <file> 17 25 24 23 26 35</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 17 25 24 23 26</file>
+          <file> 17 25 24 23 26 35</file>
         </tool>
       </inputs>
     </file>
@@ -150,11 +153,11 @@
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 17 25 24 23 26 35</file>
+          <file> 17 25 24 23 26 35 27 38</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 17 25 24 23 26 35</file>
+          <file> 17 25 24 23 26 35 27 38</file>
         </tool>
       </inputs>
     </file>

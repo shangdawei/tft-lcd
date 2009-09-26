@@ -17,6 +17,11 @@
 #define _VIE_H_
 #include "def.h"
 
+#ifndef _VIE_C_
+#define GLOBLE_VIE extern
+#else
+#define GLOBLE_VIE
+#endif
 
 
 #define REC_DIR   DDRD
@@ -31,6 +36,10 @@
 #define FT_CTL    PORTB
 #define FT_PIN    (1<<PB7)
 
+GLOBLE_VIE bool Rec_Flag;
+
+
+GLOBLE_VIE void voice_rec(bool i);
 #endif
 /*=============================================================================
 ==============================END OF THE FILE==================================
