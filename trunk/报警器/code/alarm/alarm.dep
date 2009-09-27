@@ -12,6 +12,7 @@
       <file>$PROJ_DIR$\src\led.c</file>
       <file>$PROJ_DIR$\src\main.c</file>
       <file>$PROJ_DIR$\src\phone.c</file>
+      <file>$PROJ_DIR$\src\time.c</file>
       <file>$PROJ_DIR$\src\voice.c</file>
       <file>$PROJ_DIR$\Debug\Obj\decode.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\key.pbi</file>
@@ -40,6 +41,9 @@
       <file>$PROJ_DIR$\Debug\Obj\voice.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\eeprom.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\eeprom.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\time.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\time.r90</file>
+      <file>$PROJ_DIR$\inc\time.h</file>
       <file>$PROJ_DIR$\inc\main.h</file>
       <file>$PROJ_DIR$\inc\eeprom.h</file>
       <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
@@ -51,21 +55,21 @@
       <outputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 34</file>
+          <file> 35</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 33</file>
+          <file> 34</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 17 25 24 23 26 36 35 39 37</file>
+          <file> 18 26 25 24 27 40 39 43 41</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 17 25 24 23 26 36 35 39 37</file>
+          <file> 18 26 25 24 27 40 39 43 41</file>
         </tool>
       </inputs>
     </file>
@@ -74,99 +78,7 @@
       <outputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 13</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 17 25 24 23 26 27 36 35 30 39 37</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 25 24 23 26 27 36 35 30 39 37</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\decode.c</name>
-      <outputs>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 16</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 17 25 24 23 26 35</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 25 24 23 26 35</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\led.c</name>
-      <outputs>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 18</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 19</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 17 25 24 23 26 28</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 25 24 23 26 28</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCAVR</name>
           <file> 14</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 0</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 17 25 24 23 26 35 27 38</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 25 24 23 26 35 27 38</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\phone.c</name>
-      <outputs>
-        <tool>
-          <name>ICCAVR</name>
-          <file> 15</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -176,11 +88,126 @@
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 17 25 24 23 26 29</file>
+          <file> 18 26 25 24 27 28 40 39 31 43 41</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 17 25 24 23 26 29</file>
+          <file> 18 26 25 24 27 28 40 39 31 43 41</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\decode.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 18 26 25 24 27 39</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 26 25 24 27 39</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\led.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 19</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 18 26 25 24 27 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 26 25 24 27 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 15</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 0</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 18 26 25 24 27 39 28 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 26 25 24 27 39 28 42</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\phone.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 16</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 18 26 25 24 27 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 26 25 24 27 30</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\time.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 37</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 18 26 25 24 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 26 25 24 27</file>
         </tool>
       </inputs>
     </file>
@@ -189,21 +216,21 @@
       <outputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 31</file>
+          <file> 32</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 32</file>
+          <file> 33</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 30 17 25 24 23 26</file>
+          <file> 31 18 26 25 24 27</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 30 17 25 24 23 26</file>
+          <file> 31 18 26 25 24 27</file>
         </tool>
       </inputs>
     </file>
@@ -212,7 +239,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 8 33 9 19 0 10 32</file>
+          <file> 9 34 10 20 0 11 36 33</file>
         </tool>
       </inputs>
     </file>
@@ -221,7 +248,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 21 22 16 34 13 18 14 15 31 20</file>
+          <file> 22 23 17 35 14 19 15 16 37 32 21</file>
         </tool>
       </inputs>
     </file>
@@ -230,7 +257,7 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 12</file>
+          <file> 13</file>
         </tool>
       </outputs>
     </file>
