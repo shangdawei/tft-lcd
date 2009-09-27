@@ -18,8 +18,10 @@
 #include "def.h"
 #include "main.h"
 
-#define	BUFANG_CMD		0x01
-#define	CHEFANG_CMD		0x02
+#define	BUFANG_CMD		0x01	//²¼·À
+#define	CHEFANG_CMD		0x02	//³··À
+#define	ITC_CMD			0x03	//½ô¼±±¨¾¯
+#define	PART_CF_CMD		0x04	//²¿·Ö²¼³··ÀÇø³··À
 
 /*------------------------------------------*/
 #define	REMOTE_ADDR		0xAAAA
@@ -136,6 +138,14 @@ void do_remote_cmd(uint8 val)
 			break;
 		case CHEFANG_CMD://³··ÀÃüÁî
 			gWorkMode.alarm_md = ALARM_OFF;
+			break;
+		case ITC_CMD://½ô¼±±¨¾¯
+
+			break;
+		case PART_CF_CMD://²¿·Ö²¼³··ÀÇø³··À
+
+			break;
+		default:
 			break;
 	}
 }
