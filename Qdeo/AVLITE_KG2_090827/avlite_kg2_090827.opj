@@ -1,0 +1,92 @@
+(ExpressProject ""
+  (ProjectVersion "19981106")
+  (ProjectType "PCB")
+  (Folder "Design Resources"
+    (Folder "Library")
+    (File ".\avlite_kg2_090827.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (NoModify))
+  (Folder "Outputs")
+  (Folder "Referenced Projects")
+  (PartMRUSelector)
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" ".\avlite_kg2_090827.dsn")
+      (Path "Design Resources" ".\avlite_kg2_090827.dsn" "AVLITE_KG2")
+      (Select "Design Resources" ".\avlite_kg2_090827.dsn" "AVLITE_KG2"
+         "PAGE 06: HDMI TX SiI9134"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -4 -30 0 200 0 403"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -4 -30 44 1170 58 495")
+        (Scroll "0 352")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "E:\FILE\MARVELL\DATASHEETS\DIGITAL VIDEO FORMAT CONVERTER\AVLITE_KG2_090827\AVLITE_KG2_090827.DSN")
+      (Schematic "AVLITE_KG2")
+      (Page "PAGE 01: Block Diagram"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -4 -30 66 1192 87 524")
+        (Scroll "0 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "E:\FILE\MARVELL\DATASHEETS\DIGITAL VIDEO FORMAT CONVERTER\AVLITE_KG2_090827\AVLITE_KG2_090827.DSN")
+      (Schematic "AVLITE_KG2")
+      (Page "PAGE 02: POWER"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -4 -30 88 1214 116 553")
+        (Scroll "0 330")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "E:\FILE\MARVELL\DATASHEETS\DIGITAL VIDEO FORMAT CONVERTER\AVLITE_KG2_090827\AVLITE_KG2_090827.DSN")
+      (Schematic "AVLITE_KG2")
+      (Page "PAGE 03: KG2 - POWER & DECAPS"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 2 3 -1 -1 -4 -30 110 1236 145 582")
+        (Scroll "0 30")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "E:\FILE\MARVELL\DATASHEETS\DIGITAL VIDEO FORMAT CONVERTER\AVLITE_KG2_090827\AVLITE_KG2_090827.DSN")
+      (Schematic "AVLITE_KG2")
+      (Page "PAGE 04: LCD connector"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -4 -30 132 1258 174 611")
+        (Scroll "0 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "E:\FILE\MARVELL\DATASHEETS\DIGITAL VIDEO FORMAT CONVERTER\AVLITE_KG2_090827\AVLITE_KG2_090827.DSN")
+      (Schematic "AVLITE_KG2")
+      (Page "PAGE 05: KG2 - DDR2 I/F"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -4 -30 154 1280 203 640")
+        (Scroll "0 120")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path
+         "E:\FILE\MARVELL\DATASHEETS\DIGITAL VIDEO FORMAT CONVERTER\AVLITE_KG2_090827\AVLITE_KG2_090827.DSN")
+      (Schematic "AVLITE_KG2")
+      (Page "PAGE 06: HDMI TX SiI9134"))))
