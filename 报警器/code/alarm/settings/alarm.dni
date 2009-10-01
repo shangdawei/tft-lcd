@@ -1,6 +1,0 @@
-[Breakpoints]
-Bp0=_ "Code" "{$PROJ_DIR$\src\decode.c}.53.1@1" 1 0 0 0 "" 0 ""
-Count=1
-[TraceHelper]
-Enabled=0
-ShowSource=1
