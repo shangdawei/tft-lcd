@@ -255,7 +255,7 @@ uint8 key_read(void)
 */
 void key_rec_set(KER_PAR* p)
 {
-	if(p->old_passwd != gWorkMode.password)
+	if(p->old_passwd != gSysinfo.password)
 	{
 		//led show error
 		return ;
@@ -299,7 +299,7 @@ void key_phone_num_set(KER_PAR* p)
 */
 void key_bal_set(KER_PAR* p)
 {
-  STWORK *p_mode = &gWorkMode;
+  STWORK *p_mode = &gSysinfo;
   
   p_mode->bal_md = p->val;
   phone_work_save(p_mode);
@@ -319,7 +319,7 @@ void key_bal_set(KER_PAR* p)
 */
 void sery_md_set(KER_PAR* p)
 {
-  STWORK *p_mode = &gWorkMode;
+  STWORK *p_mode = &gSysinfo;
   
   p_mode->sery_md = p->val;
   phone_work_save(p_mode);
@@ -340,7 +340,7 @@ void sery_md_set(KER_PAR* p)
 */
 void general_par_set(KER_PAR* p)
 {
-  STWORK *p_mode = &gWorkMode;
+  STWORK *p_mode = &gSysinfo;
   uint8 *pt = (uint8*)p_mode;
   
   pt[p->mode] =  p->val;

@@ -17,6 +17,7 @@
 //#include <ina90.h> 
 #include "def.h"
 #include "main.h"
+#include "led.h"
 
 #define	BUFANG_CMD		0x01	//布防
 #define	CHEFANG_CMD		0x02	//撤防
@@ -134,21 +135,100 @@ void do_remote_cmd(uint8 val)
 	switch(val)
 	{
 		case BUFANG_CMD://布防命令
-			gWorkMode.alarm_md = ALARM_ON;
+			gSysinfo.alarm_md = ALARM_ON;
+			show_digled('S','F');
 			break;
 		case CHEFANG_CMD://撤防命令
-			gWorkMode.alarm_md = ALARM_OFF;
+			gSysinfo.alarm_md = ALARM_OFF;
+			show_digled('C','F');
 			break;
 		case ITC_CMD://紧急报警
-
+			
+			show_digled('9','9');
 			break;
 		case PART_CF_CMD://部分布撤防区撤防
-
+			
+			show_digled('b','F');
 			break;
 		default:
 			break;
 	}
 }
+/*  $Function   :   do_der_info
+==  ==============================================================================================
+==  Description :   处理探测器报警信号
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/10/9   || Create this function
+==  ===============================================================================================
+*/
+void do_der_info(uint8 id)
+{
+	STWORK* pInfo = &gSysinfo;
+
+	if(pInfo->alarm_md == ALARM_OFF)//属于撤防状态
+		return;
+	//============布防状态==========================//
+	//电话报警、报警输出
+	//
+	alarm_output(ALARM_ON);
+}
+/*  $Function   :   usr_pow
+==  ==============================================================================================
+==  Description :   简单的方次计算
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/10/9   || Create this function
+==  ===============================================================================================
+*/
+int usr_pow(int m, int n)
+{
+	if(n < 0)
+		return -1;
+
+	while(--n)
+	{
+		m = m * m;
+	}
+	
+	return m;
+}
+/*  $Function   :   covert_3rdnum
+==  ==============================================================================================
+==  Description :   把3进制数转换成10进制数
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/10/9   || Create this function
+==  ===============================================================================================
+*/
+uint16 covert_3rdnum(uint8* src, uint8 num)
+{
+	uint8 i;
+	uint16 val = 0;
+	for(i = 0; i < num; i++)
+	{
+		val += (src[i] * usr_pow(3, num - i - 1));
+	}
+
+	return val;
+}
+
+
 /*  $Function   :   decode_process
 ==  ==============================================================================================
 ==  Description :   解码进程
@@ -166,19 +246,28 @@ void decode_process(void)
 {
 	uint16 data_addr = 0;
 	uint8 data_buf = 0;
-	uint8 i;
+	STWORK* pInfo = &gSysinfo;
+//	uint8 i;
 	if(flag == 1)
 	{
 		flag = 0;
 		DecodeNew();//解码
+		/*
 		for(i = 0; i < 8; i++)
 			data_addr |= Data[i] << (14 - i*2);
 		for(i = 8; i < 12; i++)
 			data_buf |= Data[i] << (11 - i);
+		*/
+		data_addr = covert_3rdnum(Data, 8);
+		data_buf = covert_3rdnum(&Data[8], 4);
 		
 		if(data_addr == REMOTE_ADDR)//遥控器地址，8位全部悬空
 		{
 			do_remote_cmd(data_buf);
+		}
+		else if(data_addr == pInfo->localID)//和本机ID相符
+		{
+			do_der_info(data_buf - 7);//参数代表防区号
 		}
 	}
 }
