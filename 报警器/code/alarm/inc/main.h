@@ -38,6 +38,7 @@ typedef struct {
   bool l_al;//有线防区 1-开启，0-关闭
   
   uint16 password;
+  uint16 localID;//本机ID
 } STWORK;
 
 #define BAL_MD  1
@@ -50,10 +51,10 @@ typedef struct {
 #define L_AL_MD   8
 #define REC_MD    0x10
 
-GLOBLE_MAIN STWORK gWorkMode;
+GLOBLE_MAIN STWORK gSysinfo;
 
 
-
+GLOBLE_MAIN void alarm_output(bool val);
 
 #endif
 /*=============================================================================
