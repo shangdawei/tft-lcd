@@ -14,7 +14,26 @@
 */
 
 
+#ifndef _TIME_H_
+#define _TIME_H_
 
+
+
+#ifndef _TIME_C_
+#define GLOBLE_TIME extern
+#else
+#define GLOBLE_TIME
+#endif
+
+
+GLOBLE_TIME uint8		flag_1000ms;
+
+
+
+
+
+
+#endif
 
 
 
