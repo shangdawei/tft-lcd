@@ -26,6 +26,8 @@
 #define ALARM_ON  1
 #define ALARM_OFF  0
 
+
+
 typedef struct {
   bool alarm_md;//布防-1/撤防-0
   bool bal_md;//断线报警功能 1-开启，0-关闭
@@ -39,6 +41,7 @@ typedef struct {
   
   uint16 password;
   uint16 localID;//本机ID
+  bool istel_set;//电话号码是否设置
 } STWORK;
 
 #define BAL_MD  1

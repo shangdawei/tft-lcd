@@ -18,6 +18,7 @@
 #include "def.h"
 #include "main.h"
 #include "led.h"
+#include "time.h"
 
 #define	BUFANG_CMD		0x01	//布防
 #define	CHEFANG_CMD		0x02	//撤防
@@ -26,6 +27,8 @@
 
 /*------------------------------------------*/
 #define	REMOTE_ADDR		0xAAAA
+
+static bool Delay_flag = 0;
 
 uint8   RecData[24]={0};//原始数据
 uint8   Data[12]={0};//解码后存放的数据，前8字节为地址码，后4字节为数据码
@@ -117,6 +120,63 @@ void DecodeNew(void)
     DecodeCom--;
   }
 }
+void alarm_delay_set(uint8 delay_s, int t)
+{
+	static uint8 i = 0;
+
+	if(Delay_flag == 0)
+	{
+		i = 0;
+		return ;
+	}
+	
+	if(flag_1000ms == 1)
+	{
+		flag_1000ms = 0;
+		i++;
+	}
+	if(i == delay_s)
+	{
+		Delay_flag = 0;
+		gSysinfo.alarm_md = ALARM_ON;
+	}
+	
+}
+/*  $Function   :   alarm_set
+==  ==============================================================================================
+==  Description :   报警状态设置
+==  ==============================================================================================
+==  Argument    :   
+==  ==============================================================================================
+==  Return      :   
+==              :   
+==  ===============================================================================================
+==  History     : Modify by  ||    ID    ||     Date      ||     Contents
+==              :   xul      ||          ||   2009/10/12  || Create this function
+==  ===============================================================================================
+*/
+void alarm_set(int	t)
+{
+	static int flag = 0;
+
+	if(t == ALARM_OFF)
+	{
+		flag = 0;
+		gSysinfo.alarm_md = ALARM_OFF;
+	}
+	else
+	{
+		if(flag == 0)
+		{//表明是第一次按布防键，调用延时布防
+			flag ++;
+			Delay_flag = 1;
+		}
+		else
+		{//第二次按布防键，立即布防
+			gSysinfo.alarm_md = ALARM_ON;
+		}
+	}
+}
 /*  $Function   :   do_remote_cmd
 ==  ==============================================================================================
 ==  Description :   处理遥控器命令
@@ -135,11 +195,11 @@ void do_remote_cmd(uint8 val)
 	switch(val)
 	{
 		case BUFANG_CMD://布防命令
-			gSysinfo.alarm_md = ALARM_ON;
+			alarm_set(ALARM_ON);
 			show_digled('S','F');
 			break;
 		case CHEFANG_CMD://撤防命令
-			gSysinfo.alarm_md = ALARM_OFF;
+			alarm_set(ALARM_OFF);
 			show_digled('C','F');
 			break;
 		case ITC_CMD://紧急报警
@@ -176,7 +236,15 @@ void do_der_info(uint8 id)
 	//============布防状态==========================//
 	//电话报警、报警输出
 	//
-	alarm_output(ALARM_ON);
+	if(pInfo->istel_set == 1)
+	{//电话号码设置
+		//拨电话号码
+		//if(拨出成功) 播放语音，报警音输出，显示报警区号
+	}
+	else
+	{//没有设置，直接声音报警
+		alarm_output(ALARM_ON);
+	}
 }
 /*  $Function   :   usr_pow
 ==  ==============================================================================================
@@ -270,6 +338,7 @@ void decode_process(void)
 			do_der_info(data_buf - 7);//参数代表防区号
 		}
 	}
+	alarm_delay_set(gSysinfo.al_del_tm, ALARM_ON);//检测延时报警
 }
 
 /*=============================================================================

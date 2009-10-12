@@ -15,12 +15,12 @@
       <file>$PROJ_DIR$\src\time.c</file>
       <file>$PROJ_DIR$\src\voice.c</file>
       <file>$PROJ_DIR$\Debug\Obj\decode.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
-      <file>$PROJ_DIR$\Debug\Obj\key.r90</file>
-      <file>$PROJ_DIR$\Debug\Exe\alarm.d90</file>
-      <file>$PROJ_DIR$\Debug\Obj\alarm.pbd</file>
-      <file>$PROJ_DIR$\Debug\Obj\phone.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\key.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\phone.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\alarm.pbd</file>
+      <file>$PROJ_DIR$\Debug\Exe\alarm.d90</file>
+      <file>$PROJ_DIR$\Debug\Obj\key.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\phone.r90</file>
       <file>$PROJ_DIR$\Debug\Obj\decode.r90</file>
       <file>$PROJ_DIR$\inc\def.h</file>
@@ -48,7 +48,6 @@
       <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
       <file>$PROJ_DIR$\inc\decode.h</file>
       <file>$TOOLKIT_DIR$\inc\clib\string.h</file>
-      <file>$TOOLKIT_DIR$\inc\clib\math.h</file>
       <file>$PROJ_DIR$\inc\time.h</file>
     </outputs>
     <file>
@@ -79,11 +78,11 @@
       <outputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 11</file>
+          <file> 14</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 15</file>
+          <file> 10</file>
         </tool>
       </outputs>
       <inputs>
@@ -112,11 +111,11 @@
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 18 26 25 24 27 38 29</file>
+          <file> 18 26 25 24 27 38 29 43</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 18 26 25 24 27 38 29</file>
+          <file> 18 26 25 24 27 38 29 43</file>
         </tool>
       </inputs>
     </file>
@@ -148,7 +147,7 @@
       <outputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 10</file>
+          <file> 15</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -175,7 +174,7 @@
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 14</file>
+          <file> 11</file>
         </tool>
       </outputs>
       <inputs>
@@ -236,20 +235,20 @@
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\Debug\Exe\alarm.d90</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 22 23 17 35 11 19 10 16 37 32 21</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
       <name>$PROJ_DIR$\Debug\Obj\alarm.pbd</name>
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 9 34 15 20 0 14 36 33</file>
+          <file> 9 34 10 20 0 11 36 33</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\alarm.d90</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 22 23 17 35 14 19 15 16 37 32 21</file>
         </tool>
       </inputs>
     </file>
@@ -258,7 +257,7 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 12</file>
+          <file> 13</file>
         </tool>
       </outputs>
     </file>
