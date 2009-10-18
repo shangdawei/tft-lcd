@@ -138,7 +138,7 @@ void alarm_delay_set(uint8 delay_s, int t)
 	if(i == delay_s)
 	{
 		Delay_flag = 0;
-		gSysinfo.alarm_md = ALARM_ON;
+		gSysinfo.alarm_md = t;
 	}
 	
 }

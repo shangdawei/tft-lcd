@@ -21,13 +21,15 @@
 #include "main.h"
 #include "voice.h"
 #include <string.h>
+#include "stdlib.h"
 
 #define	MAX_CHAR	32
 #define PARTAB_SZ		(sizeof(KeyTable) / sizeof(PAR_TAB))
 static char key_char[MAX_CHAR]="";
-static KER_PAR key_par;
+//static KER_PAR key_par;
 const uint8 keyVal[] = {1,2,3,'F',4,5,6,'G',7,8,9,'H','*',0,'#','I','A','B','C'};
 //建立按键查找列表
+/*
 PAR_TAB KeyTable[] = {
 	{  REC_LWORD,   key_rec_set,},
 	{  SET_PNUM,    key_phone_num_set,},
@@ -46,7 +48,8 @@ PAR_TAB KeyTable[] = {
 	{  L_AL_ON,     general_par_set,},
      //   {  BAL_OFF,     general_par_set,},
     //    {  BAL_OFF,     general_par_set,},
-};
+};*/
+
 
 
 /*  $Function   :   key_process
@@ -137,20 +140,91 @@ void key_process(void)
 void key_analyse(char *p, uint8 num)
 {
 	uint16 passwd = 0;
+	uint32 id = 0, val = 0;
 	uint8 i;
+	STWORK* pInfo = &gSysinfo;
 	switch(p[0])
 	{
 		case 'H'://录音
 			for(i = 1; i < (num -1); i++)
 				passwd |= (p[i] << (16 - i*4));
-			key_par.old_passwd = passwd;
-			strncpy(p, REC_LWORD, sizeof(REC_LWORD));
+		//	key_par.old_passwd = passwd;
+			key_rec_set(passwd);
+		//	strncpy(p, REC_LWORD, sizeof(REC_LWORD));
 			break;
 		case 'G'://设置
-
+			switch (p[1])
+			{
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+					key_phone_num_set(&p[1]);//保存电话号码
+				//	strncpy(p, SET_PNUM, sizeof(SET_PNUM));				
+					break;
+				case 0:
+					pInfo->l_al = (p[2] == 0x30)?0:1;//有线防区开启/关闭
+					break;
+				case 7:
+					if(memcmp(&p[2], &p[6], 4) == 0)//2次输入新密码一样
+					{
+						for(i = 1; i <= 4; i++)
+							passwd |= (p[i + 1] << (16 - i*4));
+						pInfo->password = passwd;
+						//保存
+					}
+					break;
+				case 9:
+					for(i = 1; i <= 6; i++)
+						id |= (p[i + 1] << (24 - i*4));
+					
+					pInfo->localID = id;
+					//保存
+					break;
+				default:
+					break;
+			}
 			break;
 		case 'F'://编程
-
+			switch (p[1])
+			{
+				case 1:
+					pInfo->bal_md = (p[2] == 0x30)?0:1;//断线报警功能 1-开启，0-关闭
+					break;
+				case 2:
+					pInfo->sery_md = (p[2] == 0x30)?0:1;//密码保护功能 1-开启，0-关闭
+					break;
+				case 3:
+					pInfo->al_sd_md = (p[2] == 0x30)?0:1;//0-无声报警，1-有声报警
+					break;
+				case 4:
+					pInfo->re_al_sd_md = (p[2] == 0x30)?0:1;//遥控警号伴音 1-开启，0-关闭
+					break;
+				case 5:
+					for(i = 1; i <= 2; i++)
+					{
+						val |= (p[i + 1] << (8 - i*4));
+					}
+					pInfo->beep_tm = val > 30?30:val;//警笛鸣响时间，最大30分钟
+					break;
+				case 6:
+					for(i = 1; i <= 2; i++)
+					{
+						val |= (p[i + 1] << (8 - i*4));
+					}
+					pInfo->al_del_tm = val > 99?99:val;//布防延时时间,最大99秒
+					break;
+				case 7:
+					pInfo->re_ring_tm = val > 9?9:val;//远程操作振铃次数设置
+					break;
+				case 8:
+					pInfo->al_sd_md = (p[2] == 0x30)?0:1;//0-无声报警，1-有声报警
+					break;
+				default:
+					break;
+			}
 			break;
 		case 'I'://清除
 
@@ -160,6 +234,7 @@ void key_analyse(char *p, uint8 num)
 
 	}
 
+/*
 	for(i = 0; i < PARTAB_SZ; i++)
 	{
 		if(strncmp(KeyTable[i].ParseStr, p, strlen(KeyTable[i].ParseStr)) == 0)
@@ -167,7 +242,8 @@ void key_analyse(char *p, uint8 num)
 			 KeyTable[i].ParseProc(&key_par);
 			 return ;
 		}
-	}
+	}*/
+
 }
 
 void init_key(void)
@@ -253,9 +329,9 @@ uint8 key_read(void)
 ==              :   xul      ||          ||   2009/09/24  || Create this function
 ==  ===============================================================================================
 */
-void key_rec_set(KER_PAR* p)
+void key_rec_set(uint16 pwd)
 {
-	if(p->old_passwd != gSysinfo.password)
+	if(pwd != gSysinfo.password)
 	{
 		//led show error
 		return ;
@@ -276,12 +352,25 @@ void key_rec_set(KER_PAR* p)
 ==              :   xul      ||          ||   2009/09/24  || Create this function
 ==  ===============================================================================================
 */
-void key_phone_num_set(KER_PAR* p)
+void key_phone_num_set(char* src)
 {
-  if(p->serial > MAX_PHONE_NUM)
-    return ;
-  
-  phone_num_save(p->serial, p->phone_num, p->val);
+	char *p = src;
+	STWORK* pInfo = &gSysinfo;
+	uint8 num = 0, i;
+	num = p[0] - 0x30 - 1;
+	if(num >= MAX_PHONE_NUM)
+		return ;
+	for(i = 0; ; i++)
+	{
+		pInfo->phone_num[num][i] = p[i+1];
+		if(pInfo->phone_num[num][i] == 'G')
+		{
+			pInfo->phone_num[num][i] = '\0';
+			break;
+		}
+	}
+
+	phone_num_save(num, pInfo->phone_num[num], i);
 }
 #if 0
 /*  $Function   :   key_bal_set
