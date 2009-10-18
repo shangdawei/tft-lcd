@@ -73,8 +73,8 @@ typedef struct {
 
 
 GOLBLE_KEY uint8 key_read(void);
-GOLBLE_KEY  void key_rec_set(KER_PAR*);
-GOLBLE_KEY  void key_phone_num_set(KER_PAR*);
+GOLBLE_KEY  void key_rec_set(uint16);
+GOLBLE_KEY  void key_phone_num_set(char*);
 //GOLBLE_KEY void key_bal_set(KER_PAR* p);
 GOLBLE_KEY void general_par_set(KER_PAR* p);
 GOLBLE_KEY void key_analyse(char *p, uint8 num);

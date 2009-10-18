@@ -49,6 +49,7 @@
       <file>$PROJ_DIR$\inc\decode.h</file>
       <file>$TOOLKIT_DIR$\inc\clib\string.h</file>
       <file>$PROJ_DIR$\inc\time.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdlib.h</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\src\eeprom.c</name>
@@ -88,11 +89,11 @@
       <inputs>
         <tool>
           <name>ICCAVR</name>
-          <file> 18 26 25 24 27 28 39 38 31 42 40</file>
+          <file> 18 26 25 24 27 28 39 38 31 42 40 44</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 18 26 25 24 27 28 39 38 31 42 40</file>
+          <file> 18 26 25 24 27 28 39 38 31 42 40 44</file>
         </tool>
       </inputs>
     </file>

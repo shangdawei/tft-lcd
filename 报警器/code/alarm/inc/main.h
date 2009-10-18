@@ -40,8 +40,9 @@ typedef struct {
   bool l_al;//有线防区 1-开启，0-关闭
   
   uint16 password;
-  uint16 localID;//本机ID
+  uint32 localID;//本机ID
   bool istel_set;//电话号码是否设置
+  uint8 phone_num[6][16];
 } STWORK;
 
 #define BAL_MD  1
