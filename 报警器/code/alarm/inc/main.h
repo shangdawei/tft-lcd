@@ -26,8 +26,16 @@
 #define ALARM_ON  1
 #define ALARM_OFF  0
 
+enum {	
+	TEL_NOT_SET,
+	TEL_IS_SET,
+};
 
-
+enum{
+	KEY_CLOSE,
+	KEY_OPEN,
+};
+#define MAX_TEL_NUM	6
 typedef struct {
   bool alarm_md;//布防-1/撤防-0
   bool bal_md;//断线报警功能 1-开启，0-关闭
@@ -38,11 +46,11 @@ typedef struct {
   uint8 al_del_tm;//布防延时时间
   uint8 re_ring_tm;//远程操作振铃次数设置
   bool l_al;//有线防区 1-开启，0-关闭
-  
+  bool is_key_open;//键盘是否开启
   uint16 password;
   uint32 localID;//本机ID
   bool istel_set;//电话号码是否设置
-  uint8 phone_num[6][16];
+  uint8 phone_num[MAX_TEL_NUM][16];
 } STWORK;
 
 #define BAL_MD  1

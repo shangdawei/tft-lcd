@@ -19,6 +19,7 @@
 #include "main.h"
 #include "led.h"
 #include "time.h"
+#include "phone.h"
 
 #define	BUFANG_CMD		0x01	//布防
 #define	CHEFANG_CMD		0x02	//撤防
@@ -238,8 +239,15 @@ void do_der_info(uint8 id)
 	//
 	if(pInfo->istel_set == 1)
 	{//电话号码设置
+		if(pInfo->istel_set == TEL_IS_SET)
 		//拨电话号码
-		//if(拨出成功) 播放语音，报警音输出，显示报警区号
+		{
+			if(call_the_phone(pInfo) == 1)
+			{//if(拨出成功) 播放语音，报警音输出，显示报警区号
+				alarm_output(ALARM_ON);
+			}
+		}
+		
 	}
 	else
 	{//没有设置，直接声音报警
@@ -335,7 +343,7 @@ void decode_process(void)
 		}
 		else if(data_addr == pInfo->localID)//和本机ID相符
 		{
-			do_der_info(data_buf - 7);//参数代表防区号
+			do_der_info(data_buf - 7);//参数代表防区号   减7的目的是为了和说明书的地址编码对照表一致
 		}
 	}
 	alarm_delay_set(gSysinfo.al_del_tm, ALARM_ON);//检测延时报警

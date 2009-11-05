@@ -126,7 +126,7 @@ void key_process(void)
 }
 /*  $Function   :   key_analyse
 ==  ==============================================================================================
-==  Description :   分析按键字符串
+==  Description :   分析按键字符串   这里的按键设置和说明书的略有不同，应该给份说明文档
 ==  ==============================================================================================
 ==  Argument    :   
 ==  ==============================================================================================
@@ -145,7 +145,16 @@ void key_analyse(char *p, uint8 num)
 	STWORK* pInfo = &gSysinfo;
 	switch(p[0])
 	{
+		case '*'://用于开启键盘
+			for(i = 1; i < (num -1); i++)
+				passwd |= (p[i] << (16 - i*4));
+			if(passwd == pInfo->password)
+			{
+				pInfo->is_key_open = KEY_OPEN;
+			}
 		case 'H'://录音
+			if(pInfo->is_key_open == KEY_CLOSE)
+				return ;
 			for(i = 1; i < (num -1); i++)
 				passwd |= (p[i] << (16 - i*4));
 		//	key_par.old_passwd = passwd;
@@ -153,6 +162,8 @@ void key_analyse(char *p, uint8 num)
 		//	strncpy(p, REC_LWORD, sizeof(REC_LWORD));
 			break;
 		case 'G'://设置
+			if(pInfo->is_key_open == KEY_CLOSE)
+				return ;
 			switch (p[1])
 			{
 				case 1:
@@ -162,6 +173,7 @@ void key_analyse(char *p, uint8 num)
 				case 5:
 				case 6:
 					key_phone_num_set(&p[1]);//保存电话号码
+					phone_work_save(pInfo);
 				//	strncpy(p, SET_PNUM, sizeof(SET_PNUM));				
 					break;
 				case 0:
@@ -174,33 +186,41 @@ void key_analyse(char *p, uint8 num)
 							passwd |= (p[i + 1] << (16 - i*4));
 						pInfo->password = passwd;
 						//保存
+						phone_work_save(pInfo);
 					}
 					break;
-				case 9:
+				case 9://设置主机ID码
 					for(i = 1; i <= 6; i++)
 						id |= (p[i + 1] << (24 - i*4));
 					
 					pInfo->localID = id;
 					//保存
+					phone_work_save(pInfo);
 					break;
 				default:
 					break;
 			}
 			break;
 		case 'F'://编程
+			if(pInfo->is_key_open == KEY_CLOSE)
+				return ;
 			switch (p[1])
 			{
 				case 1:
 					pInfo->bal_md = (p[2] == 0x30)?0:1;//断线报警功能 1-开启，0-关闭
+					phone_work_save(pInfo);
 					break;
 				case 2:
 					pInfo->sery_md = (p[2] == 0x30)?0:1;//密码保护功能 1-开启，0-关闭
+					phone_work_save(pInfo);
 					break;
 				case 3:
 					pInfo->al_sd_md = (p[2] == 0x30)?0:1;//0-无声报警，1-有声报警
+					phone_work_save(pInfo);
 					break;
 				case 4:
 					pInfo->re_al_sd_md = (p[2] == 0x30)?0:1;//遥控警号伴音 1-开启，0-关闭
+					phone_work_save(pInfo);
 					break;
 				case 5:
 					for(i = 1; i <= 2; i++)
@@ -208,6 +228,7 @@ void key_analyse(char *p, uint8 num)
 						val |= (p[i + 1] << (8 - i*4));
 					}
 					pInfo->beep_tm = val > 30?30:val;//警笛鸣响时间，最大30分钟
+					phone_work_save(pInfo);
 					break;
 				case 6:
 					for(i = 1; i <= 2; i++)
@@ -215,19 +236,24 @@ void key_analyse(char *p, uint8 num)
 						val |= (p[i + 1] << (8 - i*4));
 					}
 					pInfo->al_del_tm = val > 99?99:val;//布防延时时间,最大99秒
+					phone_work_save(pInfo);
 					break;
 				case 7:
 					pInfo->re_ring_tm = val > 9?9:val;//远程操作振铃次数设置
+					phone_work_save(pInfo);
 					break;
 				case 8:
 					pInfo->al_sd_md = (p[2] == 0x30)?0:1;//0-无声报警，1-有声报警
+					phone_work_save(pInfo);
 					break;
 				default:
 					break;
 			}
 			break;
 		case 'I'://清除
-
+			if(pInfo->is_key_open == KEY_CLOSE)
+				return ;
+			//do sth
 			break;
 		default:
 			return ;

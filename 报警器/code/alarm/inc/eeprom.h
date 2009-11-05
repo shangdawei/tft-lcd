@@ -37,6 +37,7 @@ GLOGLE_EEPROM void EEPROM_write(unsigned int uiAddress, unsigned char ucData);
 GLOGLE_EEPROM unsigned char EEPROM_read(unsigned int uiAddress);
 GLOGLE_EEPROM void phone_num_save(uint8 sn, uint8* num, uint8 len);
 GLOGLE_EEPROM void phone_work_save(STWORK *p_mode);
+GLOGLE_EEPROM void phone_work_read(STWORK *p_mode);
 
 #endif
 /*=============================================================================

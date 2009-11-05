@@ -16,6 +16,7 @@
 #ifndef _PHONE_H_
 #define _PHONE_H_
 #include "def.h"
+#include "main.h"
 
 #define DIAL_CLK    (1 << PC2)
 #define DIAL_DATA   (1 << PC3)
@@ -37,8 +38,12 @@
 #define CSC9270_OE_DIR  DDRD
 #define CSC9270_OE_CTL  PORTD
 
+#ifdef _PHONE_C_
 const char csc9270_dtmf_tab[] = {'D',0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,\
                                  0x09,0x00,'*','#','A','B','C'};
+#endif
+extern int call_the_phone(STWORK* pInfo);
+extern void phone_init(void);
 
 #endif
 /*=============================================================================
