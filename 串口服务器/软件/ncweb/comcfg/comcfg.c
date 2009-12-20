@@ -189,7 +189,7 @@ void ShowForm()
 
  fprintf(cgiOut, "<div id=\"formwrapper\">\n");
  fprintf(cgiOut, "	<h3>¶Ë¿Ú %d ÅäÖÃ</h3>\n", id + 1);
- fprintf(cgiOut, "	<form action=\"\n");
+ fprintf(cgiOut, "	<form action=\"");
  fprintf(cgiOut, "\" method=\"post\" name=\"com\" id=\"com\">\n");
  fprintf(cgiOut, "	  <fieldset>\n");
  fprintf(cgiOut, "	  <div>\n");
