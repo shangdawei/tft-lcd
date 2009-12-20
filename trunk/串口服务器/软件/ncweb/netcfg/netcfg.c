@@ -196,7 +196,7 @@ void ShowForm()
  int i ,j;
  fprintf(cgiOut, "<div id=\"formwrapper\">\n");
  fprintf(cgiOut, "	<h3>¶Ë¿Ú %d Ä£Ê½ÅäÖÃ</h3>\n", id + 1);
- fprintf(cgiOut, "	<form action=\"\n");
+ fprintf(cgiOut, "	<form action=\"");
  fprintf(cgiOut, "\" method=\"post\" name=\"wknet\" id=\"wknet\">\n");
  fprintf(cgiOut, " \n");
  fprintf(cgiOut, "	\n");
