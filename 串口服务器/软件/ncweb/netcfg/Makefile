@@ -1,15 +1,13 @@
+include ../config.mk
+
 CFLAGS=-g -Wall
-CC=gcc
-AR=ar
-RANLIB=ranlib
-LIBS=-L./ -lcgic 
-INC=../lib/
+CC=$(CROSS)gcc
 
 #mingw32 and cygwin users: replace .cgi with .exe
 .c.o:
-	$(CC) -I$(INC) -c -o $*.o $<
-default: netcfg.o libcgic.a 
-	$(CC) netcfg.o -o netcfg.cgi ${LIBS} -I$(INC) $(INC)libucli.a
+	$(CC) -I$(INC_DIR) -c -o $*.o $<
+default: netcfg.o
+	$(CC) netcfg.o -o netcfg.cgi $(LIB_DIR)libcgic.a $(LIB_DIR)libucli.a
 	cp netcfg.cgi /var/www/cgi-bin/
 #	sudo cp hostcfg.cgi ~/nfshome/var/www/cgi-bin/
 clean:
