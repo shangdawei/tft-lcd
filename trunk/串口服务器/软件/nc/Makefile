@@ -1,5 +1,6 @@
 
-GCC = gcc
+CROSS = arm-linux-
+GCC = $(CROSS)gcc
 EXEC = app
 INC	=./inc/
 SRC = ./src/
@@ -9,6 +10,7 @@ OBJS	=	  main.o			\
 		$(SRC)file/file.o		\
 		$(SRC)usocket/usocket.o	\
 		$(SRC)net/net.o			\
+		$(SRC)com/com.o			\
 		$(SRC)config/conf.o
 
 .c.o:

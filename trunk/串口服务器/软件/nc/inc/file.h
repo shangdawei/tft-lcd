@@ -9,18 +9,18 @@
 
 enum OPEN_FLAGS
 {
-	MODE_READ      =    0x00,	//!< only read in binary format
-	MODE_WRITE,					//!< only write in binary format
-	MODE_READWRITE,				//!< read and write dual mode
-	MODE_CREATE,				//!< create a file
-	MODE_APPEND,				//!< append new content to the existed file tail
-	MODE_UPDATE,				//!< Open file for update the contents
-	MODE_READ_T,				//!< read text file
-	MODE_WRITE_T,				//!< write text file
-	MODE_RW_T,                  //!< read and write text file, clean existed contents
-	MODE_CREATE_T,				//!< create text file
-	MODE_APPEND_T,				//!< append content to text file's tail	
-	MODE_UPDATE_T,              //!< Open text file for update the contents
+    MODE_READ      =    0x00,	//!< only read in binary format
+    MODE_WRITE,					//!< only write in binary format
+    MODE_READWRITE,				//!< read and write dual mode
+    MODE_CREATE,				//!< create a file
+    MODE_APPEND,				//!< append new content to the existed file tail
+    MODE_UPDATE,				//!< Open file for update the contents
+    MODE_READ_T,				//!< read text file
+    MODE_WRITE_T,				//!< write text file
+    MODE_RW_T,                  //!< read and write text file, clean existed contents
+    MODE_CREATE_T,				//!< create text file
+    MODE_APPEND_T,				//!< append content to text file's tail
+    MODE_UPDATE_T,              //!< Open text file for update the contents
 };
 
 

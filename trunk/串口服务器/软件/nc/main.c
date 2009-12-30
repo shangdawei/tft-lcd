@@ -6,11 +6,12 @@ int main(int argc, char *argv[])
 {
 	
 	log_init();
+    conf_init();
 	sys_log(MOD_MAIN, LOG_MSG, "system start!");
 
-//	com_start();
-//	net_start();
-	conf_init();
+	com_start();
+	net_start();
+
 	usocket_start();
 	while(1)
 	{
