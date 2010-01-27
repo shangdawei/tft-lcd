@@ -23,6 +23,8 @@ typedef DWORD                   COLORDEV;
 #define	SUCCESS 	0
 #define	FAILURE		(-1)
 
+#define ON  1
+#define OFF 0
 
 typedef struct _ITS_INFO
 {
@@ -41,10 +43,8 @@ typedef struct tagTERM_REGISTER
     DWORD dev_sw_ver; 				//!< 设备版本号
     ITS_INFO dev_info; 				//!< 前端设备的硬件具体信息
 } TERM_REGISTER;
-typedef pthread_t	TRD_t;
 
 
-extern int trd_create(TRD_t *trd_id, void *(*func)(void *));
 extern DWORD sys_str2ip(BYTE *str);
 extern void sys_ip2str(DWORD ip, BYTE *str);
 
