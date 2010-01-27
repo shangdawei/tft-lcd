@@ -1,3 +1,10 @@
+/**
+* @file sys_log.c
+* @brief	:
+* @author 	:xul <xu_liang@dahuatech.com>
+* @version 1
+* @date	:	 2010-01-27
+*/
 #include <stdio.h>
 #include <sys/time.h>
 #include <time.h>
@@ -8,6 +15,7 @@
 #include "sys_log.h"
 #include "system.h"
 #include "file.h"
+#include "thread.h"
 
 const char* g_mod_str[] =
 {
@@ -16,13 +24,27 @@ const char* g_mod_str[] =
     "MOD_LOG",
     "MOD_USOCKET",
     "MOD_ERR",
-    "MOD_CONF"
+    "MOD_CONF",
+    "MOD_COM",
+    "MOD_NET",
 };
 static int g_pfd[2];
 static	int g_efd[2];
 int log_print(const char* buf);
 static void log_thread(void);
 
+/* ==============================================================================================*/
+/**
+* @brief	:	sys_log
+*
+* @param	:	module
+* @param	:	level
+* @param	:	format
+* @param	:	...
+*
+* @return	:
+*/
+/* ==============================================================================================*/
 int sys_log(MOD_LST module, LOG_Lv level, char* format, ...)
 {
     char szbuf[1024+256] = "", szcontent[1024] = "";
@@ -43,6 +65,13 @@ int sys_log(MOD_LST module, LOG_Lv level, char* format, ...)
     return 1;
 }
 
+/* ==============================================================================================*/
+/**
+* @brief	:	perror_to_log
+*
+* @return	:
+*/
+/* ==============================================================================================*/
 int perror_to_log(void)
 {
     int s_err;
@@ -59,6 +88,11 @@ int perror_to_log(void)
     return 1;
 }
 
+/* ==============================================================================================*/
+/**
+* @brief	:	err_log_thread
+*/
+/* ==============================================================================================*/
 static void err_log_thread(void)
 {
     char buf[1024];
@@ -82,6 +116,15 @@ static void err_log_thread(void)
 }
 
 
+/* ==============================================================================================*/
+/**
+* @brief	:	log_print
+*
+* @param	:	buf
+*
+* @return	:
+*/
+/* ==============================================================================================*/
 int log_print(const char* buf)
 {
     printf("%s", buf);
@@ -89,6 +132,13 @@ int log_print(const char* buf)
     return 1;
 }
 
+/* ==============================================================================================*/
+/**
+* @brief	:	log_init
+*
+* @return	:
+*/
+/* ==============================================================================================*/
 int log_init(void)
 {
     if (pipe(g_pfd) < 0)
@@ -106,6 +156,11 @@ int log_init(void)
 }
 
 
+/* ==============================================================================================*/
+/**
+* @brief	:	log_thread
+*/
+/* ==============================================================================================*/
 static void log_thread(void)
 {
     char buf[2048];

@@ -17,6 +17,8 @@ typedef enum tagMOD_LST
     MOD_USOCKET,
     MOD_ERR,
     MOD_CONF,
+    MOD_COM,
+    MOD_NET,
 } MOD_LST;
 
 

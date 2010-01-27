@@ -1,3 +1,10 @@
+/**
+* @file usocket.c
+* @brief	:
+* @author 	:xul <xu_liang@dahuatech.com>
+* @version 1
+* @date	:	 2010-01-27
+*/
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <time.h>
@@ -10,7 +17,7 @@
 #include "sys_log.h"
 #include "usocket.h"
 #include "conf.h"
-
+#include "thread.h"
 
 #define STALE   30  /* client's name can't be older than this (sec) */
 #define offsetof1(TYPE, MEMBER) ((int)&((TYPE *)0)->MEMBER)
@@ -139,6 +146,11 @@ errout:
 }
 
 
+/* ==============================================================================================*/
+/**
+* @brief	:	usocket_process
+*/
+/* ==============================================================================================*/
 static void usocket_process(void)
 {
     int fd;
@@ -233,6 +245,11 @@ static void usocket_process(void)
 }
 
 
+/* ==============================================================================================*/
+/**
+* @brief	:	usocket_start
+*/
+/* ==============================================================================================*/
 void usocket_start(void)
 {
     sys_log(MOD_USOCKET, LOG_MSG, "%s start!", __FUNCTION__);
@@ -240,6 +257,15 @@ void usocket_start(void)
     trd_create(&trd_usocket, (void *)&usocket_process);
 }
 
+/* ==============================================================================================*/
+/**
+* @brief	:	net_cmd_proc
+*
+* @param	:	conn_info
+*
+* @return	:
+*/
+/* ==============================================================================================*/
 static int net_cmd_proc(NET_CONN_INFO *conn_info)
 {
     int len;
@@ -282,6 +308,17 @@ static int net_cmd_proc(NET_CONN_INFO *conn_info)
     return 1;
 }
 
+/* ==============================================================================================*/
+/**
+* @brief	:	net_conn_recv
+*
+* @param	:	fd
+* @param	:	net_data
+* @param	:	len
+*
+* @return	:
+*/
+/* ==============================================================================================*/
 static int net_conn_recv(int fd, void *net_data, int len)
 {
     int recv_cnt = 1;
@@ -307,6 +344,15 @@ static int net_conn_recv(int fd, void *net_data, int len)
     return SUCCESS;
 }
 
+/* ==============================================================================================*/
+/**
+* @brief	:	net_conf_query_ack
+*
+* @param	:	conf_type
+* @param	:	conf_data
+* @param	:	conn_info
+*/
+/* ==============================================================================================*/
 void net_conf_query_ack(BYTE conf_type, CONF_INFO *conf_data, NET_CONN_INFO *conn_info)
 {
     ITSIP_PACKET conf_ack_pkt;
@@ -338,6 +384,16 @@ void net_conf_set_ack(BYTE conf_type, int ret, NET_CONN_INFO *conn_info)
 
 
 
+/* ==============================================================================================*/
+/**
+* @brief	:	itsip_pack
+*
+* @param	:	cmd
+* @param	:	extlen
+* @param	:	data
+* @param	:	its_pkt
+*/
+/* ==============================================================================================*/
 inline void itsip_pack(ITS_CMD cmd, int extlen, void *data, ITSIP_PACKET *its_pkt)
 {
     memset(its_pkt, 0, sizeof(ITSIP_PACKET));

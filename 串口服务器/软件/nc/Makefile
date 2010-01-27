@@ -1,5 +1,5 @@
 
-CROSS = arm-linux-
+#CROSS = arm-linux-
 GCC = $(CROSS)gcc
 EXEC = app
 INC	=./inc/
@@ -11,7 +11,8 @@ OBJS	=	  main.o			\
 		$(SRC)usocket/usocket.o	\
 		$(SRC)net/net.o			\
 		$(SRC)com/com.o			\
-		$(SRC)config/conf.o
+		$(SRC)config/conf.o		\
+		$(SRC)thread/thread.o	\
 
 .c.o:
 	$(GCC) -I$(INC) -g -c -o $*.o $<
