@@ -1,5 +1,5 @@
 
-#CROSS = arm-linux-
+CROSS = arm-linux-
 GCC = $(CROSS)gcc
 EXEC = app
 INC	=./inc/
@@ -19,6 +19,7 @@ OBJS	=	  main.o			\
 
 default:	$(OBJS)
 	$(GCC) -O3 -o $(EXEC) $(OBJS) -lpthread
+	sudo cp app /home/xul/nfshome/home/bin/
 clean:
 	rm -rf *.o
 	rm -rf $(SRC)/*/*.o
