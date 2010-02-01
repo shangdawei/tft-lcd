@@ -114,6 +114,7 @@ static int com_open(int index)
     char name[32] = "";
 
     sprintf(name, "%s%d", TTY_DEV, index);
+	sys_log(MOD_COM, LOG_MSG, "com is [%s]\n", name);
     fd = open(name, O_RDWR);
     return fd;
 }
