@@ -44,6 +44,6 @@ typedef struct tagNET_STA
 
 extern NET_STA g_net_status[MAX_NC_PORT];
 extern int net_conn_send(NET_CONN_INFO *conn_info, void *net_data, DWORD len);
-
+extern void net_reset(int i);
 #endif
 

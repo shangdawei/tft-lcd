@@ -29,8 +29,8 @@ enum OPEN_FLAGS
 #define	CONF_PATH	"/etc/nc/"
 #define	CFG_FILE	CONF_PATH"sys.cfg"
 
-extern int file_is_existed(BYTE *file_name);
-extern FILE *sys_file_open(BYTE *file_name, DWORD flags);
+extern int file_is_existed(char *file_name);
+extern FILE *sys_file_open(char *file_name, DWORD flags);
 extern void sys_file_close( FILE *fp );
 extern int sys_file_read(FILE *file_hd, void *buf, DWORD count);
 extern int sys_file_write(FILE *file_hd, void *data, DWORD count);

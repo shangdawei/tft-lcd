@@ -16,6 +16,8 @@
 	"4800",
 	"9600",
 	"19200",
+	"38400",
+	"57600",
 	"115200",
  };
  char* dbitstr[] = 
@@ -37,7 +39,6 @@
  {
 	"---------------",
 	"1",
-	"1.5",
 	"2",
  }; 
 
@@ -260,7 +261,7 @@ void ShowForm()
 // fprintf(cgiOut, "	   <OPTION value=dW>---------------</OPTION>\n");
  for(i = 0; i < sizeof(sbitstr) / sizeof(sbitstr[0]); i++)
  {
-	if(com_cfg[id].sbit == atof(sbitstr[i]))
+	if(com_cfg[id].sbit == atoi(sbitstr[i]))
 		fprintf(cgiOut, "<option selected=\"selected\">%s</option>\n", sbitstr[i]);
 	else
 		fprintf(cgiOut, "<option>%s</option>\n", sbitstr[i]);
@@ -408,7 +409,7 @@ void getsbit() {
 	
 	int i;
 	cgiFormSelectSingle("sbit", sbitstr, sizeof(sbitstr)/sizeof(sbitstr[0]), &i, 0);
-	com_cfg[id].sbit= atof(sbitstr[i]);
+	com_cfg[id].sbit= atoi(sbitstr[i]);
 }
 
 void getbctrl() {

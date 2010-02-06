@@ -1,7 +1,7 @@
 
 
 
-CROSS = 
+CROSS = arm-linux-
 CC = gcc
 LD = ld
 LDFLAGS = -r -o

@@ -2,9 +2,13 @@
 
 
 
+<<<<<<< .mine
+DWORD sys_str2ip(char *str)
+=======
 DWORD sys_str2ip(BYTE *str)
+>>>>>>> .r117
 {
-    BYTE *p = str;
+    char *p = str;
     BYTE cIp;
     DWORD ip = 0;
     signed char j = 0;
@@ -30,7 +34,7 @@ DWORD sys_str2ip(BYTE *str)
 }
 
 
-void sys_ip2str(DWORD ip, BYTE *str)
+void sys_ip2str(DWORD ip, char *str)
 {
     BYTE i;
     BYTE cIp[4];
@@ -41,7 +45,8 @@ void sys_ip2str(DWORD ip, BYTE *str)
         cIp[i] = (BYTE)( (iIp >> (i * 8)) & (0xff) );
     }
 
-    sprintf(str, "%d.%d.%d.%d", cIp[0], cIp[1], cIp[2], cIp[3]);
+    sprintf((char*)str, "%d.%d.%d.%d", cIp[0], cIp[1], cIp[2], cIp[3]);
 }
+
 
 

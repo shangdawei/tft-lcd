@@ -270,7 +270,7 @@ void conf_init(void)
 void conf_ver(void)
 {
     CONF_DATA *cfg_info = g_conf_info;
-    sprintf(cfg_info->conf_ver.cfg_buid, "%s %s", __DATE__, __TIME__);
+    sprintf((char*)cfg_info->conf_ver.cfg_buid, "%s %s", __DATE__, __TIME__);
     memcpy(cfg_info->conf_ver.cfg_ver, DEV_VER, sizeof(cfg_info->conf_ver.cfg_ver));
 }
 
@@ -283,9 +283,9 @@ void conf_ver(void)
 void conf_sys(void)
 {
     CONF_DATA *cfg_info = g_conf_info;
-    strcpy(cfg_info->conf_sys.dev_name, "NC600");
+    strcpy((char*)cfg_info->conf_sys.dev_name, "NC600");
     cfg_info->conf_sys.dev_type = 0x01;
-    strcpy(cfg_info->conf_sys.dev_sn, "12345678");
+    strcpy((char*)cfg_info->conf_sys.dev_sn, "12345678");
 }
 
 /* ==============================================================================================*/
