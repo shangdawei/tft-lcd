@@ -45,8 +45,8 @@ typedef struct tagTERM_REGISTER
 } TERM_REGISTER;
 
 
-extern DWORD sys_str2ip(BYTE *str);
-extern void sys_ip2str(DWORD ip, BYTE *str);
+extern DWORD sys_str2ip(char *str);
+extern void sys_ip2str(DWORD ip, char *str);
 
 
 #endif

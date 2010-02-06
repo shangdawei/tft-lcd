@@ -59,7 +59,7 @@ typedef struct tagCONFIG_COM
 {
     DWORD id;
     DWORD bps;
-    float sbit;
+    DWORD sbit;
     BYTE  dbit;
     BYTE  chk;
     BYTE  bctrl;

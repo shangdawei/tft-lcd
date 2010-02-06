@@ -41,9 +41,9 @@ typedef	struct	tagTRD_LST
 {
     DWORD			id;
     pthread_t 		trd_id;
-    BYTE			name[16];
+    char			name[16];
     BYTE			status;
-    BYTE			msg[63];
+    char			msg[63];
 } TRD_LST;
 
 
@@ -55,6 +55,7 @@ extern inline void trd_lock_init(LOCK_t *lock);
 extern int trd_create2(TRD_LST * pLst, void *(*func)(void *), void* arg, char * fun_name);
 extern int trd_cancel(TRD_LST * pLst);
 extern void trd_cleanup(void* arg);
+extern inline void trd_lock_init(LOCK_t *lock);
 #endif //_TRD_H_
 /*=================================== thread.h end ==================================================*/
 

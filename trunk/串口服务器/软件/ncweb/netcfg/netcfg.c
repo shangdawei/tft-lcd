@@ -78,6 +78,7 @@ int cgiMain()
  		getdisconn();
  		gettime_out();
 		setmsg(wknet_cfg);
+		fprintf(cgiOut, "<H1>请重启相应端口&nbsp;&nbsp;</H1>\n");
 
 	}
 	ShowForm();

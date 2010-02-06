@@ -247,7 +247,15 @@ int set_com(int fd, CONFIG_COM *pcom)
 
 }
 
+int set_reset(int fd, char *p, int size)
+{
+	ITSIP_PACKET conf_pkt;
+	itsip_pack(ITS_PORT_RESET, 0, NULL, &conf_pkt);
+	memcpy(conf_pkt.head.itsip_data, p, size);
+	net_conn_send(fd, &conf_pkt, sizeof(ITSIP) );
 
+	return 1;
+}
 int get_wknet(int fd, CONFIG_WKNET *pcom)
 {
 	ITSIP_PACKET conf_pkt;

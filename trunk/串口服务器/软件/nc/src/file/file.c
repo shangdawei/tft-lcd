@@ -1,28 +1,28 @@
 #include "file.h"
 
 
-int file_is_existed(BYTE *file_name)
+int file_is_existed(char *file_name)
 {
     return access(file_name, F_OK) == 0;
 }
 
 
-FILE *sys_file_open(BYTE *file_name, DWORD flags)
+FILE *sys_file_open(char *file_name, DWORD flags)
 {
     FILE *fp = NULL;
 
     switch (flags)
     {
     case MODE_READ:
-        fp = fopen(file_name, "rb");
+        fp = fopen((char*)file_name, "rb");
         break;
 
     case MODE_WRITE:
-        fp = fopen(file_name, "wb");
+        fp = fopen((char*)file_name, "wb");
         break;
 
     case MODE_READWRITE:
-        fp = fopen(file_name, "wb+");
+        fp = fopen((char*)file_name, "wb+");
 //			if(!fp && (flags & MODE_CREATE))
 //			{
 //				fp = fopen(file_name, "wb+");
@@ -31,27 +31,27 @@ FILE *sys_file_open(BYTE *file_name, DWORD flags)
 
     case MODE_APPEND:
 //			file_hd = fopen(file_name, "ab+");
-        fp = fopen(file_name, "ab");
+        fp = fopen((char*)file_name, "ab");
         break;
 
     case MODE_UPDATE:
-        fp = fopen(file_name, "rb+");
+        fp = fopen((char*)file_name, "rb+");
         break;
 
     case MODE_READ_T:
-        fp = fopen(file_name, "r");
+        fp = fopen((char*)file_name, "r");
         break;
     case MODE_WRITE_T:
-        fp = fopen(file_name, "w");
+        fp = fopen((char*)file_name, "w");
         break;
     case MODE_APPEND_T:
-        fp = fopen(file_name, "a+");
+        fp = fopen((char*)file_name, "a+");
         break;
     case MODE_RW_T:
-        fp = fopen(file_name, "w+");
+        fp = fopen((char*)file_name, "w+");
         break;
     case MODE_UPDATE_T:
-        fp = fopen(file_name, "r+");
+        fp = fopen((char*)file_name, "r+");
         break;
     default:
         break;
@@ -127,7 +127,7 @@ void sys_file_save( void *buf, DWORD len, BYTE *file_name )
 {
     FILE *fd = NULL;
 
-    fd = sys_file_open(file_name, MODE_WRITE);
+    fd = sys_file_open((char*)file_name, MODE_WRITE);
 
     if (fd == NULL)
     {

@@ -3,6 +3,7 @@
 ** thread.c
 **
 */
+#include <string.h>
 #include "thread.h"
 
 

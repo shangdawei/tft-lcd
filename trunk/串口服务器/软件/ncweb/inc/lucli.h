@@ -9,6 +9,7 @@
 #define ITS_HEAD    0xFF
 #define ITS_VER_QUERY   0xa2
 #define ITS_VER_SET		0xa3
+#define	ITS_PORT_RESET	0xa4
 
 #define	UCLI_PATH	"/tmp/foo.socket"
 
@@ -76,7 +77,7 @@ typedef struct tagCONFIG_COM
 {
 	DWORD id;
 	DWORD bps;
-	float sbit;
+	DWORD sbit;
 	BYTE  dbit;
 	BYTE  chk;
 	BYTE  bctrl;
@@ -134,7 +135,7 @@ extern int get_wknet(int fd, CONFIG_WKNET *pcom);
 extern int get_wknet(int fd, CONFIG_WKNET *pcom);
 
 extern int set_net(int fd, CONFIG_NET *pnet);
-extern void sys_ip2str(DWORD ip, char *str);
-extern DWORD sys_str2ip(char *str);
+extern void sys_ip2str(DWORD ip, BYTE *str);
+extern DWORD sys_str2ip(BYTE *str);
 #endif
 

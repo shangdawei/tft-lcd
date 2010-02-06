@@ -18,6 +18,7 @@
 #include "usocket.h"
 #include "conf.h"
 #include "thread.h"
+#include "com.h"
 
 #define STALE   30  /* client's name can't be older than this (sec) */
 #define offsetof1(TYPE, MEMBER) ((int)&((TYPE *)0)->MEMBER)
@@ -26,6 +27,7 @@ static int net_cmd_proc(NET_CONN_INFO *conn_info);
 static int net_conn_recv(int fd, void *net_data, int len);
 void net_conf_query_ack(BYTE conf_type, CONF_INFO *conf_data, NET_CONN_INFO *conn_info);
 void net_conf_set_ack(BYTE conf_type, int ret, NET_CONN_INFO *conn_info);
+void net_issue_get(NET_CONN_INFO *conn_info);
 
 inline void itsip_pack(ITS_CMD cmd, int extlen, void *data, ITSIP_PACKET *its_pkt);
 
@@ -45,7 +47,7 @@ serv_accept(int listenfd, uid_t *uidptr)
 
     len = sizeof(un);
 
-    if ((clifd = accept(listenfd, (struct sockaddr *) & un, &len)) < 0)
+    if ((clifd = accept(listenfd, (struct sockaddr *) & un, (socklen_t*) & len)) < 0)
         return(-1);     /* often errno=EINTR, if signal caught */
 
     /* obtain the client's uid from its calling address */
@@ -271,7 +273,7 @@ static int net_cmd_proc(NET_CONN_INFO *conn_info)
     int len;
     ITSIP net_data;
     CONF_INFO conf_info;
-    int ret ;
+    int ret , i;
 
     if ((ret = net_conn_recv(conn_info->fd, &net_data, sizeof(ITSIP))) == FAILURE)
     {
@@ -300,6 +302,29 @@ static int net_cmd_proc(NET_CONN_INFO *conn_info)
         net_conf_set_ack(net_data.itsip_data[0], ret, conn_info);
         sys_conf_save(CONF_USR_SET);
         printf("ret = %d\n", ret);
+        break;
+    case ITS_PORT_RESET://重启端口
+        printf("ITS_PORT_RESET\n");
+
+        for (i = 0; i < MAX_NC_PORT; i++)
+        {
+            printf("port[%d] = %d\n", i, net_data.itsip_data[i]);
+
+            if (net_data.itsip_data[i])
+            {
+                net_reset(i);
+                com_reset(i);
+            }
+        }
+
+        break;
+    case ITS_ISSUE_QUERY://流量查询 
+        printf("ITS_ISSUE_QUERY\n");
+        net_issue_get(conn_info);
+        break;
+    case ITS_REBOOT_SET://重启设备
+        printf("system will reboot!\n");
+        system("reboot");
         break;
     default:
         break;
@@ -369,6 +394,15 @@ void net_conf_query_ack(BYTE conf_type, CONF_INFO *conf_data, NET_CONN_INFO *con
 }
 
 
+/* ==============================================================================================*/
+/** 
+* @brief	:	net_conf_set_ack 
+* 
+* @param	:	conf_type
+* @param	:	ret
+* @param	:	conn_info
+*/
+/* ==============================================================================================*/
 void net_conf_set_ack(BYTE conf_type, int ret, NET_CONN_INFO *conn_info)
 {
     ITSIP_PACKET conf_ack_pkt;
@@ -382,6 +416,32 @@ void net_conf_set_ack(BYTE conf_type, int ret, NET_CONN_INFO *conn_info)
     }
 }
 
+/* ==============================================================================================*/
+/** 
+* @brief	:	net_issue_get 
+* 
+* @param	:	conn_info
+*/
+/* ==============================================================================================*/
+void net_issue_get(NET_CONN_INFO *conn_info)
+{
+    ITSIP_PACKET conf_ack_pkt;
+    UQWORD issue[MAX_NC_PORT][2];
+    int i,j;
+    for(i = 0; i < MAX_NC_PORT; i++)
+    {
+        for(j = 0; j < 2; j++)
+        {
+            issue[i][j] = g_com_status[i].issue[j];
+        }
+    }
+    itsip_pack(ITS_ACK_ISSUE_QUERY, sizeof(issue), issue, &conf_ack_pkt);
+    if (net_conn_send(conn_info, &conf_ack_pkt, sizeof(ITSIP_PACKET)) == FAILURE)
+    {
+        sys_log(MOD_USOCKET, LOG_ERR, "net_issue_get: send ITSIP_PACKET error.");
+        return;
+    }
+}
 
 
 /* ==============================================================================================*/

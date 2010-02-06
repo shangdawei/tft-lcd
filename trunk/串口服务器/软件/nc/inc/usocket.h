@@ -19,7 +19,9 @@ typedef enum tagITS_CMD
     ITS_CONF_QUERY		= 0xa2,
 
     ITS_CONF_SET		= 0xa3,
-
+    ITS_PORT_RESET      = 0xa4,
+    ITS_ISSUE_QUERY     = 0xa5,
+    ITS_REBOOT_SET      = 0xa6,
     //! ack!
     ITS_ACK_SYSINFO_QUERY	= 0xb1,
     ITS_ACK_VER_QUERY		= 0xb2,
@@ -28,6 +30,8 @@ typedef enum tagITS_CMD
     ITS_ACK_CONF_QUERY		= 0xb2,
 
     ITS_ACK_CONF_SET		= 0xb3,
+
+    ITS_ACK_ISSUE_QUERY     = 0xb5,
 } ITS_CMD;
 
 
