@@ -681,15 +681,22 @@ static int net_svr_proc(int fd, int index)
 static int write_to_com(int index, const char * buf, int size)
 {
     COM_STA* com_sta = &g_com_status[index];
-    int len;
+    int len, cnt;
 
     //lock
     pthread_mutex_lock(&com_wr_lock[index]);
     com_sta->issue[1] += size;
 
     if (com_sta->fd > 0)
-        len = write(com_sta->fd, buf, size);
-
+	{
+		len = 0;
+     	while(len < size)
+		{
+	 		cnt = write(com_sta->fd, buf + len, size - len);
+			len += cnt;
+	//		printf("len = %d\n", len);
+		}
+	}
     //unlock
     pthread_mutex_unlock(&com_wr_lock[index]);
     return len;
