@@ -2,11 +2,8 @@
 
 
 
-<<<<<<< .mine
+
 DWORD sys_str2ip(char *str)
-=======
-DWORD sys_str2ip(BYTE *str)
->>>>>>> .r117
 {
     char *p = str;
     BYTE cIp;

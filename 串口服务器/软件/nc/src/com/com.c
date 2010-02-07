@@ -325,9 +325,9 @@ static int write_to_net(int index, const char * buf, int size)
 void com_reset(int i)
 {
     COM_STA* com_sta = &g_com_status[i];
-    int ret = close(com_sta->fd);
-	printf("ret = %d\n", ret);
-    com_sta->fd = com_open(i);
+ //   int ret = close(com_sta->fd);
+	//printf("ret = %d\n", ret);
+ //   com_sta->fd = com_open(i);
     
     CONFIG_COM *cfg_com = &g_conf_info->conf_com[i];
 	printf("[%d] bps = %d, dbit = %d, chk = %d, sbit = %d\n",

