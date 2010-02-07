@@ -224,9 +224,9 @@ static void com_proc(void *arg)
     while (1)
     {
         //select  com fd   p_fd
-		memset(lsbuf, 0, sizeof(lsbuf));
+//		memset(lsbuf, 0, sizeof(lsbuf));
         len = read(com_sta->fd, lsbuf, sizeof(lsbuf));
-		printf("len = %d\n", len);
+//		printf("len = %d\n", len);
         if (len == 0)
         {
             sys_log(MOD_COM, LOG_MSG, "read return 0");
@@ -242,7 +242,7 @@ static void com_proc(void *arg)
         else
         {
             com_sta->issue[0] += len;
-			printf("lsbuf is [%s]\n", lsbuf);
+//			printf("lsbuf is [%s]\n", lsbuf);
             write_to_net(cfg_com->id, lsbuf, len);
         }
     }
