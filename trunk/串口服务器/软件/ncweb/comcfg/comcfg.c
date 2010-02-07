@@ -91,6 +91,18 @@ char gateway[16]="";
 static int id=0;
 CONFIG_COM com_cfg[MAX_NC_PORT];
 
+void print_backgrounf(void)
+{
+	fprintf(cgiOut, "<style type=\"text/css\">\n");
+	fprintf(cgiOut, "<!--\n");
+	fprintf(cgiOut, "body {\n");
+	fprintf(cgiOut, "background-image: url(../images/blue-tile.png);\n");
+	fprintf(cgiOut, "background-repeat: repeat;\n");
+	fprintf(cgiOut, "}\n");
+	fprintf(cgiOut, "-->\n");
+	fprintf(cgiOut, "</style>\n");
+}
+
 int cgiMain() 
 {
 	id = atoi(cgiQueryString);
@@ -102,6 +114,7 @@ int cgiMain()
 	fprintf(cgiOut, "<HTML><HEAD>\n");
 	fprintf(cgiOut, "<TITLE>NC600 Web Server</TITLE>\n");
 	print_css();
+	print_backgrounf();
 	fprintf(cgiOut,	"</HEAD><BODY>\n");
 	getmsg(com_cfg);
 //	printf("%d\n",getmsg(com_cfg));

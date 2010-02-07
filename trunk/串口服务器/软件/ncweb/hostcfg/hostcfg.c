@@ -31,7 +31,7 @@ int get_msg(CONFIG_NET *p);
 int set_msg(CONFIG_NET *p);
 void getformstrchar(char *name, char *buf, int size);
 int getformstrval(char *name);
-
+void print_backgrounf(void);
 void getmode();
 void getdhcp();
 
@@ -58,6 +58,7 @@ int cgiMain()
 	fprintf(cgiOut, "<HTML><HEAD>\n");
 	fprintf(cgiOut, "<TITLE>NC600 Web Server</TITLE>\n");
 	print_css();
+	print_backgrounf();
 	fprintf(cgiOut,	"</HEAD><BODY>\n");
 	get_msg(&net_cfg);
  	//fprintf(cgiOut, "ret = \%d\n", ret);
@@ -133,6 +134,19 @@ int get_msg(CONFIG_NET *p)
 	close(fd);
 	return 1;
 
+}
+
+
+void print_backgrounf(void)
+{
+	fprintf(cgiOut, "<style type=\"text/css\">\n");
+	fprintf(cgiOut, "<!--\n");
+	fprintf(cgiOut, "body {\n");
+	fprintf(cgiOut, "background-image: url(../images/blue-tile.png);\n");
+	fprintf(cgiOut, "background-repeat: repeat;\n");
+	fprintf(cgiOut, "}\n");
+	fprintf(cgiOut, "-->\n");
+	fprintf(cgiOut, "</style>\n");
 }
 
 void ShowForm()
