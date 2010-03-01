@@ -435,7 +435,7 @@ void net_issue_get(NET_CONN_INFO *conn_info)
             issue[i][j] = g_com_status[i].issue[j];
         }
     }
-    itsip_pack(ITS_ACK_ISSUE_QUERY, sizeof(issue), issue, &conf_ack_pkt);
+    itsip_pack(ITS_ACK_ISSUE_QUERY, 1024/*sizeof(issue)*/, issue, &conf_ack_pkt);
     if (net_conn_send(conn_info, &conf_ack_pkt, sizeof(ITSIP_PACKET)) == FAILURE)
     {
         sys_log(MOD_USOCKET, LOG_ERR, "net_issue_get: send ITSIP_PACKET error.");

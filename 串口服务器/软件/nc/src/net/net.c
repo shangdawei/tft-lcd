@@ -121,6 +121,7 @@ static void net_proc(void *arg)
 
         for (i = 0; i < cfg_wknet->max_num; i++)
         {
+            //printf("------------[%d]-------------\n", cfg_wknet->session[i].protocol);
             if (cfg_wknet->session[i].protocol == P_TCP_SRV)
             {
                 srv_flag ++;
@@ -135,6 +136,7 @@ static void net_proc(void *arg)
                 net_sta->conn_status[i].conn_idx = i;
                 //pthread_create(&trd_net_srv, NULL, (void *)&mode_tcp_cli_proc, (void *)&net_sta->conn_status[i]);
                 //pthread_detach(trd_net_srv);
+               // printf("++++++++++++++++++++++++++++++++++++++++++++\n");
                 trd_create2(&net_trd[cfg_wknet->id][i], (void*)&mode_tcp_cli_proc, (void *)&net_sta->conn_status[i], "mode_tcp_cli_proc");
             }
             else if (cfg_wknet->session[i].protocol == P_UDP)
@@ -375,12 +377,15 @@ static void mode_tcp_cli_proc(void* arg)
     NET_CONN_INF* net_sta = (NET_CONN_INF*)arg;
     int id = net_sta->idx;
     CONFIG_WKNET* cfg_wknet = &g_conf_info->conf_wknet[id];
+    
+    NET_STA* net_sta1 = &g_net_status[id];
     int fd = -1;
     int len;
     char lsbuf[1024];
 
     trd_cleanup_push(thread_off, &net_trd[id][net_sta->conn_idx]);
     trdinfo_on(&net_trd[id][net_sta->conn_idx]);
+    
 
     while (1)
     {
@@ -394,13 +399,14 @@ static void mode_tcp_cli_proc(void* arg)
         }
 
         net_sta->client_conn = fd;
+        net_sta1->fd[net_sta->conn_idx] = fd;
 
-        len = recv(fd, lsbuf, sizeof(lsbuf), 0);
+        len = recv(fd, lsbuf, sizeof(lsbuf), 0); 
 
         if (len <= 0)
         {
             close(fd);
-            net_sta->client_conn = fd = -1;
+            net_sta->client_conn = fd = net_sta1->fd[net_sta->conn_idx] = -1;
             continue;
         }
         else
@@ -663,6 +669,7 @@ static int net_svr_proc(int fd, int index)
         return -1;
     }
 
+
     return write_to_com(index, lsbuf, len);
 }
 
@@ -688,15 +695,17 @@ static int write_to_com(int index, const char * buf, int size)
     com_sta->issue[1] += size;
 
     if (com_sta->fd > 0)
-	{
-		len = 0;
-     	while(len < size)
-		{
-	 		cnt = write(com_sta->fd, buf + len, size - len);
-			len += cnt;
-	//		printf("len = %d\n", len);
-		}
-	}
+    {
+        len = size;
+        cnt = 0;
+        while(len)
+        {
+            cnt = write(com_sta->fd, buf + cnt, len);
+            len -= cnt;
+           // printf("size = %d, cnt = %d\n",size, cnt);
+        }
+    }
+
     //unlock
     pthread_mutex_unlock(&com_wr_lock[index]);
     return len;
