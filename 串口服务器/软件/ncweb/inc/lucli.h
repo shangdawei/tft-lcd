@@ -10,6 +10,7 @@
 #define ITS_VER_QUERY   0xa2
 #define ITS_VER_SET		0xa3
 #define	ITS_PORT_RESET	0xa4
+#define ITS_ISSUE_QUERY 0xa5
 
 #define	UCLI_PATH	"/tmp/foo.socket"
 
@@ -133,9 +134,10 @@ extern int get_com(int fd, CONFIG_COM *pcom);
 extern int set_com(int fd, CONFIG_COM *pcom);
 extern int get_wknet(int fd, CONFIG_WKNET *pcom);
 extern int get_wknet(int fd, CONFIG_WKNET *pcom);
+extern int get_issue(int fd, UQWORD *p);
 
 extern int set_net(int fd, CONFIG_NET *pnet);
-extern void sys_ip2str(DWORD ip, BYTE *str);
-extern DWORD sys_str2ip(BYTE *str);
+extern void sys_ip2str(DWORD ip, char *str);
+extern DWORD sys_str2ip(char *str);
 #endif
 

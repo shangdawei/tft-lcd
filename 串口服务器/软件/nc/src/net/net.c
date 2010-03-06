@@ -121,7 +121,7 @@ static void net_proc(void *arg)
 
         for (i = 0; i < cfg_wknet->max_num; i++)
         {
-            //printf("------------[%d]-------------\n", cfg_wknet->session[i].protocol);
+          //  printf("-------[%d]-----[%d]-------------\n", i, cfg_wknet->session[i].protocol);
             if (cfg_wknet->session[i].protocol == P_TCP_SRV)
             {
                 srv_flag ++;
@@ -142,9 +142,10 @@ static void net_proc(void *arg)
             else if (cfg_wknet->session[i].protocol == P_UDP)
             {
                 udp_flag ++;
-
-                if (srv_flag == 1)
+               // printf("+++++++++++++++++udp_flag= %d+++++++++++++++++++++++++++\n", udp_flag);
+                if (udp_flag == 1)
                 {
+                    //printf("++++++++++++++++++++++++++++++++++++++++++++\n");
                     trd_create2(&net_trd[cfg_wknet->id][i], (void*)&mode_udp_proc, (void *)cfg_wknet, "mode_udp_proc");
                 }
             }
@@ -479,6 +480,7 @@ static void mode_udp_proc(void* arg)
             {
                 if (cfg_wknet->session[i].protocol == P_UDP && FD_ISSET(net_sta->fd[i], &m_readfds))
                 {
+                    //printf("net_sta->fd[i] = %d, cfg_wknet->id = %d, i = %d\n", net_sta->fd[i], cfg_wknet->id, i);
                     udp_recv(cfg_wknet->id, i);
                 }
             }
@@ -503,7 +505,15 @@ static int udp_recv(int index, int i)
     struct sockaddr_in src_addr;
     socklen_t src_len;
     char data[1024];
+    
+    memset(&src_addr, 0, sizeof(src_addr));
+    src_addr.sin_family = AF_INET;
+    src_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    src_addr.sin_port = htons(g_conf_info->conf_wknet[index].session[i].port);
+    src_len = sizeof(struct sockaddr_in);
     int recv_len = recvfrom(net_sta->fd[i], data, 1024, 0, (struct sockaddr *) & src_addr, &src_len);
+    //printf("net_sta->fd[i] = %d, recv_len = %d\n", net_sta->fd[i], recv_len);
+    //perror("recvfrom");
     return write_to_com(index, data, recv_len);
 }
 
@@ -710,5 +720,33 @@ static int write_to_com(int index, const char * buf, int size)
     pthread_mutex_unlock(&com_wr_lock[index]);
     return len;
 }
+
+
+void net_auto_find(void)
+{
+    #define PORT 7773
+    #define MAXDATASIZE 256
+    int socket_fd;
+    struct sockaddr_in my_addr;
+    char buf[MAXDATASIZE]="";
+    int so_broadcast = 1;
+    my_addr.sin_family = AF_INET;    
+    my_addr.sin_port = htons(PORT);    
+    my_addr.sin_addr.s_addr = inet_addr("255.255.255.255");    
+    bzero(&(my_addr.sin_zero), 8);
+    
+    if((socket_fd = (socket(AF_INET, SOCK_DGRAM, 0))) == -1)
+    {        
+        perror("socket");        
+        return;
+    }    
+    int ret1 = setsockopt(socket_fd, SOL_SOCKET, SO_BROADCAST, &so_broadcast, sizeof(so_broadcast));
+    strcpy(buf, "Hello,I'm on line!");    
+    int ret = sendto(socket_fd, buf, strlen(buf), 0, (struct sockaddr *)&my_addr, sizeof(my_addr));
+    if(ret <= 0)
+        perror("sendto");
+    close(socket_fd);
+}
+
 
 

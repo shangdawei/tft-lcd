@@ -250,6 +250,7 @@ int set_com(int fd, CONFIG_COM *pcom)
 int set_reset(int fd, char *p, int size)
 {
 	ITSIP_PACKET conf_pkt;
+	int len ;
 	itsip_pack(ITS_PORT_RESET, 0, NULL, &conf_pkt);
 	memcpy(conf_pkt.head.itsip_data, p, size);
 	net_conn_send(fd, &conf_pkt, sizeof(ITSIP) );
@@ -299,6 +300,34 @@ int set_wknet(int fd, CONFIG_WKNET *pcom)
 		return 1;
 
 	return 0;
+}
+
+int get_issue(int fd, UQWORD *p)
+{
+	ITSIP_PACKET conf_pkt;
+	int len;
+	int i , j;
+	itsip_pack(ITS_ISSUE_QUERY, 0, NULL, &conf_pkt);
+	conf_pkt.head.itsip_data[0] = 0;
+	net_conn_send(fd, &conf_pkt, sizeof(ITSIP));
+
+	memset(&conf_pkt, 0, sizeof(ITSIP_PACKET));
+	len = readn(fd, (char*)&conf_pkt, sizeof(ITSIP_PACKET));
+
+	if(len != sizeof(ITSIP_PACKET))
+	{
+		return 0;
+	}
+	UQWORD* pp = (UQWORD*)conf_pkt.data;
+	for(i = 0; i < MAX_NC_PORT*2; i++)
+	{
+		//for(j = 0; j < 2; j++)
+		{
+			p[i] = *pp;
+			pp++;
+		}
+	}
+	return 1;
 }
 
 
