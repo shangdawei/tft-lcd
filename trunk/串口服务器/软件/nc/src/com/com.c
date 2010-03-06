@@ -296,11 +296,15 @@ static int write_to_net(int index, const char * buf, int size)
             if (cfg_wknet->session[i].protocol == P_UDP)
             {
                 struct sockaddr_in dst_addr;
+                //printf("net_sta->fd[%d] = %d\n", i, net_sta->fd[i]);
                 bzero(&dst_addr, sizeof(dst_addr));
                 dst_addr.sin_family = AF_INET;
-                dst_addr.sin_port = htons(cfg_wknet->session[index].port);
-                dst_addr.sin_addr.s_addr = cfg_wknet->session[index].ip;
+                //printf("cfg_wknet->session[index].port = %d, ip = %d\n", cfg_wknet->session[i].port, cfg_wknet->session[i].ip);
+                dst_addr.sin_port = htons(cfg_wknet->session[i].port);
+                dst_addr.sin_addr.s_addr = cfg_wknet->session[i].ip;
                 len = sendto(net_sta->fd[i], buf, size, 0, (struct sockaddr *) & dst_addr, sizeof(dst_addr));
+                //printf("len = %d\n", len);
+                //perror("sendto");
             }
             else
             {

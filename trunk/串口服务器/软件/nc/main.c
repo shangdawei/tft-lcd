@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
 
     while (1)
     {
-        pause();
+        net_auto_find();
+        sleep(10);
     }
 
     return 1;
