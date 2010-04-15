@@ -1,18 +1,20 @@
-/*
-**  ******************************************************************************************
-**                                      ALARM
-**         (c) Copyright 2009-2010, XXXX CO.LTD.
-**                                    All Rights Reserved
-**  ==========================================================================================
-**	File		: key.c
-**  ==========================================================================================
-**	Description	: Application enter pointer
-**  ==========================================================================================
-**  History     : Modify by  ||    ID    ||     Date      ||     Contents
-**              :   xul      ||          ||   2009/09/14  || Create this file
-**  ******************************************************************************************
-*/
-
+//////////////////////////////////////////////////////////////////////////
+///    COPYRIGHT NOTICE
+///    Copyright (c) 2010, 浙江共创技术有限公司
+///    All rights reserved.
+///
+/// @file	key.c
+/// @brief	按键处理
+///
+///
+///
+/// @version	1.0     
+/// @author		xul	<gxuliang@gmail.com>          
+/// @date		2009年09月14日                 
+///
+///
+///     修订说明：最初版本
+//////////////////////////////////////////////////////////////////////////
 #define _KEY_C_
 
 #include "def.h"
@@ -20,6 +22,7 @@
 #include "eeprom.h"
 #include "main.h"
 #include "voice.h"
+#include "time.h"
 #include <string.h>
 #include "stdlib.h"
 
@@ -272,74 +275,97 @@ void key_analyse(char *p, uint8 num)
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+///
+///     按键初始化，主要是对相关IO进行配置
+///		@author xuliang<gxuliang@gmail.com>
+///		@date	2010年04月14日
+//////////////////////////////////////////////////////////////////////////
 void init_key(void)
 {
-  DDRC |= ROW_PIN; //line is output
+	PORTC |= LINE_PIN;
+	DDRC &= ~LINE_PIN; //line is intput，上拉
   
-  /*row is input*/
-  DDRC &= ~(1<<PC6);
-  DDRB &= ~(1<< PB3 | 1<<PB4 | 1<<PB5);
+	/*row is output，输出高电平*/
+	PORTC |= (1<<PC6);
+	PORTB |= (1<< PB3 | 1<<PB4 | 1<<PB5);
+	DDRC |= (1<<PC6);
+	DDRB |= (1<< PB3 | 1<<PB4 | 1<<PB5);
 }
 
+//////////////////////////////////////////////////////////////////////////
+///
+///     对按键相应列作输出处理
+///     @param	i 扫描的列号
+///		@author xuliang<gxuliang@gmail.com>
+///		@date	2010年04月14日
+//////////////////////////////////////////////////////////////////////////
 void set_port(uint8 i)
 {
-  PORTC |= ROW_PIN;//输入上拉状态
-  
-  if(i == 0)
-  {
-    PORTC &= ~(1<<PC6);//输出低电平
-    PORTB |= (1<< PB3 | 1<<PB4 | 1<<PB5);//其余输出为高
-  }
-  else
-  {
-    PORTC |= (1<<PC6);//输出高电平
-    
-    PORTB |= (1<< PB3 | 1<<PB4 | 1<<PB5);//其余输出为高
-    PORTB &= ~((1<<PB5) >> (i - 1));//相应位输出低电平
-  }
-}
+	PORTC |= (1<<PC6);
+	PORTB |= (1<< PB3 | 1<<PB4 | 1<<PB5);
 
-uint8 convert(uint8 val)
-{
-  const uint8 tab[]={1<<PC5, 1<<PC4, 1<<PC3, 1<<PC2, 1<<PC1};
-  uint8 i;
-  for(i = 0; i < sizeof(tab); i++)
-  {
-    if(tab[i] == val)
-      return i;
-  }
-  return 0xFF;
-}
-
-void delay50us(uint32 n)
-{
-  uint32 i,j;
-  for(i = 0; i < n; i++)
-  {
-    for(j = 0; j < 100; j++)
-      ;
-  }
+	switch(i) 
+	{
+	case 3:
+		PORTC &= ~(1<<PC6);//输出低电平
+		break;
+	case 2:
+		PORTB &= ~(1<<PB5);
+		break;
+	case 1:
+		PORTB &= ~(1<<PB4);
+		break;
+	case 0:
+		PORTB &= ~(1<<PB3);
+		break;
+	default:
+		break;
+	}
 }
 
 
+
+
+//////////////////////////////////////////////////////////////////////////
+///
+///     扫描键盘，读取key值
+////	@return	key_val 成功返回键码，失败返回0xFF
+///		@author xuliang<gxuliang@gmail.com>
+///		@date	2010年04月14日
+//////////////////////////////////////////////////////////////////////////
 uint8 key_read(void)
 {
-  uint8 i;
-  uint8 val;
-  init_key();
-  for(i = 0; i < 4; i++)
-  {
-    set_port(i);
-    delay50us(1);
-    if((KEY_PIN & ROW_PIN) != ROW_PIN)
-    {
-      val = KEY_PIN & ROW_PIN;//得到行，i的值就是列值
-      val = convert(val);//尽行转换
-      return (val == 0xFF)?val:(val*4 + i);
-    }
-  }
-  return 0xFF;
+	uint8 i;
+	uint8 val;
+	static uint8 old_bak = 0xFF;
+	init_key();
+	for(i = 0; i < 4; i++)
+	{
+		set_port(i);
+		if((PINC & LINE_PIN) != LINE_PIN)
+			udelay(50);
+		if((PINC & LINE_PIN) != LINE_PIN)
+		{
+			val = ~((PINC & LINE_PIN) >> 0x01) & 0x1F;//得到行，i的值就是列值
+			val = val == 4 ? 3 : val;
+			val = val == 8 ? 4 : val;
+			val = val == 16 ? 5 : val;
+
+			val = (val - 1) * 4 + i;
+			if(val >= 20)
+				return 0xFF;
+			if(old_bak == val)
+				return 0xFF;
+			
+			old_bak = val;
+			return keyVal[val];
+		}
+	}
+	old_bak = 0xFF;
+	return 0xFF;
 }
+
 
 
 /*  $Function   :   key_rec_set

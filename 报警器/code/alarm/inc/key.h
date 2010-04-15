@@ -25,7 +25,7 @@
 
 #define MAX_PHONE_NUM 6
 
-#define ROW_PIN (1<<PC1 | 1<<PC2 | 1<<PC3 | 1<<PC4 | 1<<PC5)
+#define LINE_PIN (1<<PC1 | 1<<PC2 | 1<<PC3 | 1<<PC4 | 1<<PC5)
 #define KEY_PIN PORTC
 
 

@@ -162,13 +162,11 @@ uint8 dtmf_detect(void)
 //*************************************
 void phone_init(void)
 {
-  __disable_interrupt();
   PORTB |= (1 << PB0); 
   DDRB &= ~(1 << DDB0);//捕获端口设置为输入
   
   EICRA = 0x02;//int0 下降沿触发
   EIMSK = 0x01;//int0 enable
-  __enable_interrupt();
 }
 
 #pragma vector = INT0_vect
