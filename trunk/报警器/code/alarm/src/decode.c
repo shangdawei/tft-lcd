@@ -14,7 +14,6 @@
 */
 
 #define	_DEC_C_
-//#include <ina90.h> 
 #include "def.h"
 #include "main.h"
 #include "led.h"
@@ -43,12 +42,12 @@ uint8   flag=0;//接收原始码完成标志位
 
 void decode_init(void)
 {
-  __disable_interrupt();
-  PORTB |= (1 << PB0); 
-  DDRB &= ~(1 << DDB0);//捕获端口设置为输入
-  TIMSK1|=0x20; //输入捕获使能
-  TCCR1B=0x42;   //上升沿捕获，时钟8分频1us计数一次,最大计数65ms 
-  __enable_interrupt();
+	SREG |= 0x80;
+	PORTB |= (1 << PB0); 
+	DDRB &= ~(1 << DDB0);//捕获端口设置为输入
+	TIMSK1|=0x20; //输入捕获使能
+	TCCR1B=0x42;   //上升沿捕获，时钟8分频1us计数一次,最大计数65ms 
+
 }
 //**************************************
 //定时器1输入捕获中断，上升沿触发
