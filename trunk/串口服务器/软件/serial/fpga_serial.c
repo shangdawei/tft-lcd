@@ -16,7 +16,6 @@
 #include <linux/interrupt.h>
 //#include <asm/arch/at91_pio.h>
 //#include <asm-alpha/termbits.h>
-#include <asm-alpha/delay.h>
 #include <linux/ioport.h>
 //#include <asm-alpha/ioctls.h>
 #include <linux/tty.h>
@@ -48,8 +47,8 @@ MODULE_LICENSE("GPL");
 #define	UART_GET_CHAR(p)	(u8)readb(p + fpga_mapped_addr)
 #define	UART_PUT_CHAR(p,c)	writeb(c, p+ fpga_mapped_addr)
 /*read and write state reg*/
-#define	UART_GET_RSR(p)		(u8)readb((p < 8 ? 0x66 : 0x6D) + fpga_mapped_addr)
-#define	UART_PUT_RSR(p)		(u8)readb((p < 8 ? 0x67 : 0x6E) + fpga_mapped_addr)
+#define	UART_GET_RSR(p)		(u8)readb(p + (p < 8 ? 0x66 : 0x6D) + fpga_mapped_addr)
+#define	UART_PUT_RSR(p)		(u8)readb(p + (p < 8 ? 0x67 : 0x6E) + fpga_mapped_addr)
 /*read and write irg reg*/
 #define	UART_GET_RST(p)		(u8)readb((p < 8 ? 0x30 : 0x68) + fpga_mapped_addr)
 #define	UART_GET_WST(p)		(u8)readb((p < 8 ? 0x33 : 0x6B) + fpga_mapped_addr)
@@ -58,8 +57,8 @@ MODULE_LICENSE("GPL");
 #define	UART_GET_RIRQ(p)	(u8)(readb((p < 8 ? 0x31 : 0x69) + fpga_mapped_addr))
 #define	UART_ENB_RIRQ(p)	writeb((1 << (p%8)) | UART_GET_RIRQ(p),  (p < 8 ? 0x31 : 0x69) + fpga_mapped_addr)
 #define	UART_DIB_RIRQ(p)	writeb(~(1 << (p%8)) & UART_GET_RIRQ(p), (p < 8 ? 0x31 : 0x69) + fpga_mapped_addr)
-#define	UART_GET_WIRQ(p)	(u8)readb((p < 8 ? 0x32 : 0x6a) + fpga_mapped_addr)
-#define	UART_ENB_WIRQ(p)	writeb((1 << (p%8)) | UART_GET_WIRQ(p), (p < 8 ? 0x32 : 0x6a) + fpga_mapped_addr)
+#define	UART_GET_WIRQ(p)	(u8)readb((p < 8 ? 0x32 : 0x69) + fpga_mapped_addr)
+#define	UART_ENB_WIRQ(p)	writeb((1 << (p%8)) | UART_GET_WIRQ(p), (p < 8 ? 0x32 : 0x69) + fpga_mapped_addr)
 #define	UART_DIB_WIRQ(p)	writeb(~(1 << (p%8)) & UART_GET_WIRQ(p), (p < 8 ? 0x32 : 0x6A) + fpga_mapped_addr)
 /*FIFO reset reg*/
 
@@ -67,20 +66,14 @@ MODULE_LICENSE("GPL");
 #define	UART_GET_BAUD(p)	(u8)readb(p + 0x20 + fpga_mapped_addr)
 #define	UART_SET_BAUD(p,c)	writeb(c, p + 0x20 + fpga_mapped_addr)
 /*data bit */
-#define	UART_GET_ALL(p)		(u8)(readb(p + 0x10 + fpga_mapped_addr))
 #define	UART_GET_DBIT(p)	(u8)(readb(p + 0x10 + fpga_mapped_addr) & 0x03)
-#define	UART_SET_DBIT(p,c)	writeb((c & 0x03) | (UART_GET_ALL(p) & 0xfc), p + 0x10 + fpga_mapped_addr)
+#define	UART_SET_DBIT(p,c)	writeb((c & 0x03) | (UART_GET_DBIT(p) & 0xfc), p + 0x10 + fpga_mapped_addr)
 /*check bit*/
 #define	UART_GET_CBIT(p)	(u8)((readb(p + 0x10 + fpga_mapped_addr) >> 4) & 0x03)
-#define	UART_SET_CBIT(p,c)	writeb(((c & 0x03) << 4) | (UART_GET_ALL(p) & 0xcf), p + 0x10 + fpga_mapped_addr)
+#define	UART_SET_CBIT(p,c)	writeb(((c & 0x03) << 4) | (UART_GET_CBIT(p) & 0x3f), p + 0x10 + fpga_mapped_addr)
 /*stop bit*/
 #define	UART_GET_SBIT(p)	(u8)((readb(p + 0x10 + fpga_mapped_addr) >> 6) & 0x01)
-#define	UART_SET_SBIT(p,c)	writeb(((c & 0x01) << 6) | (UART_GET_ALL(p) & 0x3f), p + 0x10 + fpga_mapped_addr)
-/*FIFO reset*/
-#define	UART_FIFO_GETSET(p)	(u8)(readb((p < 8 ? 0x45 : 0x6c) + fpga_mapped_addr))
-#define	UART_FIFO_RESET(p)	writeb((1 << (p%8)) | UART_FIFO_GETSET(p),  (p < 8 ? 0x45 : 0x6c) + fpga_mapped_addr)
-#define	UART_FIFO_NORMAL(p)	writeb(~(1 << (p%8)) & UART_FIFO_GETSET(p), (p < 8 ? 0x45 : 0x6c) + fpga_mapped_addr)
-
+#define	UART_SET_SBIT(p,c)	writeb(((c & 0x01) << 6) | (UART_GET_SBIT(p) & 0x4f), p + 0x10 + fpga_mapped_addr)
 
 struct baud_rates {
 	unsigned int rate;
@@ -95,24 +88,24 @@ static const struct baud_rates baud_rates[] = {
 	{   4800, B4800   },
 	{   2400, B2400   },
 	{   1200, B1200   },
-	{      0, B115200  }
+	{      0, B38400  }
 };
 
 static const u8 fpga_baud[] = {
-	1,
-	3,
-	5,
+	119,
+	339,
+	559,
 	11,
 	23,
 	47,
 	95,
 	191,
-	1
+	0
 };
 
 
 static void * fpga_mapped_addr;
-#define	MAX_BUF_LEN		8//1024
+#define	MAX_BUF_LEN		1024
 struct serial_dev
 {
 	struct cdev cdev;
@@ -156,10 +149,8 @@ int get_char(char *buf, int i, int len)
 
 static void get_buf(struct serial_dev *devp)
 {
-//	int time = 10000;
 	UART_DIB_RIRQ(devp->index);//disable recvive irq
-//	DBG("index = %d, RSR = 0x%08x\n", devp->index, UART_GET_RSR(devp->index));
-	while(devp->recv_full_flag == 0 && (~UART_GET_RSR(devp->index) & (1 << (devp->index%8))))
+	while(devp->recv_full_flag == 0 && UART_GET_RSR(devp->index))
 	{
 		devp->recv_buf[devp->recv_wr_point++] = UART_GET_CHAR(devp->index);
 		if(devp->recv_wr_point >= MAX_BUF_LEN)
@@ -167,9 +158,7 @@ static void get_buf(struct serial_dev *devp)
 		if(devp->recv_wr_point == devp->recv_rd_point)
 			devp->recv_full_flag = 1;			
 	}
-//	while(time --);
-//	DBG("wp = %d, rp = %d\n", devp->recv_wr_point, devp->recv_rd_point);
-//	UART_ENB_RIRQ(devp->index);
+	UART_ENB_RIRQ(devp->index);
 	return ;
 }
 static void get_recv_irg(void);
@@ -178,35 +167,21 @@ DECLARE_TASKLET(recv_tasklet, get_recv_irg, 0);
 static void get_recv_irg(void)
 {
 	int i;
-//	printk("ssssssssssss\n");
 	for(i = 0; i < MAX_PORT; i++)
 	{
-//		DBG("iiii = %d\n", i);
-		if(UART_GET_RST(i) & (1 << (i%8)))
+		if(UART_GET_RST(i) & (i%8))
 		{
-//			DBG("i = %d\n", i);
 			get_buf(&serial_devp[i]);
-			wake_up_interruptible(&serial_devp[i].r_wait);//wake up read
 		}
 	}
 }
-irqreturn_t my_recv_interrupt(void)
+irqreturn_t recv_interrupt(void)
 {
-	unsigned int state;
-//	disable_irq(AT91SAM9260_ID_IRQ0);
-//	DBG("my_recv_interrupt\n");
-//	state = at91_sys_read(AT91_AIC_ISR);
-//	DBG("state = 0x%08x\n", state);
-	get_recv_irg();
-//	tasklet_schedule(&recv_tasklet);
-//	enable_irq(AT91SAM9260_ID_IRQ0);
-	return IRQ_HANDLED;
+	tasklet_schedule(&recv_tasklet);
 }
-static int recvbuf_to_userbuf(struct serial_dev *devp, char __user *buf, int len)
+static int recvbuf_to_userbuf(struct serial_dev *devp, char* buf, int len)
 {
 	int i = 0;
-//	int time = 30000;
-//	while(time --);
 	char *p = kmalloc(len, GFP_KERNEL);
 	while(devp->recv_rd_point != devp->recv_wr_point)
 	{
@@ -217,34 +192,24 @@ static int recvbuf_to_userbuf(struct serial_dev *devp, char __user *buf, int len
 		if(i == len)
 			break;
 	}
-	if(copy_to_user(buf, p, i))
-	{
-		i = -EFAULT;
-	}
+	copy_to_user(buf, p, i);
 	kfree(p);
-//	DBG("112wp = %d, rp = %d\n", devp->recv_wr_point, devp->recv_rd_point);
-	while(1)
 	return i;
 }
 
 static void send_buf(struct serial_dev *devp)
 {
-	int cnt = 0;
 	UART_DIB_WIRQ(devp->index);//disable recvive irq
-	while(devp->send_rd_point != devp->send_wr_point || devp->send_full_flag == 1)
+	while(devp->send_rd_point != devp->send_wr_point)
 	{
-//		DBG("w!=r\n");
-		if(1)//(!UART_PUT_RSR(devp->index))	
+		if(!UART_PUT_RSR(devp->index))	
 		{
 			UART_PUT_CHAR(devp->index, devp->send_buf[devp->send_rd_point++]);
-			cnt ++;
 			if(devp->send_rd_point >= MAX_BUF_LEN)
 			{
 				devp->send_rd_point = 0;
 			}
 			devp->send_full_flag = 0;
-			/*write less than 128 bytes every time*/
-			if(cnt >= 128) break;
 		}
 		else
 		{
@@ -255,11 +220,9 @@ static void send_buf(struct serial_dev *devp)
 	if(devp->send_rd_point == devp->send_wr_point)
 	{
 	//	UART_DIB_WIRQ(devp->index);
-//		DBG("w==r\n");
 		return;
 	}
 	UART_ENB_WIRQ(devp->index);
-	enable_irq(AT91SAM9260_ID_IRQ1);
 }
 static void get_send_irg(void);
 DECLARE_TASKLET(send_tasklet, get_send_irg, 0);
@@ -268,51 +231,88 @@ static void get_send_irg(void)
 	int i;
 	for(i = 0; i < MAX_PORT; i++)
 	{
-		if(UART_GET_WST(i) & (1 << (i%8)))
+		if(UART_GET_WST(i) & (i%8))
 		{
-//			DBG("i = %d\n", i);
 			send_buf(&serial_devp[i]);
 		}
 	}
 }
-irqreturn_t my_send_interrupt(void)
+irqreturn_t send_interrupt(void)
 {
-	unsigned int state;
-	disable_irq(AT91SAM9260_ID_IRQ1);
-//	DBG("my_send_interrupt\n");
-	state = at91_sys_read(AT91_AIC_ISR);
-//	DBG("state = 0x%08x\n", state);
-	get_send_irg();
-//	enable_irq(AT91SAM9260_ID_IRQ1);
-
-//	tasklet_schedule(&send_tasklet);
-	return IRQ_HANDLED;
+	tasklet_schedule(&send_tasklet);
 }
 
-static int userbuf_to_sendbuf(struct serial_dev *devp, const char *buf, int len)
+static int userbuf_to_sendbuf(struct serial_dev *devp, char *buf, int len)
 {
 	int i = 0;
-//	char *p = NULL;
-//	DBG("userbuf_to_sendbuf: flag = %d\n", devp->send_full_flag);
+	char *p = NULL;
 	if(devp->send_full_flag == 1)
 		return 0;//it should be bolck
 
-//	p = kmalloc(len , GFP_KERNEL);
-//	copy_from_user(p, buf, len);
+	p = kmalloc(len , GFP_KERNEL);
+	copy_from_user(p, buf, len);
 	while(devp->send_full_flag == 0 && i < len)
 	{	
-		devp->send_buf[devp->send_wr_point++] = buf[i++];
+		devp->send_buf[devp->send_wr_point++] = p[i++];
 		if(devp->send_wr_point >= MAX_BUF_LEN)
 			devp->send_wr_point = 0;
 		if(devp->send_wr_point == devp->send_rd_point)
 			devp->send_full_flag = 1;
 	}
-//	kfree(p);
+	kfree(p);
 	UART_ENB_WIRQ(devp->index);
-	enable_irq(AT91SAM9260_ID_IRQ1);
-//	DBG("userbuf_to_sendbuf: i = %d\n", i);
 	return i;
 }
+#if 0
+static int recvbuf_to_userbuf(struct serial_dev *devp, char* buf, int len)
+{
+	int ret = 0, left = len;
+	while(left && devp->recv_rd_point != devp->recv_wr_point)
+	{
+		if(devp->recv_rd_point < devp->recv_wr_point)
+		{
+			if(devp->recv_wr_point - devp->recv_rd_point >= left)
+			{
+				copy_to_user(buf + ret, devp->recv_buf[devp->recv_rd_point], left);
+				recv_rd_point += left;
+				ret += left;
+				left = 0;
+				break;
+			}
+			else
+			{
+				copy_to_user(buf + ret, devp->recv_buf[devp->recv_rd_point], devp->recv_wr_point - devp->recv_rd_point);
+				recv_rd_point = recv_wr_point;
+				ret += (devp->recv_wr_point - devp->recv_rd_point);
+				break;
+			}
+		}
+			else
+			{
+				if((MAX_BUF_LEN - recv_rd_point) > left)
+				{
+					copy_to_user(buf + ret, devp->recv_buf[devp->recv_rd_point], left);
+					recv_rd_point += left;
+					ret += left;
+					left = 0;
+					break;
+				}
+				else
+				{
+					copy_to_user(buf + ret, devp->recv_buf[devp->recv_rd_point], MAX_BUF_LEN - recv_rd_point - 1);
+					recv_rd_point = 0;
+					ret += MAX_BUF_LEN - recv_rd_point - 1;
+					left -= (MAX_BUF_LEN - recv_rd_point - 1);
+				}
+
+			}
+		}
+	}
+
+	return ret;
+
+}
+#endif
 unsigned int get_baud_rates(int i)
 {
 	u8 baud;
@@ -335,7 +335,6 @@ unsigned int get_baud_rates(int i)
 int set_baud_rates(int i, u16 x)
 {
 	int j;
-	DBG("i = %d, x = %x\n", i , x);
 	for(j = 0; baud_rates[j].rate; j++)
 	{
 		if(baud_rates[j].cflag == x)
@@ -349,100 +348,69 @@ int set_baud_rates(int i, u16 x)
 
 
 /*文件打开函数*/
-int serial_my_open(struct inode *inode, struct file *filp)
+int serial_open(struct inode *inode, struct file *filp)
 {
   /*将设备结构体指针赋值给文件私有数据指针*/
   struct serial_dev *dev;
   
   dev = container_of(inode->i_cdev,struct serial_dev,cdev); 
-  printk(KERN_ALERT "open.dev is %d\n",dev->index);
+  printk(KERN_ALERT "1open.dev is %p\n",dev);
   //printk(KERN_ALERT "open.dev->p is %p\n",dev->p);
-  filp->private_data = dev; 
-  UART_FIFO_RESET(dev->index);
-  UART_FIFO_NORMAL(dev->index);
-  dev->send_rd_point = 0;
-  dev->send_wr_point = 0;
-  dev->recv_rd_point = 0;
-  dev->recv_wr_point = 0;
-  dev->send_full_flag = 0;
-  dev->recv_full_flag = 0;
-//  UART_ENB_RIRQ(dev->index);
+  filp->private_data = dev;  
   return 0;
 }
 
 /*文件释放函数*/
-int serial_my_release(struct inode *inode, struct file *filp)
+int serial_release(struct inode *inode, struct file *filp)
 {
-//	printk(KERN_ALERT "close.dev is \n");
 	struct serial_dev *dev = filp->private_data;/*获得设备结构体指针*/
-	printk(KERN_ALERT "close.dev is %d\n",dev->index);
-//	UART_FIFO_RESET(dev->index);
-	return 0;
+
+  return 0;
 }
 
 /*写函数*/
-static ssize_t serial_my_write(struct file *filp, const char __user *buf,
+static ssize_t serial_write(struct file *filp, const char __user *buf,
   size_t size, loff_t *ppos)
 {
-  //unsigned long p =  *ppos;
-  //unsigned int count = size;
+  unsigned long p =  *ppos;
+  unsigned int count = size;
   int ret = 0;
   struct serial_dev *dev = filp->private_data; /*获得设备结构体指针*/
-//  printk(KERN_ALERT "write: lsbuf is [%s], size = %d\n", buf, size);
-  ret = userbuf_to_sendbuf(dev, buf, size);
-//  printk(KERN_ALERT "write.dev is %p,i=%d\n",dev,dev->index);  
+  printk(KERN_ALERT "write: lsbuf is [%s], size = %d\n", buf, size);
+//  userbuf_to_sendbuf(dev, buf, size);
+//   printk(KERN_ALERT "write.dev is %p,i=%d\n",dev,dev->index);  
   /*用户空间->内核空间*/
 //  if (copy_from_user(&(dev->value) , buf, 1))
   //  ret =  - EFAULT;
-//  DBG("write: ret = %d\n", ret);
+
   return ret;
 }
 
 /*写函数*/
-static ssize_t serial_my_read(struct file *filp, char __user *buf,
+static ssize_t serial_read(struct file *filp, const char __user *buf,
   size_t size, loff_t *ppos)
 {
-//  unsigned long p =  *ppos;
-//  unsigned int count = size;
+  unsigned long p =  *ppos;
+  unsigned int count = size;
   int ret = 0;
   struct serial_dev *dev = filp->private_data; /*获得设备结构体指针*/
   
-//  DBG("read\n");
-	if(dev->recv_rd_point != dev->recv_wr_point)
-	{
-//  		DBG("read=====\n");
- 		 ret = recvbuf_to_userbuf(dev, buf, size);
-		 return ret;
-	}
-
- // 		DBG("read111=====\n");
+  DBG("read\n");
   DECLARE_WAITQUEUE(wait, current); //定义等待队列
 
   down(&dev->sem); //获得信号量
-//  DBG("recv1\n");
   add_wait_queue(&dev->r_wait, &wait); //进入读等待队列头
-//  DBG("recv2\n");
   __set_current_state(TASK_INTERRUPTIBLE); //改变进程状态为睡眠
-  UART_ENB_RIRQ(dev->index);
-//	DBG("index = %d, val = 0x%x\n", dev->index, UART_GET_RIRQ(dev->index));
-
-//  DBG("recv3\n");
   up(&dev->sem);
-//  DBG("recv4\n");
-//  DBG("index = %d\n", dev->index);
+
   schedule(); //调度其他进程执行
   down(&dev->sem);
-//  DBG("recv5\n");
-  ret = recvbuf_to_userbuf(dev, buf, size);
-/*  DBG("index = %d\n", dev->index);
-  UART_ENB_RIRQ(dev->index);
-	enable_irq(AT91SAM9260_ID_IRQ0);
-  DBG("index = %d\n", dev->index);
-*/
+
+  recvbuf_to_userbuf(dev, buf, size);
+
   up(&dev->sem); //释放信号量
   remove_wait_queue(&dev->w_wait, &wait); //从附属的等待队列头移除
   set_current_state(TASK_RUNNING);
-//	enable_irq(AT91SAM9260_ID_IRQ0);
   /*用户空间->内核空间*/
 //  if (copy_to_user(buf, (void*)&(dev->value), 1))
   //  ret =  - EFAULT;
@@ -452,7 +420,7 @@ static ssize_t serial_my_read(struct file *filp, char __user *buf,
   //  printk(KERN_INFO "read %d bytes(s) from %p\n", count, p);
   }
 
-  return ret;
+  return 1;
 }
 
 int get_attr(struct termios __user * u_termio, struct ktermios *a_termios, int index)
@@ -469,60 +437,6 @@ int get_attr(struct termios __user * u_termio, struct ktermios *a_termios, int i
 	return 0;
 }
 
-static void set_databits(int i, u16 x)
-{
-	DBG("databits: [%d]---%x\n", i, x);
-	switch(x)
-	{
-		case 5:
-			UART_SET_DBIT(i, 0x03);
-			break;
-		case 6:
-			UART_SET_DBIT(i, 0x02);
-			break;
-		case 7:
-			UART_SET_DBIT(i, 0x01);
-			break;
-		case 8:
-		default:
-			UART_SET_DBIT(i, 0x00);
-			break;
-	}
-}
-
-static void set_checkbits(int i, u16 x)
-{
-	DBG("checkbits: [%d]---%x\n", i, x);
-	if(x == 0)
-	{//no checkbits
-		UART_SET_CBIT(i, 0);
-	}
-	else
-	{
-		if(x == 1)
-		{//ji
-			UART_SET_CBIT(i, 3);
-		}
-		else
-		{
-			UART_SET_CBIT(i, 2);
-		}
-	}
-}
-
-static void set_stopbits(int i, u16 x)
-{
-	DBG("stopbits: [%d]---%x\n", i, x);
-	if(x == 2)
-	{//2
-		UART_SET_SBIT(i, 1);
-	}
-	else
-	{
-		UART_SET_SBIT(i, 0);
-	}
-}
-
 int set_attr(struct termios __user * u_termio, struct ktermios *a_termios, int index)
 {
 	struct ktermios *k_termios = (a_termios);
@@ -530,10 +444,7 @@ int set_attr(struct termios __user * u_termio, struct ktermios *a_termios, int i
 //	k_termio.c_cflag = B50;
 //	printk("k_termio.c_cflag = 0x%x\n", k_termios->c_cflag);
 	ret = copy_from_user(k_termios, u_termio, sizeof(struct ktermios));
-	set_baud_rates(index, k_termios->c_cflag);
-	set_databits(index, k_termios->c_iflag);
-	set_checkbits(index, k_termios->c_oflag);
-	set_stopbits(index, k_termios->c_lflag);
+	set_baud_rates(index, k_termios->c_cflag & 0x3f);
 //	printk("u_termio->c_cflag = 0x%x\n", (struct termios __user *)u_termio->c_cflag);
 //	printk("ret1 = %d\n", ret);
 	return 0;
@@ -541,15 +452,12 @@ int set_attr(struct termios __user * u_termio, struct ktermios *a_termios, int i
 static int serial_ioctl(struct inode *tty, struct file *filp, unsigned int cmd, unsigned long arg)
 {
 	int ret = -ENOIOCTLCMD;
-//	void __user *p = (void __user *)arg;	
+	void __user *p = (void __user *)arg;	
 	printk("cmd = 0x%04x\n", cmd);
 	char *pp = (char *)arg;
 	struct serial_dev *dev = filp->private_data; /*获得设备结构体指针*/
-//	DBG("serial_ioctl: wp = %d, rp = %d\n", serial_devp[7].recv_wr_point, serial_devp[7].recv_rd_point);
 //	dev->termios.c_cflag = 0x03;
 //	printk("cflag = 0x%x\n", dev->termios.c_cflag);
-//	ret = at91_sys_read(AT91_AIC_IPR);
-//	printk("IPR = 0x%08x\n", ret);
 	switch(cmd)
 	{
 	case TCGETS:
@@ -562,26 +470,26 @@ static int serial_ioctl(struct inode *tty, struct file *filp, unsigned int cmd, 
 		break;
 	case F_READ:
 		pp[1] = (unsigned char) readb(fpga_mapped_addr + pp[0]);
-		DBG("read: 0x%x, 0x%x\n", pp[0], pp[1]);
+		DBG("read: %d, %d\n", pp[0], pp[1]);
 		break;
 	case F_WRITE:
 		writeb(pp[1], fpga_mapped_addr + pp[0]);
-		DBG("write: 0x%x, 0x%x\n", pp[0], pp[1]);
+		DBG("write: %d, %d\n", pp[0], pp[1]);
 		break;
 	default:
 		break;
 	}
-	return 0;
+	return ret;
 }
 
 /*文件操作结构体*/
 static const struct file_operations serial_fops =
 {
   .owner = THIS_MODULE,
-  .read = serial_my_read,
-  .write = serial_my_write,
-  .open = serial_my_open,
-  .release = serial_my_release,
+  .read = serial_read,
+  .write = serial_write,
+  .open = serial_open,
+  .release = serial_release,
   .ioctl = serial_ioctl,
 };
 
@@ -640,10 +548,8 @@ int serial_init(void)
 	  return result;
   }
 
-//  at91_set_A_periph(AT91_PIN_PC12, 1);//irq0
-//  at91_sys_write(AT91_AIC_ISCR, 1 << AT91SAM9260_ID_IRQ0);
-//  at91_sys_write(AT91_AIC_IECR, 1 << AT91SAM9260_ID_IRQ0);
-//	disable_irq(AT91SAM9260_ID_IRQ1);
+  result = request_irq(AT91SAM9260_ID_IRQ0, recv_interrupt, SA_SHIRQ, "FPGA_uart", NULL);
+  result = request_irq(AT91SAM9260_ID_IRQ1, send_interrupt, SA_SHIRQ, "FPGA_uart", NULL);
 
 	/* 动态申请2个设备结构体的内存*/
   serial_devp = kmalloc(MAX_PORT*sizeof(struct serial_dev), GFP_KERNEL);
@@ -655,19 +561,12 @@ int serial_init(void)
   memset(serial_devp, 0, MAX_PORT*sizeof(struct serial_dev));
   
   for(i = 0; i < MAX_PORT; i ++)
-  {
   	serial_setup_cdev(&serial_devp[i], i);
 	
-  init_MUTEX(&serial_devp[i].sem);   /*初始化信号量*/
-  init_waitqueue_head(&serial_devp[i].r_wait); /*初始化读等待队列头*/
-  init_waitqueue_head(&serial_devp[i].w_wait); /*初始化写等待队列头*/
-//  UART_FIFO_RESET(i);
-  }
+  init_MUTEX(&serial_devp->sem);   /*初始化信号量*/
+  init_waitqueue_head(&serial_devp->r_wait); /*初始化读等待队列头*/
+  init_waitqueue_head(&serial_devp->w_wait); /*初始化写等待队列头*/
 
-	result = request_irq(AT91SAM9260_ID_IRQ0, my_recv_interrupt, SA_SAMPLE_RANDOM, "FPGA_uart", serial_devp);
-	printk("irq0 ret = %d\n", result);
-	result = request_irq(AT91SAM9260_ID_IRQ1, my_send_interrupt, SA_SAMPLE_RANDOM, "FPGA_uart", serial_devp);
-	printk("irq1 ret = %d\n", result);
   return 0;
 
   fail_malloc: 
@@ -682,8 +581,6 @@ void serial_exit(void)
 {
   int i;
   printk(KERN_ALERT "serial exit\n");
-  free_irq(AT91SAM9260_ID_IRQ0, serial_devp);
-  free_irq(AT91SAM9260_ID_IRQ1, serial_devp);
   for(i = 0; i < MAX_PORT; i++)
   	cdev_del(&(serial_devp[i].cdev));   /*注销cdev*/
   kfree(serial_devp);     /*释放设备结构体内存*/
