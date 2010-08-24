@@ -2,19 +2,23 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>4242551386</fileChecksum>
+  <fileChecksum>1233695579</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
+      <file>$PROJ_DIR$\src\alarm.c</file>
+      <file>$PROJ_DIR$\src\device.c</file>
+      <file>$PROJ_DIR$\src\decode.c</file>
+      <file>$PROJ_DIR$\src\key.c</file>
       <file>$PROJ_DIR$\src\main.c</file>
       <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-      <file>$PROJ_DIR$\inc\def.h</file>
-      <file>$TOOLKIT_DIR$\lib\dbgstm8smd.a</file>
-      <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
-      <file>$TOOLKIT_DIR$\config\lnkstm8s105c4.icf</file>
-      <file>$PROJ_DIR$\Debug\Exe\yyy.out</file>
       <file>$PROJ_DIR$\Debug\Obj\alamr1.pbd</file>
+      <file>$PROJ_DIR$\Debug\Exe\yyy.out</file>
+      <file>$TOOLKIT_DIR$\config\lnkstm8s105c4.icf</file>
+      <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
+      <file>$TOOLKIT_DIR$\lib\dbgstm8smd.a</file>
+      <file>$PROJ_DIR$\inc\def.h</file>
       <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
       <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
       <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_clk.h</file>
@@ -22,38 +26,144 @@
       <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_gpio.h</file>
       <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_type.h</file>
       <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s.h</file>
-      <file>$TOOLKIT_DIR$\inc\io_macros.h</file>
-      <file>$TOOLKIT_DIR$\inc\iostm8s105c4.h</file>
+      <file>$PROJ_DIR$\inc\device.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\device.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\device.o</file>
+      <file>$PROJ_DIR$\inc\key.h</file>
+      <file>$PROJ_DIR$\inc\decode.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\key.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\key.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\decode.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\decode.pbi</file>
+      <file>$PROJ_DIR$\inc\alarm.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\alarm.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\alarm.pbi</file>
+      <file>$PROJ_DIR$\inc\led.h</file>
+      <file>$PROJ_DIR$\src\led.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\led.o</file>
+      <file>$PROJ_DIR$\Debug\Obj\led.pbi</file>
     </outputs>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>ILINK</name>
-          <file> 7</file>
+          <file> 8</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\alarm.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 31</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 30</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\device.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 22</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20 23 32</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 20 23 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\decode.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 27</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12 24</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 12 14 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\key.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 26</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12 23</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 12 14 23</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\src\main.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 2</file>
+          <name>BICOMP</name>
+          <file> 13</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 9</file>
+          <name>ICCSTM8</name>
+          <file> 6</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 15 14 12 11 13 10 3</file>
+          <name>BICOMP</name>
+          <file> 19 18 16 15 17 12 20 24 23 29</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 15 14 12 11 13 3</file>
+          <name>ICCSTM8</name>
+          <file> 19 18 16 15 17 14 12 20 24 23 29</file>
         </tool>
       </inputs>
     </file>
@@ -61,30 +171,53 @@
       <name>$PROJ_DIR$\main.c</name>
       <outputs>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 2</file>
+          <name>BICOMP</name>
+          <file> 13</file>
         </tool>
         <tool>
-          <name>BICOMP</name>
-          <file> 9</file>
+          <name>ICCSTM8</name>
+          <file> 6</file>
         </tool>
       </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Exe\yyy.out</name>
-      <inputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 6 2 5 4</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\Debug\Obj\alamr1.pbd</name>
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 9</file>
+          <file> 31 28 21 26 35 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\yyy.out</name>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 9 30 27 22 25 34 6 10 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\led.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 35</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 34</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 32</file>
         </tool>
       </inputs>
     </file>

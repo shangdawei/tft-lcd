@@ -19,10 +19,10 @@
 //#include <ioavr.h>
 #include <intrinsics.h>
 //! type redefinition 
-typedef unsigned char           uint8;
-typedef unsigned short          uint16;
+typedef unsigned char           BYTE;
+typedef unsigned short          WORD;
 typedef signed long              int32;
-typedef unsigned long            uint32;
+typedef unsigned long           DWORD;
 
 typedef signed char             int8;
 

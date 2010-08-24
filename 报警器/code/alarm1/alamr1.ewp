@@ -1503,6 +1503,21 @@
     </settings>
   </configuration>
   <file>
+    <name>$PROJ_DIR$\src\alarm.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\src\decode.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\src\device.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\src\key.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\src\led.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\src\main.c</name>
   </file>
 </project>
