@@ -16,7 +16,7 @@
 #define   _DEF_H_
 // Include I/O definition file
 #define  ENABLE_BIT_DEFINITIONS //don't del this line
-//#include <ioavr.h>
+#include "stm8s.h"
 #include <intrinsics.h>
 //! type redefinition 
 typedef unsigned char           BYTE;
