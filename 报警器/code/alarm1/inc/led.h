@@ -7,8 +7,8 @@
 /// @brief  ≤Œ ˝≈‰÷√
 ///
 ///
-///
-/// @version    2.0
+/// "$Id$"
+/// @version    1.0
 /// @author     xuliang<gxuliang@gmail.com>
 /// @date       2010£≠04£≠24
 ///
