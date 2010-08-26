@@ -18,6 +18,7 @@
 
 #include "def.h"
 #include "decode.h"
+#include "stm8s_itc.h"
 
 
 static BYTE DecodeAddr, DecodeData;
@@ -32,6 +33,19 @@ static BYTE DecodeAddr, DecodeData;
 static BYTE DecodeRead(BYTE* ch)
 {
   
+  return 0;
+}
+//////////////////////////////////////////////////////////////////////////
+///
+///     RemoteData
+///     @param data
+///     @return bool值，1-读取到0-未读取到
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-08-24
+//////////////////////////////////////////////////////////////////////////
+inline BYTE RemoteData(BYTE data)
+{
+  return data;
 }
 //////////////////////////////////////////////////////////////////////////
 ///
@@ -45,6 +59,15 @@ static BYTE DecodeAnalyze(BYTE *ch, BYTE *ret)
 {
   DecodeAddr = ch[0];
   DecodeData = ch[1];
+  switch(DecodeAddr)
+  {
+  case REMOTE_ADDR:
+    *ret = RemoteData(DecodeData);
+    return 1;
+  default:
+    break;
+  }
+  return 0;
 }
 //////////////////////////////////////////////////////////////////////////
 ///
@@ -75,4 +98,12 @@ void DecodeProcess(void)
       DecodeCmdDone(ret);
     }
   }
+}
+
+
+#pragma vector = ITC_IRQ_TIM1_CAPCOM
+__interrupt void timer1_capt_isr(void)
+{
+  
+  
 }
