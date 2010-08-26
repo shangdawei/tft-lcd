@@ -42,7 +42,18 @@
       <file>$PROJ_DIR$\inc\led.h</file>
       <file>$PROJ_DIR$\Debug\Obj\led.o</file>
       <file>$PROJ_DIR$\Debug\Obj\led.pbi</file>
+      <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_itc.h</file>
+      <file>$TOOLKIT_DIR$\doc\infocenter\index.ENU.html</file>
     </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+    </file>
     <file>
       <name>$PROJ_DIR$\src\alarm.c</name>
       <outputs>
@@ -104,11 +115,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 13 20 19 17 16 18 25</file>
+          <file> 13 20 19 17 16 18 25 36</file>
         </tool>
         <tool>
           <name>ICCSTM8</name>
-          <file> 13 20 19 17 16 18 15 25</file>
+          <file> 13 20 19 17 16 18 15 25 36</file>
         </tool>
       </inputs>
     </file>
@@ -211,15 +222,6 @@
           <file> 10 31 28 23 26 34 7 11 12</file>
         </tool>
       </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 9</file>
-        </tool>
-      </outputs>
     </file>
   </configuration>
   <configuration>

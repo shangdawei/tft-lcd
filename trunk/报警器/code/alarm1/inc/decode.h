@@ -19,6 +19,18 @@
 #ifndef _DECODE_H
 #define _DECODE_H
 
+enum  {
+  BUFANG1_CMD  = 1,//¡Ù ÿ≤º∑¿
+  BUFANG2_CMD,      //≤ø∑÷≤º∑¿
+  CHEFANG_CMD,     //≥∑∑¿
+  ITC_CMD,         //ΩÙº±±®æØ  
+};
+
+enum {
+  REMOTE_ADDR  = 0xAAAA,//
+  
+};
+
 extern void DecodeProcess(void);
 
 #endif
