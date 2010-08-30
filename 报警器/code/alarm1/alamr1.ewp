@@ -768,7 +768,7 @@
         <debug>0</debug>
         <option>
           <name>GenDeviceSelectMenu</name>
-          <state></state>
+          <state>UnspecifiedSTM8	STM8 - Unspecified</state>
         </option>
         <option>
           <name>GenCodeModel</name>
@@ -812,7 +812,7 @@
         </option>
         <option>
           <name>GenRTConfigPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dlstm8smn.h</state>
         </option>
         <option>
           <name>GenLibInFormatter</name>
@@ -898,12 +898,12 @@
         </option>
         <option>
           <name>IccOptLevelSlave</name>
-          <state>1</state>
+          <state>3</state>
         </option>
         <option>
           <name>IccOptAllowList</name>
           <version>0</version>
-          <state>111110</state>
+          <state>111111</state>
         </option>
         <option>
           <name>IccGenerateDebugInfo</name>
@@ -911,7 +911,7 @@
         </option>
         <option>
           <name>IccOutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.o</state>
         </option>
         <option>
           <name>IccCodeModel</name>
@@ -999,7 +999,9 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state></state>
+          <state>$PROJ_DIR$\inc\</state>
+          <state>C:\Program Files\IAR Systems\Embedded Workbench 6.0 Evaluation\stm8\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\</state>
+          <state>C:\Program Files\IAR Systems\Embedded Workbench 6.0 Evaluation\stm8\examples\ST-LINK\STM8S105C6-Board\Project\Discover\inc</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1214,7 +1216,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state></state>
+          <state>alamr1.srec</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -1268,7 +1270,7 @@
         </option>
         <option>
           <name>IlinkOutputFile</name>
-          <state>###Unitialized###</state>
+          <state>alamr1.out</state>
         </option>
         <option>
           <name>IlinkDebugInfoEnable</name>
