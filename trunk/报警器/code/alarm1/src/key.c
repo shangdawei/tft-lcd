@@ -53,6 +53,12 @@ static BYTE KeyRead(BYTE* ch)
     return 0;
   
   //ÏÈ°Ñ×´Ì¬Çåµô
+  GPIOD->DDR |= GPIO_PIN_2;
+  GPIOD->CR1 |= GPIO_PIN_2;
+  
+  GPIOC->DDR |= GPIO_PIN_3;
+  GPIOC->CR1 |= GPIO_PIN_3;
+  
   GPIOD->ODR &= ~GPIO_PIN_2;//PD2 as AB
   for(i = 0; i < 8; i++)
   {

@@ -32,6 +32,9 @@ void LedInit(void)
 {
     GPIOD->DDR |= GPIO_PIN_2; //AB
     GPIOC->DDR |= GPIO_PIN_3; //CLK
+    
+    GPIOD->CR1 |= GPIO_PIN_2;
+    GPIOC->CR1 |= GPIO_PIN_3;
 }
 //////////////////////////////////////////////////////////////////////////
 ///

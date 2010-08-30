@@ -2,7 +2,7 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1233695579</fileChecksum>
+  <fileChecksum>3065829278</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
@@ -14,12 +14,12 @@
       <file>$PROJ_DIR$\src\main.c</file>
       <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-      <file>$PROJ_DIR$\Debug\Obj\alamr1.pbd</file>
-      <file>$PROJ_DIR$\Debug\Exe\yyy.out</file>
-      <file>$TOOLKIT_DIR$\config\lnkstm8s105c4.icf</file>
-      <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
-      <file>$TOOLKIT_DIR$\lib\dbgstm8smd.a</file>
       <file>$PROJ_DIR$\inc\def.h</file>
+      <file>$TOOLKIT_DIR$\lib\dbgstm8smd.a</file>
+      <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
+      <file>$TOOLKIT_DIR$\config\lnkstm8s105c4.icf</file>
+      <file>$PROJ_DIR$\Debug\Exe\yyy.out</file>
+      <file>$PROJ_DIR$\Debug\Obj\alamr1.pbd</file>
       <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
       <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
       <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_clk.h</file>
@@ -43,14 +43,13 @@
       <file>$PROJ_DIR$\Debug\Obj\led.o</file>
       <file>$PROJ_DIR$\Debug\Obj\led.pbi</file>
       <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_itc.h</file>
-      <file>$TOOLKIT_DIR$\doc\infocenter\index.ENU.html</file>
     </outputs>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>ILINK</name>
-          <file> 9</file>
+          <file> 12</file>
         </tool>
       </outputs>
     </file>
@@ -58,21 +57,21 @@
       <name>$PROJ_DIR$\src\alarm.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 32</file>
-        </tool>
-        <tool>
           <name>ICCSTM8</name>
           <file> 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
+          <name>ICCSTM8</name>
           <file> 30</file>
         </tool>
         <tool>
-          <name>ICCSTM8</name>
+          <name>BICOMP</name>
           <file> 30</file>
         </tool>
       </inputs>
@@ -81,22 +80,22 @@
       <name>$PROJ_DIR$\src\device.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 22</file>
-        </tool>
-        <tool>
           <name>ICCSTM8</name>
           <file> 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 22</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 21 24 33 13 20 19 17 16 18</file>
+          <name>ICCSTM8</name>
+          <file> 21 24 33 8 20 19 17 16 18 15</file>
         </tool>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 21 24 33 13 20 19 17 16 18 15</file>
+          <name>BICOMP</name>
+          <file> 21 24 33 8 20 19 17 16 18</file>
         </tool>
       </inputs>
     </file>
@@ -104,22 +103,22 @@
       <name>$PROJ_DIR$\src\decode.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 29</file>
-        </tool>
-        <tool>
           <name>ICCSTM8</name>
           <file> 28</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 13 20 19 17 16 18 25 36</file>
+          <name>ICCSTM8</name>
+          <file> 8 20 19 17 16 18 15 25 36</file>
         </tool>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 13 20 19 17 16 18 15 25 36</file>
+          <name>BICOMP</name>
+          <file> 8 20 19 17 16 18 25 36</file>
         </tool>
       </inputs>
     </file>
@@ -127,22 +126,22 @@
       <name>$PROJ_DIR$\src\key.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 27</file>
-        </tool>
-        <tool>
           <name>ICCSTM8</name>
           <file> 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 13 20 19 17 16 18 24</file>
+          <name>ICCSTM8</name>
+          <file> 8 20 19 17 16 18 15 24</file>
         </tool>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 13 20 19 17 16 18 15 24</file>
+          <name>BICOMP</name>
+          <file> 8 20 19 17 16 18 24</file>
         </tool>
       </inputs>
     </file>
@@ -150,22 +149,22 @@
       <name>$PROJ_DIR$\src\led.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 35</file>
-        </tool>
-        <tool>
           <name>ICCSTM8</name>
           <file> 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 35</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 13 20 19 17 16 18 33</file>
+          <name>ICCSTM8</name>
+          <file> 8 20 19 17 16 18 15 33</file>
         </tool>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 13 20 19 17 16 18 15 33</file>
+          <name>BICOMP</name>
+          <file> 8 20 19 17 16 18 33</file>
         </tool>
       </inputs>
     </file>
@@ -173,22 +172,22 @@
       <name>$PROJ_DIR$\src\main.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 14</file>
-        </tool>
-        <tool>
           <name>ICCSTM8</name>
           <file> 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 13 20 19 17 16 18 21 25 24 30</file>
+          <name>ICCSTM8</name>
+          <file> 8 20 19 17 16 18 15 21 25 24 30</file>
         </tool>
         <tool>
-          <name>ICCSTM8</name>
-          <file> 13 20 19 17 16 18 15 21 25 24 30</file>
+          <name>BICOMP</name>
+          <file> 8 20 19 17 16 18 21 25 24 30</file>
         </tool>
       </inputs>
     </file>
@@ -196,14 +195,23 @@
       <name>$PROJ_DIR$\main.c</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 14</file>
-        </tool>
-        <tool>
           <name>ICCSTM8</name>
           <file> 7</file>
         </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\yyy.out</name>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 11 31 28 23 26 34 7 10 9</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\Debug\Obj\alamr1.pbd</name>
@@ -214,23 +222,188 @@
         </tool>
       </inputs>
     </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Exe\yyy.out</name>
-      <inputs>
-        <tool>
-          <name>ILINK</name>
-          <file> 10 31 28 23 26 34 7 11 12</file>
-        </tool>
-      </inputs>
-    </file>
   </configuration>
   <configuration>
     <name>Release</name>
-    <outputs/>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>ILINK</tool>
-    </forcedrebuild>
+    <outputs>
+      <file>$PROJ_DIR$\src\alarm.c</file>
+      <file>$PROJ_DIR$\src\device.c</file>
+      <file>$PROJ_DIR$\src\decode.c</file>
+      <file>$PROJ_DIR$\src\key.c</file>
+      <file>$PROJ_DIR$\src\led.c</file>
+      <file>$PROJ_DIR$\src\main.c</file>
+      <file>$PROJ_DIR$\inc\def.h</file>
+      <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
+      <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+      <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_clk.h</file>
+      <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Project\Discover\inc\stm8s_conf.h</file>
+      <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_gpio.h</file>
+      <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_type.h</file>
+      <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s.h</file>
+      <file>$PROJ_DIR$\inc\device.h</file>
+      <file>$PROJ_DIR$\inc\key.h</file>
+      <file>$PROJ_DIR$\inc\decode.h</file>
+      <file>$PROJ_DIR$\inc\alarm.h</file>
+      <file>$PROJ_DIR$\inc\led.h</file>
+      <file>$TOOLKIT_DIR$\examples\ST-LINK\STM8S105C6-Board\Libraries\STM8S_StdPeriph_Driver\inc\stm8s_itc.h</file>
+      <file>$PROJ_DIR$\Release\Obj\device.o</file>
+      <file>$PROJ_DIR$\Release\Obj\led.o</file>
+      <file>$PROJ_DIR$\Release\Obj\main.o</file>
+      <file>$PROJ_DIR$\Release\Obj\decode.o</file>
+      <file>$PROJ_DIR$\Release\Obj\key.o</file>
+      <file>$PROJ_DIR$\Release\Obj\alarm.o</file>
+      <file>$TOOLKIT_DIR$\lib\dbgstm8smn.a</file>
+      <file>$TOOLKIT_DIR$\config\lnkstm8.icf</file>
+      <file>$PROJ_DIR$\Release\Obj\alarm.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\decode.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\device.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\key.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\led.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release\Exe\alamr1.out</file>
+      <file>$PROJ_DIR$\Release\Obj\alamr1.pbd</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 34</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\alarm.c</name>
+      <outputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 25</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 17</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\device.c</name>
+      <outputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 20</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 14 15 18 6 13 12 10 9 11 8</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\decode.c</name>
+      <outputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 6 13 12 10 9 11 8 16 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\key.c</name>
+      <outputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 24</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 31</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 6 13 12 10 9 11 8 15</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\led.c</name>
+      <outputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 21</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 6 13 12 10 9 11 8 18</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\src\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 33</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCSTM8</name>
+          <file> 6 13 12 10 9 11 8 14 16 15 17</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\alamr1.out</name>
+      <inputs>
+        <tool>
+          <name>ILINK</name>
+          <file> 27 25 23 20 24 21 22 7 26</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\alamr1.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 28 29 30 31 32 33</file>
+        </tool>
+      </inputs>
+    </file>
   </configuration>
 </project>
 
