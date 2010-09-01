@@ -23,6 +23,24 @@
 #include "key.h"
 #include "alarm.h"
 
+/**
+  ******************************************************************************
+  * @brief Configures clocks
+  * @par Parameters:
+  * None
+  * @retval void None
+  * @par Required preconditions:
+  * None
+  ******************************************************************************
+  */
+void CLK_Configuration(void)
+{
+
+  /* Fmaster = 16MHz */
+  CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV1);
+
+}
+
 //////////////////////////////////////////////////////////////////////////
 ///
 ///     main
@@ -32,6 +50,9 @@
 //////////////////////////////////////////////////////////////////////////
 int main( void )
 {
+  /* Configures clocks */
+  CLK_Configuration();
+  
   DeviceInit();
   
   while(1)

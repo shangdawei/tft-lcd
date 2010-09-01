@@ -1508,10 +1508,16 @@
     <name>$PROJ_DIR$\src\alarm.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\src\board.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\src\decode.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\src\device.c</name>
+  </file>
+  <file>
+    <name>$EW_DIR$\stm8\examples\ST-LINK\STM8S105C6-Board\Debug\Exe\FWLib.a</name>
   </file>
   <file>
     <name>$PROJ_DIR$\src\key.c</name>

@@ -27,9 +27,10 @@ typedef unsigned long           DWORD;
 
 typedef signed char             int8;
 
-//typedef unsigned char              bool;
+typedef unsigned char           BOOL;
 typedef unsigned long long      UQWORD;
 typedef long long               SQWORD;
+
 
 #define START   1
 #define STOP    0
