@@ -19,7 +19,7 @@
 #include "def.h"
 #include "decode.h"
 #include "stm8s_itc.h"
-
+#include "board.h"
 
 static BYTE DecodeAddr, DecodeData;
 //////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,22 @@ static BYTE DecodeAnalyze(BYTE *ch, BYTE *ret)
 //////////////////////////////////////////////////////////////////////////
 static void DecodeCmdDone(BYTE type)
 {
-  
+  switch(type)
+  {
+  case BUFANG1_CMD://¡Ù ÿ≤º∑¿ 
+//    break;
+  case BUFANG2_CMD://≤ø∑÷≤º∑¿
+//    break;
+  case CHEFANG_CMD://≥∑∑¿
+    SetBF(type);
+    break;
+  case ITC_CMD://ΩÙº±±®æØ  
+    SetAlarm();
+    break;
+    
+  default:
+    break;
+  }
 }
 //////////////////////////////////////////////////////////////////////////
 ///
