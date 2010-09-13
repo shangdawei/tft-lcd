@@ -22,7 +22,8 @@
 
 #include "def.h"
 
-
+extern void LedOn(WORD mask);
+extern void LedOff(WORD mask);
 
 
 //////////////////////////////////////////////////////////////////////////
