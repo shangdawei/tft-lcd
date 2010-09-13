@@ -31,10 +31,12 @@ static WORD LedVal=0;
 void LedInit(void)
 {
     GPIOD->DDR |= GPIO_PIN_2; //AB
-    GPIOC->DDR |= GPIO_PIN_3; //CLK
+    GPIOC->DDR |= GPIO_PIN_2; //CLK
     
     GPIOD->CR1 |= GPIO_PIN_2;
-    GPIOC->CR1 |= GPIO_PIN_3;
+    GPIOC->CR1 |= GPIO_PIN_2;
+    
+    LedVal=0;
 }
 //////////////////////////////////////////////////////////////////////////
 ///
@@ -52,9 +54,10 @@ static void LedPut(WORD val)
             GPIOD->ODR |= GPIO_PIN_2;//PD2 as AB
         else
             GPIOD->ODR &= ~GPIO_PIN_2;//PD2 as AB
-        //PC3产生一个上升沿，可能要加延迟
-        GPIOC->ODR &= ~GPIO_PIN_3;//PC3 as CLK
-        GPIOC->ODR |= GPIO_PIN_3;//PC3 as CLK
+        //PC2产生一个上升沿，可能要加延迟
+        GPIOC->ODR &= ~GPIO_PIN_2;//PC2 as CLK
+
+        GPIOC->ODR |= GPIO_PIN_2;//PC2 as CLK
     }
 }
 //////////////////////////////////////////////////////////////////////////

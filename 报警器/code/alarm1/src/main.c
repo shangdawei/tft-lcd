@@ -22,6 +22,7 @@
 #include "decode.h"
 #include "key.h"
 #include "alarm.h"
+#include "led.h"
 
 /**
   ******************************************************************************
@@ -41,6 +42,15 @@ void CLK_Configuration(void)
 
 }
 
+void delayms(WORD ms)
+{
+    WORD i;
+    while(ms--)
+    {
+        for(i = 0; i < 16000; i++)
+          __no_operation();
+    }
+}
 //////////////////////////////////////////////////////////////////////////
 ///
 ///     main
@@ -50,10 +60,22 @@ void CLK_Configuration(void)
 //////////////////////////////////////////////////////////////////////////
 int main( void )
 {
+  BYTE i;
   /* Configures clocks */
   CLK_Configuration();
   
   DeviceInit();
+  
+  while(1)
+  {
+    for(i = 0; i < 16; i++)
+    {
+      LedOn(0x0001 << i);
+      delayms(50);
+    }
+    LedOff(0xffff);
+    delayms(50);
+  }
   
   while(1)
   {
