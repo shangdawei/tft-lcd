@@ -108,9 +108,150 @@ static BYTE KeyRead(BYTE* ch)
 ///     @author     xuliang<gxuliang@gmail.com>
 ///     @date       2010-08-24
 //////////////////////////////////////////////////////////////////////////
+BYTE ls_cnt;
+BYTE cmd_flag;
+
 static BYTE KeyAnalyze(BYTE ch, BYTE *ret)
 {
+    BYTE i,j;
+  BYTE key_value;
   
+  if(IsProgaMode() == 0)
+    return 0;
+  key_value = ch;
+  if(key_value != 0xFF)
+  {
+    lsbuf[ls_cnt++] = key_value;
+  }
+   
+  if(!(ls_cnt < 32))
+    ls_cnt = 0;
+  
+  if(lsbuf[0] != 0x0C || 0x0E)   //“储存”或“对码”键
+    ls_cnt = 0;
+    return 0;
+  for(i = 2;i < 31;i++)
+  {
+    if((lsbuf[i] != 0x0C) && (lsbuf[i] != 0x0D) && (lsbuf[i] != 0x0F))
+    {
+      if(i == 30)
+        return 0;
+    }
+    else
+    {
+      j = i;
+      break;
+    }  
+  }
+  
+  
+  if(cmd_flag)  
+  {
+    switch(lsbuf[0])
+    {
+    case 0x0C: 
+      if(lsbuf[j] == 0x0C)
+      {
+        switch(lsbuf[j + 1])
+        {
+        case 0x00:
+          * ret = 1;                   //*ret = 1 进入延时和退出延时时间设置
+          ls_cnt = 0;
+          return 1;
+        case 0x01:
+        case 0x02:
+        case 0x03:
+        case 0x04:
+        case 0x05:
+        case 0x06:
+        case 0x07:
+          * ret = 2;                   //*ret = 2 接警电话号码设置
+          ls_cnt = 0;
+          return 1;
+        case 0x0A:
+          * ret = 3;                   //*ret = 3 布防1、布防2防区设置
+          ls_cnt = 0;
+          return 1;
+        default:
+          break;
+        }
+      }
+      if(lsbuf[j] == 0x0F)            //“确认”键
+      {
+        switch(lsbuf[j - 1 ])
+        {
+        case 0x00:
+          * ret = 4;                   //*ret = 4 进入延时和退出延时清除
+          ls_cnt = 0;
+          return 1;
+        case 0x01:
+        case 0x02:
+        case 0x03:
+        case 0x04:
+        case 0x05:
+        case 0x06:
+        case 0x07:
+          * ret = 5;                   //*ret = 5 接警电话号码清除
+          ls_cnt = 0;
+          return 1;
+        default:
+          break;
+        }
+      }
+      break;    
+    case 0x0E:
+      if(lsbuf[j] == 0x0D)            //“清除”键
+      {
+        switch(lsbuf[j - 1])
+        {
+        case 0:
+          * ret = 6;                   //*ret = 6 遥控器学习码清除
+          ls_cnt = 0;
+          return 1;
+        case 0x01:
+        case 0x02:
+        case 0x03:
+        case 0x04:
+        case 0x05:
+        case 0x06:
+        case 0x07:
+        case 0x08:
+          * ret = 7;                   //*ret = 7 探测器或门磁学习码清除
+          ls_cnt = 0;
+          return 1;
+        default:
+          break;
+        }
+      }
+      if(lsbuf[j] == 0x0F)            //“确认”键
+      {
+        switch(lsbuf[j - 1])
+        {
+        case 0:
+          * ret = 8;                   //*ret = 8 遥控器对码
+          ls_cnt = 0;
+          return 1;
+        case 0x01:
+        case 0x02:
+        case 0x03:
+        case 0x04:
+        case 0x05:
+        case 0x06:
+        case 0x07:
+        case 0x08:
+          * ret = 9;                   //*ret = 9 探测器或门磁对码
+          ls_cnt = 0;
+          return 1;
+        default:
+          break;
+        }
+      }
+      break;
+    default:
+      return 0;
+    }  
+  }
+  return 0;
 }
 //////////////////////////////////////////////////////////////////////////
 ///
