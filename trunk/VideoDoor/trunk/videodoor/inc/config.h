@@ -55,6 +55,9 @@ typedef union tagCONF_UNION
     CONFIG_NET      con_net;
 } CONF_UNION;
 
+/////////////////////////////////////////////////
+
+void config_init(void);
 
 #endif
 

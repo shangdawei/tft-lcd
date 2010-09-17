@@ -7,15 +7,13 @@
 //	Description:
 //	Revisions:		Year-Month-Day  SVN-Author  Modification
 //
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-#include <libxml/xpath.h>
 
 #include "config.h"
+#include "xml.h"
 
 void config_init(void)
 {
-
+    conf_makedefault(CFG_FILE);
 }
 
 
@@ -52,30 +50,4 @@ int setConfig(CONF_TYPE type, CONF_UNION *config)
 
 
 
-int	conf_makedefault(BYTE *file_name)
-{
-    xmlDocPtr doc = NULL;		/* document pointer */
-
-    xmlNodePtr root_node = NULL;/* node pointers */
-
-    // Creates a new document, a node and set it as a root node
-
-    doc = xmlNewDoc(BAD_CAST "1.0");
-
-
-    root_node = xmlNewNode(NULL, BAD_CAST "CONFIG");
-    xmlDocSetRootElement(doc, root_node);
-
-
-
-
-    //Dumping document to stdio or file
-    xmlSaveFormatFileEnc(file_name, doc, "UTF-8", 1);
-    /*free the document */
-    xmlFreeDoc(doc);
-    xmlCleanupParser();
-
-    return 1;
-
-}
 

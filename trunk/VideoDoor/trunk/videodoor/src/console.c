@@ -27,10 +27,12 @@ static void console_parse(char ch);
 
 void console_help();
 void console_system_cmd();
+void console_exit_cmd();
 
 PAR_TAB ParseTable[] = {
-    { LVL_USR, "help",    console_help,     "Show System Command Supported",},
-	{ LVL_USR, "!",       console_system_cmd,"Execute Linux System Command",},
+    { LVL_USR, "help",    console_help,     "Show System Command Supported"},
+	{ LVL_USR, "!",       console_system_cmd,"Execute Linux System Command"},
+	{ LVL_USR, "exit",    console_exit_cmd,"Teletn Logout"},
 
 };
 
@@ -53,7 +55,7 @@ static void console_proc()
     int max_fd;
     struct timeval tv;
 
-    infof("console_procp start = %d\n", getpid());
+    sys_print(FUNC, INFO,"console_procp start = %d\n", getpid());
 #ifdef _CONSOLE
     console_fd = open(DEV_COM, O_RDONLY);
 
@@ -74,14 +76,14 @@ static void console_proc()
 
     if (sock_listen == -1)
     {
-        errorf("console_tcp_start socket() error!\n");
+        sys_print(FUNC, ERROR, "console_tcp_start socket() error!\n");
         return;
     }
 
     if (setsockopt(sock_listen, SOL_SOCKET, SO_REUSEADDR, \
                    &flag, sizeof(flag)) == -1)
     {
-        errorf("console_tcp_start setsocketopt() error!\n");
+        sys_print(FUNC, ERROR, "console_tcp_start setsocketopt() error!\n");
         return;
     }
 
@@ -93,7 +95,8 @@ static void console_proc()
     if (bind(sock_listen, (struct sockaddr *)&servaddr, \
              sizeof(struct sockaddr)) == -1)
     {
-        errorf("console_tcp_start bind() error!\n");
+        sys_print(FUNC, ERROR, "console_tcp_start bind() error!\n");
+		close(sock_listen);
         return;
     }
 
@@ -152,10 +155,10 @@ static void console_proc()
             }
 
             sys_ip2str(cliaddr.sin_addr.s_addr, address);
-            infof("Remote Console Connected From[%s]\n", address);
+            sys_print(FUNC, INFO, "Remote Console Connected From[%s]\n", address);
             dup2(sock_console, STDOUT_FILENO);
             dup2(sock_console, STDERR_FILENO);
-            infof("Remote Console Connected From[%s]\n", address);
+            sys_print(FUNC, INFO, "Remote Console Connected From[%s]\n", address);
             console.idletime = 0;
 
             /*current user logout!*/
@@ -276,6 +279,11 @@ void console_system_cmd()
 	return;
 }
 
+void console_exit_cmd()
+{
+	console_recover();
+
+}
 void console_cmd_parse()
 {
 	int i, j, k;

@@ -31,6 +31,15 @@ int get_xml_net(CONFIG_NET* config);
 int update_xml_sys(CONFIG_SYS* config);
 
 int update_xml_net(CONFIG_NET* config);
+//////////////////////////////////////////////////////////////////////////
+///
+///     conf_makedefault
+///     @param *file_name 
+///     @return int 1
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-09-16
+//////////////////////////////////////////////////////////////////////////
+int	conf_makedefault(BYTE *file_name);
 
 #endif
 

@@ -95,7 +95,7 @@ extern "C"
 #endif
     extern LIBICONV_DLL_EXPORTED int iconv_close (iconv_t cd);
 
-
+#define LIBICONV_PLUG   //xul add
 #ifndef LIBICONV_PLUG
 
     /* Nonstandard extensions. */

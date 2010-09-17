@@ -33,8 +33,13 @@ typedef unsigned int u32;
 #define TRUE    1
 #define FALSE   0
 
+#define FUNC    (char*)__FUNCTION__
 
 #define FOR(i, max)         for (i = 0; i < (max); i++)
+
+
+
+
 
 #endif
 
