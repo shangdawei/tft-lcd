@@ -14,6 +14,17 @@
 #include "globleinc.h"
 #include "support.h"
 
+/*! \enum 
+*   \brief compare result
+*/
+enum COMPARE_RET
+{
+	EQUAL = 0,  //!< a is equal with b
+	LESS  = 1,  //!< a is less than b
+	MORE  = 2,  //!< a is more than b
+};
+
+
 DWORD sys_str2ip(BYTE *str);
 void sys_ip2str(DWORD ip, BYTE *str);
 

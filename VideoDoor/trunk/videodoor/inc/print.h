@@ -56,7 +56,32 @@ int logFatal(const char* fmt, ...);
 #endif
 #endif
 
-#define tracepoint()  debugf("tracepoint: %s, %d.\n",__FILE__,__LINE__)
+//#define tracepoint()  debugf("tracepoint: %s, %d.\n",__FILE__,__LINE__)
+#define tracepoint()  sys_print(FUNC, DBG, "tracepoint: %s, %d.\n",__FILE__,__LINE__)
+
+typedef enum tagLOG_Lv
+{
+    LNULL,    
+    TRACE,
+    DBG,
+    INFO,
+    WARN,
+    ERROR,
+    FATAL,
+
+}LOG_Lv;
+
+//////////////////////////////////////////////////////////////////////////
+///
+///     打印信息
+///     @param  module  函数名称
+///     @param  level   日志等级
+///     @param  format  数据内容
+///     @return SUCCESS FAILURE
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-09-16
+//////////////////////////////////////////////////////////////////////////
+int sys_print ( char* module, LOG_Lv level, char* format, ... );
 
 
 #endif

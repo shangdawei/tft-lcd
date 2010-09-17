@@ -314,4 +314,70 @@ int update_xml_net(CONFIG_NET* config)
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+///
+///     sys_config_add
+///     @param *root_node 
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-09-16
+//////////////////////////////////////////////////////////////////////////
+void sys_config_add(xmlNodePtr root_node)
+{
+    xmlNodePtr sys_node = NULL, node1 = NULL;
+
+
+    //creates a new node, which is "attached" as child node of root_node node.
+    sys_node = xmlNewChild(root_node, NULL, BAD_CAST "System", BAD_CAST NULL);
+    node1 = xmlNewChild(sys_node, NULL, BAD_CAST "id", BAD_CAST"01");
+
+    node1 = xmlNewChild(sys_node, NULL, BAD_CAST "type", BAD_CAST"02");
+
+
+    char p[64] = "室内";
+    char lsbuf[64] = "";
+    covert("UTF-8", "GBK", p, strlen(p), lsbuf, 64);
+    node1 = xmlNewChild(sys_node, NULL, BAD_CAST "hostname", BAD_CAST lsbuf);
+    strcpy(p, "南向北");
+    covert("UTF-8", "GBK", p, strlen(p), lsbuf, 64);
+    node1 = xmlNewChild(sys_node, NULL, BAD_CAST "pos_info", BAD_CAST lsbuf);
+
+
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+///
+///     conf_makedefault
+///     @param *file_name 
+///     @return int 1
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-09-16
+//////////////////////////////////////////////////////////////////////////
+int	conf_makedefault(BYTE *file_name)
+{
+    xmlDocPtr doc = NULL;		/* document pointer */
+
+    xmlNodePtr root_node = NULL;/* node pointers */
+
+    // Creates a new document, a node and set it as a root node
+
+    doc = xmlNewDoc(BAD_CAST "1.0");
+
+
+    root_node = xmlNewNode(NULL, BAD_CAST "CONFIG");
+    xmlDocSetRootElement(doc, root_node);
+
+    sys_config_add(root_node);
+
+
+    //Dumping document to stdio or file
+    xmlSaveFormatFileEnc(file_name, doc, "UTF-8", 1);
+    /*free the document */
+    xmlFreeDoc(doc);
+    xmlCleanupParser();
+
+    return 1;
+
+}
+
 

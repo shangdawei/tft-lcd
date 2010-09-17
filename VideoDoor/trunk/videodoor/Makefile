@@ -1,6 +1,15 @@
+#
+#  "$Id$"
+#
+#  Copyright (c)1992-2007, ZheJiang XXX Technology Stock CO.LTD.
+#  All Rights Reserved.
+#
+#	Description:
+#	Revisions:		Year-Month-Day  SVN-Author  Modification
+#
 
-#CROSS = powerpc-e300c3-linux-gnu-
-CC = gcc
+CROSS = arm-uclibc-linux-
+CC = $(CROSS)gcc
 CPP = g++
 
 EXEC_DIR = 
@@ -10,8 +19,10 @@ DEBUG = -DDEBUG
 OBJ = ./obj/
 SRC = ./src/
 INC = ./inc/
-XMLINC = /usr/local/libxml2/include/libxml2
-
+LIB = ./lib/
+#XMLINC = /usr/local/libxml2/include/libxml2
+#XMLINC = /home/xul/test/opt/hisilibxml2/include/libxml2
+CINC = /home/xul/Hi3510_VSSDK_V1.3.2.0/tools/sysroot-uclibc-soft/usr/include
 OBJS	=	$(OBJ)main.o		\
 			$(OBJ)print.o		\
 			$(OBJ)console.o		\
@@ -19,12 +30,19 @@ OBJS	=	$(OBJ)main.o		\
 			$(OBJ)config.o		\
 			$(OBJ)trd.o			\
 			$(OBJ)xml.o			\
+			$(OBJ)log.o			\
+			$(OBJ)timer.o		\
 
 
 $(OBJ)%.o: $(SRC)%.c $(INC)*.h
-	$(CC) -I$(INC) -I$(XMLINC) $(DEBUG) -g  -O0 -c -o  $(OBJ)$*.o $<
+	$(CC) -I$(INC) $(DEBUG) -g  -O0 -c -o  $(OBJ)$*.o $< 
 default: $(OBJS) #$(INC)*.h
-	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) -lpthread -lcrypt -liconv -lxml2 -lm
+ifeq ($(CROSS), arm-uclibc-linux-)
+#	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) -L$(LIB) -lxml2 -liconv -lpthread -lcrypt -lm 
+	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) $(LIB)libxml2.a $(LIB)libiconv.a -lpthread -lcrypt -lm 
+else
+	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) -lpthread -lcrypt -liconv -lxml2 -lm 
+endif
 
 clean:
 	rm -f $(EXEC) $(OBJ)*.o
