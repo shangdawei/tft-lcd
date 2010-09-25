@@ -66,7 +66,7 @@ int main( void )
   
   DeviceInit();
   
-  while(1)
+ /* while(1)
   {
     for(i = 0; i < 16; i++)
     {
@@ -75,7 +75,7 @@ int main( void )
     }
     LedOff(0xffff);
     delayms(50);
-  }
+  }*/
   
   while(1)
   {
@@ -84,5 +84,5 @@ int main( void )
     AlarmInProcess();//有线防区处理
     //	watch_dog();//最后加上
   }
-  
+ 
 }
