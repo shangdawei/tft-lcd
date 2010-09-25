@@ -20,8 +20,25 @@
 #include "key.h"
 
 //用来缓冲键值
+
+/*#define  DELAYTIME_SET_CMD   1; //延时时间设置
+#define  PHONENUM_SET_CMD    2; //报警电话号码设置
+#define  DEFENDAREA_SET_CMD  3; //防区设置
+#define  DELAYTIME_CLN_CMD   4; //延时时间清除
+#define  PHONENUM_CLN_CMD    5; //报警电话号码清除
+#define  TELECONTROL_CLN_CMD 6; //遥控器学习码清除
+#define  DETECTOR_CLN_CMD    7; //探测器和门磁学习码清除
+#define  TELECONTROL_STY_CMD 8; //遥控器对码
+#define  DETECTOR_STY_CMD    9; //探测器和门磁对码*/
 static BYTE lsbuf[32]="";
 const BYTE KeyVal[]={1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF};
+/*          实际按键 1  2  3  4  5  6  7  8  9  0   *    #  存储  清除 对码  确认*/
+/*struct studycode
+{
+  BYTE DEFENDAREA_BUF1[12];
+  BYTE DEFENDAREA_BUF2[12];
+  BYTE DEFENDAREA_BUF3[12];
+}def_area1,def_area2,def_area3,def_area4,def_area5,def_area6,def_area7,def_area8;*/
 //////////////////////////////////////////////////////////////////////////
 ///
 ///     判断是否处于编程模式
@@ -109,11 +126,11 @@ static BYTE KeyRead(BYTE* ch)
 ///     @date       2010-08-24
 //////////////////////////////////////////////////////////////////////////
 BYTE ls_cnt;
-BYTE cmd_flag;
+BYTE cmd_flag = 0;
 
 static BYTE KeyAnalyze(BYTE ch, BYTE *ret)
 {
-    BYTE i,j;
+  BYTE i;
   BYTE key_value;
   
   if(IsProgaMode() == 0)
@@ -122,42 +139,67 @@ static BYTE KeyAnalyze(BYTE ch, BYTE *ret)
   if(key_value != 0xFF)
   {
     lsbuf[ls_cnt++] = key_value;
-  }
-   
-  if(!(ls_cnt < 32))
-    ls_cnt = 0;
-  
-  if(lsbuf[0] != 0x0C || 0x0E)   //“储存”或“对码”键
-    ls_cnt = 0;
-    return 0;
-  for(i = 2;i < 31;i++)
-  {
-    if((lsbuf[i] != 0x0C) && (lsbuf[i] != 0x0D) && (lsbuf[i] != 0x0F))
+    if(key_value == 0x0F)               //判断指令结束标志“确认”
     {
-      if(i == 30)
-        return 0;
+      cmd_flag = 1;
+      i = ls_cnt - 1;
     }
-    else
-    {
-      j = i;
-      break;
-    }  
   }
-  
-  
-  if(cmd_flag)  
+  if(!cmd_flag)
   {
-    switch(lsbuf[0])
+    return 0;
+  }
+  else  
+  {
+    cmd_flag = 0;                //进入指令分析后清除指令标志位
+    //switch(lsbuf[0])
+    if(lsbuf[0] == 0x0C)
     {
-    case 0x0C: 
-      if(lsbuf[j] == 0x0C)
+   // case 0x0C:                   //“储存”指令头；第1个键值为“储存”
+      switch(lsbuf[i - 1])
       {
-        switch(lsbuf[j + 1])
+      case 0x00:               //倒数第2个键值为“0”
+        * ret = 1;                   //*ret = 1 进入延时和退出延时时间设置
+        ls_cnt = 0;
+        return 1;
+        
+      case 0x01:               //倒数第2个键值为“1”
+      case 0x02:               //倒数第2个键值为“2”
+      case 0x03:               //倒数第2个键值为“3”
+      case 0x04:               //倒数第2个键值为“4”
+      case 0x05:               //倒数第2个键值为“5”
+      case 0x06:               //倒数第2个键值为“6”
+      case 0x07:               //倒数第2个键值为“7”
+        * ret = 2;                   //*ret = 2 接警电话号码设置
+        ls_cnt = 0;
+        return 1;
+        
+      case 0x0A:               //倒数第2个键值为“*”
+        * ret = 3;                   //*ret = 3 布防1、布防2防区设置
+        ls_cnt = 0;
+        return 1;
+        
+      case 0x0D:               //倒数第2个键值为“清除”
+        if(lsbuf[1] == 0x00)
         {
-        case 0x00:
-          * ret = 1;                   //*ret = 1 进入延时和退出延时时间设置
+          * ret = 4;                 //*ret = 4,删除已设置进入延时和退出延时时间
           ls_cnt = 0;
           return 1;
+        }
+        else if((lsbuf[1] > 0x00)&&(lsbuf[1] < 0x08))
+        {
+          * ret = 5;                 //*ret = 5,删除已设置的报警电话号码
+          ls_cnt = 0;
+          return 1;
+        }
+        break;
+        /* switch(lsbuf[1])              //switch结构
+        {
+        case 0x00:
+          * ret = 4;                 //*ret = 4,删除已设置进入延时和退出延时时间
+          ls_cnt = 0;
+          return 1;
+          
         case 0x01:
         case 0x02:
         case 0x03:
@@ -165,49 +207,44 @@ static BYTE KeyAnalyze(BYTE ch, BYTE *ret)
         case 0x05:
         case 0x06:
         case 0x07:
-          * ret = 2;                   //*ret = 2 接警电话号码设置
+          * ret = 5;                 //*ret = 5,删除已设置的报警电话号码
           ls_cnt = 0;
           return 1;
-        case 0x0A:
-          * ret = 3;                   //*ret = 3 布防1、布防2防区设置
-          ls_cnt = 0;
-          return 1;
+          
         default:
           break;
-        }
+        }*/
+      default:
+        break;
       }
-      if(lsbuf[j] == 0x0F)            //“确认”键
+    }
+    //  break;
+    //case 0x0E:                   //“对码”指令头；第1个键值为“对码”
+    else if(lsbuf[0] == 0x0E)  
+    {
+      switch(lsbuf[i - 1])
       {
-        switch(lsbuf[j - 1 ])
+      case 0x0D:               //倒数第2个键值为“清除”
+        if(lsbuf[1] == 0x00)
         {
-        case 0x00:
-          * ret = 4;                   //*ret = 4 进入延时和退出延时清除
+          * ret = 6;                 //*ret = 6 遥控器学习码清除
           ls_cnt = 0;
           return 1;
-        case 0x01:
-        case 0x02:
-        case 0x03:
-        case 0x04:
-        case 0x05:
-        case 0x06:
-        case 0x07:
-          * ret = 5;                   //*ret = 5 接警电话号码清除
-          ls_cnt = 0;
-          return 1;
-        default:
-          break;
         }
-      }
-      break;    
-    case 0x0E:
-      if(lsbuf[j] == 0x0D)            //“清除”键
-      {
-        switch(lsbuf[j - 1])
+        else if((lsbuf[1] > 0x00)&&(lsbuf[1] < 0x09))
+        {
+          * ret = 7;                 //*ret = 7 探测器或门磁学习码清除
+          ls_cnt = 0;
+          return 1;
+        }
+        break;
+        /*  switch(lsbuf[1])        ////switch jiegou
         {
         case 0:
-          * ret = 6;                   //*ret = 6 遥控器学习码清除
+          * ret = 6;                 //*ret = 6 遥控器学习码清除
           ls_cnt = 0;
           return 1;
+          
         case 0x01:
         case 0x02:
         case 0x03:
@@ -216,21 +253,35 @@ static BYTE KeyAnalyze(BYTE ch, BYTE *ret)
         case 0x06:
         case 0x07:
         case 0x08:
-          * ret = 7;                   //*ret = 7 探测器或门磁学习码清除
+          * ret = 7;                 //*ret = 7 探测器或门磁学习码清除
           ls_cnt = 0;
           return 1;
+          
         default:
           break;
         }
-      }
-      if(lsbuf[j] == 0x0F)            //“确认”键
-      {
-        switch(lsbuf[j - 1])
+        break;*/
+      case 0x0E:               //倒数第2个键值为“对码”
+        if(lsbuf[1] == 0x00)
+        {
+          * ret = 8;                   //*ret = 8 遥控器对码
+          ls_cnt = 0;
+          return 1;
+        }
+        else if((lsbuf[1] > 0x00)&&(lsbuf[1] < 0x09))
+        {
+          * ret = 9;                   //*ret = 9 探测器或门磁对码
+          ls_cnt = 0;
+          return 1;
+        }
+        break;
+        /*switch(lsbuf[1])            ////switch jiegou
         {
         case 0:
           * ret = 8;                   //*ret = 8 遥控器对码
           ls_cnt = 0;
           return 1;
+         
         case 0x01:
         case 0x02:
         case 0x03:
@@ -242,16 +293,20 @@ static BYTE KeyAnalyze(BYTE ch, BYTE *ret)
           * ret = 9;                   //*ret = 9 探测器或门磁对码
           ls_cnt = 0;
           return 1;
+         
         default:
           break;
         }
+        break;*/
+      default:
+        break;
       }
-      break;
-    default:
-      return 0;
+      //break;
+    //default:
+     // return 0;
     }  
-  }
   return 0;
+  }
 }
 //////////////////////////////////////////////////////////////////////////
 ///
@@ -260,12 +315,34 @@ static BYTE KeyAnalyze(BYTE ch, BYTE *ret)
 ///     @return 无
 ///     @author     xuliang<gxuliang@gmail.com>
 ///     @date       2010-08-24
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 static void KeyCmdDone(BYTE type)
 {
-  
+  switch(type)
+  {
+  case 1: //延时时间设置
+    break;
+  case 2:   //报警电话号码设置
+    break;
+  case 3:  //防区设置
+    break;
+  case 4:  //延时时间清除
+    break;
+  case 5:   //报警电话号码清除
+    break;
+  case 6: //遥控器学习码清除
+    break;
+  case 7: //探测器和门磁学习码清除
+    break;
+  case 8: //遥控器对码
+    break;
+  case 9:    //探测器和门磁对码
+    break;
+  default:
+    break;
+  }
 }
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 ///
 ///     KeyProcess
 ///     @param 无

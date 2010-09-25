@@ -22,7 +22,7 @@
 //! type redefinition 
 typedef unsigned char           BYTE;
 typedef unsigned short          WORD;
-typedef signed long              int32;
+typedef signed long             int32;
 typedef unsigned long           DWORD;
 
 typedef signed char             int8;
