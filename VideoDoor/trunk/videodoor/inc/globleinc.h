@@ -4,7 +4,7 @@
 //  Copyright (c)1992-2007, ZheJiang XXX Technology Stock CO.LTD.
 //  All Rights Reserved.
 //
-//	Description:	
+//	Description:
 //	Revisions:		Year-Month-Day  SVN-Author  Modification
 //
 
@@ -44,7 +44,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <assert.h>
-#include <termios.h> 
+#include <termios.h>
 #include <dirent.h>
 #include <crypt.h>
 #include <limits.h>
@@ -55,7 +55,10 @@
 /*! linux kernel supported interfaces */
 #include <linux/hdreg.h>
 
-// for thread safe 
+
+#include <stdbool.h>
+
+// for thread safe
 #define TS_LOCK(lock)	pthread_cleanup_push((void(*)(void*))pthread_mutex_unlock, (void*)lock );	pthread_mutex_lock( lock )
 
 #define TS_UNLOCK(lock)	pthread_cleanup_pop( 1 )

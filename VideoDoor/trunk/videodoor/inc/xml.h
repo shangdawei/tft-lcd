@@ -4,7 +4,7 @@
 //  Copyright (c)1992-2007, ZheJiang XXX Technology Stock CO.LTD.
 //  All Rights Reserved.
 //
-//	Description:	
+//	Description:
 //	Revisions:		Year-Month-Day  SVN-Author  Modification
 //
 
@@ -34,7 +34,7 @@ int update_xml_net(CONFIG_NET* config);
 //////////////////////////////////////////////////////////////////////////
 ///
 ///     conf_makedefault
-///     @param *file_name 
+///     @param *file_name
 ///     @return int 1
 ///     @author     xuliang<gxuliang@gmail.com>
 ///     @date       2010-09-16

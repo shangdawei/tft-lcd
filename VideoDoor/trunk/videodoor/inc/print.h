@@ -4,7 +4,7 @@
 //  Copyright (c)1992-2007, ZheJiang XXX Technology Stock CO.LTD.
 //  All Rights Reserved.
 //
-//	Description:	
+//	Description:
 //	Revisions:		Year-Month-Day  SVN-Author  Modification
 //
 
@@ -31,8 +31,8 @@ int logFatal(const char* fmt, ...);
 #	define errorf(format, ...) logError(format, ## __VA_ARGS__)
 #	define fatalf(format, ...) logFatal(format, ## __VA_ARGS__)
 #else
-#	define tracef(format, ...) 
-#	define debugf(format, ...) 
+#	define tracef(format, ...)
+#	define debugf(format, ...)
 #	define infof(format, ...) logInfo(format, ## __VA_ARGS__)
 #	define warnf(format, ...) logWarn(format, ## __VA_ARGS__)
 #	define errorf(format, ...) logError(format, ## __VA_ARGS__)
@@ -61,7 +61,7 @@ int logFatal(const char* fmt, ...);
 
 typedef enum tagLOG_Lv
 {
-    LNULL,    
+    LNULL,
     TRACE,
     DBG,
     INFO,
@@ -69,7 +69,7 @@ typedef enum tagLOG_Lv
     ERROR,
     FATAL,
 
-}LOG_Lv;
+} LOG_Lv;
 
 //////////////////////////////////////////////////////////////////////////
 ///

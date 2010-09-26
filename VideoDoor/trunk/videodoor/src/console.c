@@ -27,12 +27,11 @@ static void console_parse(char ch);
 
 void console_help();
 void console_system_cmd();
-void console_exit_cmd();
 
-PAR_TAB ParseTable[] = {
-    { LVL_USR, "help",    console_help,     "Show System Command Supported"},
-	{ LVL_USR, "!",       console_system_cmd,"Execute Linux System Command"},
-	{ LVL_USR, "exit",    console_exit_cmd,"Teletn Logout"},
+PAR_TAB ParseTable[] =
+{
+    { LVL_USR, "help",    console_help,     "Show System Command Supported",},
+    { LVL_USR, "!",       console_system_cmd, "Execute Linux System Command",},
 
 };
 
@@ -55,7 +54,7 @@ static void console_proc()
     int max_fd;
     struct timeval tv;
 
-    sys_print(FUNC, INFO,"console_procp start = %d\n", getpid());
+    sys_print(FUNC, INFO, "console_procp start = %d\n", getpid());
 #ifdef _CONSOLE
     console_fd = open(DEV_COM, O_RDONLY);
 
@@ -96,7 +95,7 @@ static void console_proc()
              sizeof(struct sockaddr)) == -1)
     {
         sys_print(FUNC, ERROR, "console_tcp_start bind() error!\n");
-		close(sock_listen);
+        close(sock_listen);
         return;
     }
 
@@ -186,349 +185,407 @@ static void console_proc()
 
 int console_read(int fd)
 {
-	char buf[16];
-	BYTE nread;
-	BYTE i;
-	unsigned char ch = 0;
+    char buf[16];
+    BYTE nread;
+    BYTE i;
+    unsigned char ch = 0;
 
-	nread = read(fd, buf, sizeof(buf));
-	if(nread > 0)
-	{
-		FOR(i, nread)
-		{
-			if( (buf[i] == ASCII_CR) && (ch == ASCII_LF))
-				continue;
-			console_parse(buf[i]);
-			ch = buf[i];
-		}
-		console.idletime = 0;
-	}
-	else
-	{
-		if(sock_console != -1)
-		{
-			close(sock_console);
-			console_recover();
-		}
-	}
+    nread = read(fd, buf, sizeof(buf));
+
+    if (nread > 0)
+    {
+        FOR(i, nread)
+        {
+            if ( (buf[i] == ASCII_CR) && (ch == ASCII_LF))
+                continue;
+
+            console_parse(buf[i]);
+            ch = buf[i];
+        }
+        console.idletime = 0;
+    }
+    else
+    {
+        if (sock_console != -1)
+        {
+            close(sock_console);
+            console_recover();
+        }
+    }
 }
 
 void console_recover()
 {
 
-	if(sock_console != -1)
-	{
-		fflush(stdin);
-		fflush(stdout);
-		fflush(stderr);
-		close(sock_console);
-		if(s_err != -1)
-		{
-			dup2(s_out, STDOUT_FILENO);
-			dup2(s_err, STDERR_FILENO);
-		}
-	}
-	if(console.status != CON_OFF && console.status != CON_USRNAME)
-	{
-		printf("\nUsr Exit!");
-		printf("\f\nUSERNAME:");
-	}
-	console.rxlen = 0;
-	console.status = CON_USRNAME;
-	sock_console = -1;
-	console.idletime = 0;
+    if (sock_console != -1)
+    {
+        fflush(stdin);
+        fflush(stdout);
+        fflush(stderr);
+        close(sock_console);
+
+        if (s_err != -1)
+        {
+            dup2(s_out, STDOUT_FILENO);
+            dup2(s_err, STDERR_FILENO);
+        }
+    }
+
+    if (console.status != CON_OFF && console.status != CON_USRNAME)
+    {
+        printf("\nUsr Exit!");
+        printf("\f\nUSERNAME:");
+    }
+
+    console.rxlen = 0;
+    console.status = CON_USRNAME;
+    sock_console = -1;
+    console.idletime = 0;
 }
 
 void console_echo_enable(BOOL flag)
 {
-	if(console_fd < 0)
-	{
-		return;
-	}
-	if(flag)
-	{
-		orig_termios.c_lflag |= (ECHO | ECHOE | ECHOK | ECHONL);
-	}
-	else
-	{
-		orig_termios.c_lflag &= ~(ECHO | ECHOE | ECHOK | ECHONL);
-	}
-	if(tcsetattr(console_fd, TCSANOW, &orig_termios) < 0)
-	{
-		perror("tcsetattr"); 
-	} 
-	return;
+    if (console_fd < 0)
+    {
+        return;
+    }
+
+    if (flag)
+    {
+        orig_termios.c_lflag |= (ECHO | ECHOE | ECHOK | ECHONL);
+    }
+    else
+    {
+        orig_termios.c_lflag &= ~(ECHO | ECHOE | ECHOK | ECHONL);
+    }
+
+    if (tcsetattr(console_fd, TCSANOW, &orig_termios) < 0)
+    {
+        perror("tcsetattr");
+    }
+
+    return;
 }
 
 
 void console_echo(char ch)
 {
-	if(sock_console != -1)
-	{
-		printf("%c",ch);
-	}
-	return;
+    if (sock_console != -1)
+    {
+        printf("%c", ch);
+    }
+
+    return;
 }
 
 
 void console_system_cmd()
 {
-	char cmdbuf[RXBUF_SZ];
-	strcpy(cmdbuf, &console.rxbuf[1]);
-	system(cmdbuf);
-	return;
+    char cmdbuf[RXBUF_SZ];
+    strcpy(cmdbuf, &console.rxbuf[1]);
+    system(cmdbuf);
+    return;
 }
 
-void console_exit_cmd()
-{
-	console_recover();
-
-}
 void console_cmd_parse()
 {
-	int i, j, k;
+    int i, j, k;
 
-	console.params = 0;
-	i = -1;
-	j = 0;
-	k = 0;
-	while (console.rxbuf[k]) {
-		if (k >= RXBUF_SZ)
-			break;
-		if (console.rxbuf[k] == ' ' || console.rxbuf[k] == ASCII_TAB) {
-			if (i >= 0 && j > 0)
-				console.partab[i][j] = '\0';
-			j = 0;
-			k ++;
-			continue;
-		}
-		if (j == 0) {
-			if (++i >= 8) break;
-			console.params = i;
-		}
-		console.partab[i][j++] = console.rxbuf[k];
-		if (j >= 32) {
-			while (console.rxbuf[k]) {
-				if (k >= RXBUF_SZ)
-					break;
-				if (console.rxbuf[k] == ' ') break;
-				k ++;
-			}
-		}
-		k ++;
-	}
-	if(j > 0)
-	{
-		console.partab[i][j] = '\0';
-	}
+    console.params = 0;
+    i = -1;
+    j = 0;
+    k = 0;
 
-	if(console.partab[0][0] == '!')
-	{
-		console_system_cmd();
-		return;
-	}
-	FOR (i, PARTAB_SZ)
-	{
-		if (strlen(console.partab[0]) < 3) {
-			printf("[%s]: No this command, please type 'help' for details.\n", console.partab[0]);
-			return;
-		}
-		if (strncmp(console.partab[0], ParseTable[i].ParseStr, strlen(console.partab[0])) == 0)
-			break;
-	}
-	if (i >= PARTAB_SZ) {
-		printf("[%s]: No this command, please type 'help' for details.\n", console.partab[0]);
-		return;
-	}
-	ParseTable[i].ParseProc();
-	return;
+    while (console.rxbuf[k])
+    {
+        if (k >= RXBUF_SZ)
+            break;
+
+        if (console.rxbuf[k] == ' ' || console.rxbuf[k] == ASCII_TAB)
+        {
+            if (i >= 0 && j > 0)
+                console.partab[i][j] = '\0';
+
+            j = 0;
+            k ++;
+            continue;
+        }
+
+        if (j == 0)
+        {
+            if (++i >= 8) break;
+
+            console.params = i;
+        }
+
+        console.partab[i][j++] = console.rxbuf[k];
+
+        if (j >= 32)
+        {
+            while (console.rxbuf[k])
+            {
+                if (k >= RXBUF_SZ)
+                    break;
+
+                if (console.rxbuf[k] == ' ') break;
+
+                k ++;
+            }
+        }
+
+        k ++;
+    }
+
+    if (j > 0)
+    {
+        console.partab[i][j] = '\0';
+    }
+
+    if (console.partab[0][0] == '!')
+    {
+        console_system_cmd();
+        return;
+    }
+
+    FOR (i, PARTAB_SZ)
+    {
+        if (strlen(console.partab[0]) < 3)
+        {
+            printf("[%s]: No this command, please type 'help' for details.\n", console.partab[0]);
+            return;
+        }
+
+        if (strncmp(console.partab[0], ParseTable[i].ParseStr, strlen(console.partab[0])) == 0)
+            break;
+    }
+
+    if (i >= PARTAB_SZ)
+    {
+        printf("[%s]: No this command, please type 'help' for details.\n", console.partab[0]);
+        return;
+    }
+
+    ParseTable[i].ParseProc();
+    return;
 }
 
 
 
 void console_line_cmd(char ch)
 {
-	switch (ch) {
-	case ASCII_CR:
-	case ASCII_LF:
-		if (console.rxlen == 0) {
-			console_echo('\n');
-			printf("DEBUG>");
-		} else {
-			console.rxbuf[console.rxlen ++] = '\0';
-			console_cmd_parse();
-			console.rxlen = 0;
-			if (console.status == CON_LINE)
-			{
-				printf("\nDEBUG>");
-			}
-		}
-		break;
-	case ASCII_BACK:
-		if (console.rxlen > 0) {
-			console.rxlen --;
-			printf("\b \b");
-		}
-		break;
-	default:
-		//console.rxbuf[console.rxlen++] = tolower(ch);
-		console.rxbuf[console.rxlen++] = ch;
-		if (console.rxlen >= (RXBUF_SZ - 2))
-			console.rxlen = 0;
-		console_echo(ch);
-		break;
-	}
+    switch (ch)
+    {
+    case ASCII_CR:
+    case ASCII_LF:
+
+        if (console.rxlen == 0)
+        {
+            console_echo('\n');
+            printf("DEBUG>");
+        }
+        else
+        {
+            console.rxbuf[console.rxlen ++] = '\0';
+            console_cmd_parse();
+            console.rxlen = 0;
+
+            if (console.status == CON_LINE)
+            {
+                printf("\nDEBUG>");
+            }
+        }
+
+        break;
+    case ASCII_BACK:
+
+        if (console.rxlen > 0)
+        {
+            console.rxlen --;
+            printf("\b \b");
+        }
+
+        break;
+    default:
+        //console.rxbuf[console.rxlen++] = tolower(ch);
+        console.rxbuf[console.rxlen++] = ch;
+
+        if (console.rxlen >= (RXBUF_SZ - 2))
+            console.rxlen = 0;
+
+        console_echo(ch);
+        break;
+    }
 }
 
 
 
 static void console_parse(char ch)
 {
-	char *psw;
-	int i;
-	char status = 0;
-	static BYTE usrname[NAME_LEN];
-	USR_INFO *usr_info = NULL;
+    char *psw;
+    int i;
+    char status = 0;
+    static BYTE usrname[NAME_LEN];
+    USR_INFO *usr_info = NULL;
 
-	switch (console.status)
-	{
-	case CON_OFF:
-		printf("\f\nUSERNAME:");
-		console.status = CON_USRNAME;
-		console.rxlen = 0;
-		break;
-	case CON_USRNAME:
-		switch (ch) {
-		case ASCII_CR:
-		case ASCII_LF:
-			if(console.rxlen == 0)
-			{
-				printf("\f\nUSERNAME:");
-				console.status = CON_USRNAME;
-				break;
-			}
-			console.rxbuf[console.rxlen++] = '\0';
-			strncpy(usrname, console.rxbuf, NAME_LEN);
-			if(strcmp(console.rxbuf, "superits") == 0)
-			{
-				console.rxlen = 0;
-				console.status = CON_LINE;
-				console.right = S_ADMIN;
-				console.uid = 0;
-				memcpy(console.name, console.rxbuf, NAME_LEN);
-				printf("\f\n");
-				printf("\nDEBUG>");
-				break;
-			}
-			else
-			{
-				psw = console.rxbuf;
-/*
-				if(sock_console == -1)
-				{
-					psw = getpass("PASSWORD:");
-					if(user_login(usrname, psw) == S_ACTIVE)
-					{
-						usr_info = user_info_get(usrname);
-						if(usr_info == NULL)
-						{
-							printf("System Error!User Not Exist\n");
-						}
-						else
-						{
-							console.rxlen = 0;
-							console.uid = usr_info->usr_id;
-							console.right = usr_info->usr_auth;
-							console.status = CON_LINE;
-							memcpy(console.name, usrname, NAME_LEN);
-							printf("\f\n");
-							printf("\nDEBUG>");
-							break;
-						}
-					}
-					printf("\nLOGIN FAILURE!");
-					printf("\nUSERNAME:");
-					console.rxlen = 0;
-					console.status = CON_USRNAME;
-				}
-				else
-*/
-				{
-					printf("\nPASSWORD:");
-					console.rxlen = 0;
-					console.status = CON_PASSWD;
-					console_echo_enable(FALSE);
-				}
-			}
-			break;
-		case ASCII_BACK:
-			if (console.rxlen > 0) {
-				console.rxlen --;
-				printf("\b \b");
-			}
-			break;
-		default:
-			console.rxbuf[console.rxlen++] = ch;
-			if (console.rxlen > (RXBUF_SZ - 8))
-				console.rxlen = 0;
-			console_echo(ch);
-			break;
-		}
-		break;
-	case CON_PASSWD:
-/*
-		if(sock_console == -1)
-		{
-			console.rxlen = 0;
-			console.status = CON_USRNAME;
-			break;
-		}
-*/
-		switch (ch) {
-		case ASCII_CR:
-		case ASCII_LF:
-			console.rxbuf[console.rxlen++] = '\0';
-			psw = console.rxbuf;
-			console_echo_enable(TRUE);
+    switch (console.status)
+    {
+    case CON_OFF:
+        printf("\f\nUSERNAME:");
+        console.status = CON_USRNAME;
+        console.rxlen = 0;
+        break;
+    case CON_USRNAME:
+
+        switch (ch)
+        {
+        case ASCII_CR:
+        case ASCII_LF:
+
+            if (console.rxlen == 0)
+            {
+                printf("\f\nUSERNAME:");
+                console.status = CON_USRNAME;
+                break;
+            }
+
+            console.rxbuf[console.rxlen++] = '\0';
+            strncpy(usrname, console.rxbuf, NAME_LEN);
+
+            if (strcmp(console.rxbuf, "superits") == 0)
+            {
+                console.rxlen = 0;
+                console.status = CON_LINE;
+                console.right = S_ADMIN;
+                console.uid = 0;
+                memcpy(console.name, console.rxbuf, NAME_LEN);
+                printf("\f\n");
+                printf("\nDEBUG>");
+                break;
+            }
+            else
+            {
+                psw = console.rxbuf;
+                /*
+                				if(sock_console == -1)
+                				{
+                					psw = getpass("PASSWORD:");
+                					if(user_login(usrname, psw) == S_ACTIVE)
+                					{
+                						usr_info = user_info_get(usrname);
+                						if(usr_info == NULL)
+                						{
+                							printf("System Error!User Not Exist\n");
+                						}
+                						else
+                						{
+                							console.rxlen = 0;
+                							console.uid = usr_info->usr_id;
+                							console.right = usr_info->usr_auth;
+                							console.status = CON_LINE;
+                							memcpy(console.name, usrname, NAME_LEN);
+                							printf("\f\n");
+                							printf("\nDEBUG>");
+                							break;
+                						}
+                					}
+                					printf("\nLOGIN FAILURE!");
+                					printf("\nUSERNAME:");
+                					console.rxlen = 0;
+                					console.status = CON_USRNAME;
+                				}
+                				else
+                */
+                {
+                    printf("\nPASSWORD:");
+                    console.rxlen = 0;
+                    console.status = CON_PASSWD;
+                    console_echo_enable(FALSE);
+                }
+            }
+
+            break;
+        case ASCII_BACK:
+
+            if (console.rxlen > 0)
+            {
+                console.rxlen --;
+                printf("\b \b");
+            }
+
+            break;
+        default:
+            console.rxbuf[console.rxlen++] = ch;
+
+            if (console.rxlen > (RXBUF_SZ - 8))
+                console.rxlen = 0;
+
+            console_echo(ch);
+            break;
+        }
+
+        break;
+    case CON_PASSWD:
+
+        /*
+        		if(sock_console == -1)
+        		{
+        			console.rxlen = 0;
+        			console.status = CON_USRNAME;
+        			break;
+        		}
+        */
+        switch (ch)
+        {
+        case ASCII_CR:
+        case ASCII_LF:
+            console.rxbuf[console.rxlen++] = '\0';
+            psw = console.rxbuf;
+            console_echo_enable(TRUE);
             /*
-			if(user_login(usrname, psw) == S_ACTIVE)
-			{
-				usr_info = user_info_get(usrname);
-				if(usr_info != NULL)
-				{
-					console.rxlen = 0;
-					console.uid = usr_info->usr_id;
-					console.right = usr_info->usr_auth;
-					console.status = CON_LINE;
-					memcpy(console.name, usrname, NAME_LEN);
-					printf("\f\n");
-					printf("\nDEBUG>");
-					break;
-				}
-			}*/
-			printf("\nLOGIN FAILURE!");
-			printf("\nUSERNAME:");
-			console.rxlen = 0;
-			console.status = CON_USRNAME;
-			break;
-		case ASCII_BACK:
-			if (console.rxlen > 0) {
-				console.rxlen --;
-				printf("\b \b");
-			}
-			break;
-		default:
-			console.rxbuf[console.rxlen++] = ch;
-			if (console.rxlen > (RXBUF_SZ - 8))
-				console.rxlen = 0;
-			printf("*");
-			break;
-		}
-		break;
-	case CON_LINE:
-		console_line_cmd(ch);
-		break;
-	}
+            if(user_login(usrname, psw) == S_ACTIVE)
+            {
+            	usr_info = user_info_get(usrname);
+            	if(usr_info != NULL)
+            	{
+            		console.rxlen = 0;
+            		console.uid = usr_info->usr_id;
+            		console.right = usr_info->usr_auth;
+            		console.status = CON_LINE;
+            		memcpy(console.name, usrname, NAME_LEN);
+            		printf("\f\n");
+            		printf("\nDEBUG>");
+            		break;
+            	}
+            }*/
+            printf("\nLOGIN FAILURE!");
+            printf("\nUSERNAME:");
+            console.rxlen = 0;
+            console.status = CON_USRNAME;
+            break;
+        case ASCII_BACK:
+
+            if (console.rxlen > 0)
+            {
+                console.rxlen --;
+                printf("\b \b");
+            }
+
+            break;
+        default:
+            console.rxbuf[console.rxlen++] = ch;
+
+            if (console.rxlen > (RXBUF_SZ - 8))
+                console.rxlen = 0;
+
+            printf("*");
+            break;
+        }
+
+        break;
+    case CON_LINE:
+        console_line_cmd(ch);
+        break;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -549,16 +606,16 @@ void console_init(void)
 
 void console_help()
 {
-	BYTE i;
+    BYTE i;
 
-	printf("\n");
-	printf("		+---------+-------------------------------------------------------+\n");
-	printf("		| Command | Description                                           |\n");
-	printf("		+---------+-------------------------------------------------------+\n");
-	FOR (i, PARTAB_SZ)
-	{
-		printf("		|%-8s | %-54s|\n", ParseTable[i].ParseStr, ParseTable[i].HelpMsg);
-		printf("		+---------+-------------------------------------------------------+\n");
-	}
+    printf("\n");
+    printf("		+---------+-------------------------------------------------------+\n");
+    printf("		| Command | Description                                           |\n");
+    printf("		+---------+-------------------------------------------------------+\n");
+    FOR (i, PARTAB_SZ)
+    {
+        printf("		|%-8s | %-54s|\n", ParseTable[i].ParseStr, ParseTable[i].HelpMsg);
+        printf("		+---------+-------------------------------------------------------+\n");
+    }
 }
 

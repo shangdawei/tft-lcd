@@ -4,7 +4,7 @@
 //  Copyright (c)1992-2007, ZheJiang XXX Technology Stock CO.LTD.
 //  All Rights Reserved.
 //
-//	Description:	
+//	Description:
 //	Revisions:		Year-Month-Day  SVN-Author  Modification
 //
 
