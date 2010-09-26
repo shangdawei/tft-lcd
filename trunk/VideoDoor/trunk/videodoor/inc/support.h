@@ -4,14 +4,14 @@
 //  Copyright (c)1992-2007, ZheJiang XXX Technology Stock CO.LTD.
 //  All Rights Reserved.
 //
-//	Description:	
+//	Description:
 //	Revisions:		Year-Month-Day  SVN-Author  Modification
 //
 
 #ifndef _SUPPORT_H
 #define _SUPPORT_H
 
-//! type redefinition 
+//! type redefinition
 typedef unsigned char           BYTE;
 typedef unsigned short          WORD;
 typedef signed int              LONG;

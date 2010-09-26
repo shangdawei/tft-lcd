@@ -15,12 +15,21 @@
 #include "support.h"
 #include "timer.h"
 
+#define  LOG_FILE   "videodoor.log"
+
 typedef struct  tagLOG
 {
     DHTIME mTime;
-    char   mMsg[256]; 
-}LOG;
+    char   user[32];
+    char   mMsg[256];
+} LOG;
 
+bool initLog(const char *path);
+bool writeLog(char* format, ...);
+int selectLog(DHTIME start, DHTIME end);
+bool deleteLog(DHTIME start, DHTIME end);
+LOG *getLog(int num);
+bool stopSelectLog(void);
 
 #endif
 

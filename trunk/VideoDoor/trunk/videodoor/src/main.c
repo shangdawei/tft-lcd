@@ -11,6 +11,8 @@
 #include "globleinc.h"
 #include "print.h"
 #include "config.h"
+#include "iccard.h"
+#include "dsp.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -26,7 +28,19 @@ int main(int argc, char* argv[])
     config_init();
     console_init();
 
-    while(1)
+    ///门口机
+    if (g_conf_info.con_sys.type == OUT_TP)
+    {
+        icCardInit();
+        dspEncInit();
+    }
+    ///室内机
+    else
+    {
+
+    }
+
+    while (1)
     {
         sleep(10);
     }

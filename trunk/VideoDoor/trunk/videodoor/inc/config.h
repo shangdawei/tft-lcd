@@ -19,7 +19,16 @@ typedef enum    tagCONF_TYPE
 {
     TYPE_SYS   = 1,
     TYPE_NET,
-}CONF_TYPE;
+
+    TYPE_ALL,
+} CONF_TYPE;
+
+
+typedef enum    tagDEV_TYPE
+{
+    OUT_TP = 1,
+    IN_TP,
+} DEV_TYPE;
 
 typedef	struct	tagCONFIG_SYS
 {
@@ -35,8 +44,10 @@ typedef	struct	tagCONFIG_NET
 {
     DWORD       ip_addr;
     DWORD       netmask;
-    DWORD       gateway;
-    DWORD       dns[2];	 
+    DWORD       gateway;
+
+
+    DWORD       dns[2];
     DWORD       cen_svr;//中心服务器地址
     WORD        cen_svr_port;//中心服务器地址端口
     BYTE        mac[6];
@@ -56,8 +67,9 @@ typedef union tagCONF_UNION
 } CONF_UNION;
 
 /////////////////////////////////////////////////
-
+extern CONF_DATA   g_conf_info;
 void config_init(void);
+int sys_config_load(CONF_TYPE load_type);
 
 #endif
 
