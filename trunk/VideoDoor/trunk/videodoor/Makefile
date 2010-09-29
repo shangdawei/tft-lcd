@@ -8,7 +8,7 @@
 #	Revisions:		Year-Month-Day  SVN-Author  Modification
 #
 
-#CROSS = arm-uclibc-linux-
+CROSS = arm-uclibc-linux-
 CC = $(CROSS)gcc
 CPP = g++
 
@@ -36,15 +36,18 @@ OBJS	=	$(OBJ)main.o		\
 			$(OBJ)iccard.o		\
 			$(OBJ)dsp.o			\
 			$(OBJ)database.o	\
-			$(OBJ)dblog.o			\
+			$(OBJ)dblog.o		\
+			$(OBJ)net.o			\
+			$(OBJ)indoor.o		\
+			$(OBJ)outdoor.o		\
 
 
 $(OBJ)%.o: $(SRC)%.c $(INC)*.h
-	$(CC) -I$(INC) $(DEBUG) -g  -O0 -c -o  $(OBJ)$*.o $< 
+	$(CC) -Wall -I$(INC) $(DEBUG) -g  -O0 -c -o  $(OBJ)$*.o $< 
 default: $(OBJS) #$(INC)*.h
 ifeq ($(CROSS), arm-uclibc-linux-)
 #	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) -L$(LIB) -lxml2 -liconv -lpthread -lcrypt -lm 
-	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) $(LIB)libxml2.a $(LIB)libiconv.a $(LIB)libsqlite3.a -lpthread -lcrypt -lm -static
+	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) $(LIB)libxml2.a $(LIB)libiconv.a $(LIB)libsqlite3.a $(LIB)libhienc.a $(LIB)libhiapi.a -lpthread -lcrypt -lm -static
 else
 	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) -lpthread -lcrypt -liconv -lxml2 -lm $(LIB)libsqlite3_pc.a
 endif

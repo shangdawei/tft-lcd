@@ -72,3 +72,15 @@ BYTE* sys_ip2str_static(DWORD ip)
     return str;
 }
 
+
+UQWORD system_mscount_get(void)
+{
+    struct timeval		tv;
+    struct timezone	tz;
+    UQWORD  mscnt = 0;
+
+    gettimeofday(&tv, &tz);
+    mscnt = (tv.tv_sec * CLOCKS_PER_MSEC) + (tv.tv_usec / CLOCKS_PER_MSEC);
+    return mscnt;
+}
+

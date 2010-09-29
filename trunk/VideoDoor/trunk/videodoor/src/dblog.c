@@ -124,7 +124,7 @@ int QueryDBLog(LOG_QUERY *query)
 
         if (query->Istime == true)
         {
-            snprintf(pcondition[i], MAX_CODLENFTH, "mTime > %d AND mTime < %d", query->start_time, query->end_time);
+            snprintf(pcondition[i], MAX_CODLENFTH, "mTime > %d AND mTime < %d", *(DWORD*)&(query->start_time), *(DWORD*)&(query->end_time));
             i++;
         }
 
@@ -184,7 +184,7 @@ bool DeleteDBLog(LOG_QUERY *deletec)
 
         if (deletec->Istime == true)
         {
-            snprintf(pcondition[i], MAX_CODLENFTH, "mTime > =%d AND mTime =< %d", deletec->start_time, deletec->end_time);
+            snprintf(pcondition[i], MAX_CODLENFTH, "mTime > =%d AND mTime =< %d", *(DWORD*)&(deletec->start_time), *(DWORD*)&(deletec->end_time));
             i++;
         }
 

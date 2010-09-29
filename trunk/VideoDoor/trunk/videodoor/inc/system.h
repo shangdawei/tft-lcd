@@ -28,6 +28,7 @@ enum COMPARE_RET
 DWORD sys_str2ip(BYTE *str);
 void sys_ip2str(DWORD ip, BYTE *str);
 BYTE* sys_ip2str_static(DWORD ip);
+UQWORD system_mscount_get(void);
 
 
 #endif

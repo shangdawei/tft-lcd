@@ -11,11 +11,13 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xpath.h>
+#include <math.h>
 #include "iconv.h"
 
 #include "xml.h"
 #include "config.h"
 #include "print.h"
+#include "system.h"
 //////////////////////////////////////////////////////////////////////////
 ///
 ///     xml_open
@@ -101,9 +103,9 @@ xmlXPathObjectPtr get_nodeset(xmlDocPtr doc, const xmlChar *xpath)
 //////////////////////////////////////////////////////////////////////////
 xmlXPathObjectPtr find_node(xmlDocPtr doc, xmlChar *xpath)
 {
-    xmlNodePtr cur;
+ //   xmlNodePtr cur;
 
-    xmlChar *value;
+ //   xmlChar *value;
 
 
     xmlXPathObjectPtr app_result = get_nodeset(doc, xpath);
@@ -219,7 +221,7 @@ int get_xml_str(xmlXPathObjectPtr app_result, const xmlChar * key, BYTE *strdst,
 {
     xmlChar *value;
     xmlNodePtr cur;
-    int i, val = -1;
+    int i;
     xmlNodeSetPtr nodeset ;
 
     if (strdst == NULL || len <= 0)
@@ -522,7 +524,7 @@ int get_xml_sys(CONFIG_SYS* config)
 {
     xmlXPathObjectPtr app_result ;
     xmlDocPtr doc;
-    char lsbuf[512] = "", buf[512] = "";
+    char lsbuf[512] = "";
 
     doc = xml_open(CFG_FILE);
     app_result = find_node(doc, XML_SYS);
@@ -545,6 +547,8 @@ int get_xml_sys(CONFIG_SYS* config)
 
     close_node(app_result);
     xml_close(doc);
+
+    return 1;
 }
 //////////////////////////////////////////////////////////////////////////
 ///
@@ -557,7 +561,7 @@ int get_xml_net(CONFIG_NET* config)
 {
     xmlXPathObjectPtr app_result ;
     xmlDocPtr doc;
-    char lsbuf[512] = "", buf[512] = "";
+    char lsbuf[512] = "";
 
     doc = xml_open(CFG_FILE);
     app_result = find_node(doc, XML_NET);
@@ -599,6 +603,8 @@ int get_xml_net(CONFIG_NET* config)
 
     close_node(app_result);
     xml_close(doc);
+
+    return 1;
 }
 //////////////////////////////////////////////////////////////////////////
 ///
@@ -651,7 +657,6 @@ int update_xml_net(CONFIG_NET* config)
 {
     xmlXPathObjectPtr app_result ;
     xmlDocPtr doc;
-    char lsbuf[512] = "";
 
     if (config == NULL)
         return FALSE;
