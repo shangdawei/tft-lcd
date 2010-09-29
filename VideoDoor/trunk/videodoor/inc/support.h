@@ -33,6 +33,17 @@ typedef unsigned int u32;
 #define TRUE    1
 #define FALSE   0
 
+#define ON              1
+#define OFF             0
+
+#define SUCCESS         0
+#define FAILURE        -1
+
+#ifndef CLOCKS_PER_MSEC
+#define CLOCKS_PER_MSEC 	1000
+#endif
+
+
 #define FUNC    (char*)__FUNCTION__
 
 #define FOR(i, max)         for (i = 0; i < (max); i++)

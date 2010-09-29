@@ -52,8 +52,8 @@ TABLE_NAME* AddTable(const char* tablename)
         memset(ptable_name, 0, sizeof(TABLE_NAME));
         strncpy(ptable_name->tablename, tablename, MAX_TABLENAMELENGTH);
         ptable_name->nextpname = NULL;
-        ptable_name->querydegree - 1;
-        return ptable_name;
+        ptable_name->querydegree = - 1;
+	    return ptable_name;
     }
     else
     {
@@ -171,7 +171,6 @@ int Query_Count(const char *cmd)
 bool Query_Result(const char *cmd, QUERY_RESULT* result)
 {
     int ret = 0;
-    int count = 0;
     char *errMsg = NULL;
 
     if (NULL == p_sqlitedb)
@@ -397,7 +396,7 @@ bool AddInfo(const char* tablename, void *info)
             sprintf(tmp, "%llu", *(unsigned long long *)(pdata + (ptmp->arg_offset)));
             break;
         case TYPE_DOUBLE:
-            sprintf(tmp, "%d", *(double *)(pdata + (ptmp->arg_offset)));
+            sprintf(tmp, "%f", *(double *)(pdata + (ptmp->arg_offset)));
             break;
         case TYPE_STRING:
             sprintf(tmp, "'%s'", (char *)(pdata + (ptmp->arg_offset)));

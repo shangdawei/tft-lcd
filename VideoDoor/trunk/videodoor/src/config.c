@@ -10,6 +10,7 @@
 
 #include "config.h"
 #include "xml.h"
+#include "file.h"
 
 
 /* global config var */
@@ -48,6 +49,8 @@ int sys_config_load(CONF_TYPE load_type)
     default:
         break;
     }
+
+    return 1;
 }
 
 

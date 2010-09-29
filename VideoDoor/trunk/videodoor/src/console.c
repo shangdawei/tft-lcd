@@ -10,6 +10,8 @@
 
 #include "console.h"
 #include "print.h"
+#include "system.h"
+#include "trd.h"
 
 #define PARTAB_SZ		(sizeof(ParseTable) / sizeof(PAR_TAB))
 
@@ -27,6 +29,7 @@ static void console_parse(char ch);
 
 void console_help();
 void console_system_cmd();
+int console_read(int fd);
 
 PAR_TAB ParseTable[] =
 {
@@ -153,7 +156,7 @@ static void console_proc()
                 continue;
             }
 
-            sys_ip2str(cliaddr.sin_addr.s_addr, address);
+            sys_ip2str((DWORD)cliaddr.sin_addr.s_addr, (BYTE*)address);
             sys_print(FUNC, INFO, "Remote Console Connected From[%s]\n", address);
             dup2(sock_console, STDOUT_FILENO);
             dup2(sock_console, STDERR_FILENO);
@@ -212,6 +215,8 @@ int console_read(int fd)
             console_recover();
         }
     }
+
+    return 1;
 }
 
 void console_recover()
@@ -422,10 +427,10 @@ void console_line_cmd(char ch)
 static void console_parse(char ch)
 {
     char *psw;
-    int i;
-    char status = 0;
+   // int i;
+   // char status = 0;
     static BYTE usrname[NAME_LEN];
-    USR_INFO *usr_info = NULL;
+   // USR_INFO *usr_info = NULL;
 
     switch (console.status)
     {

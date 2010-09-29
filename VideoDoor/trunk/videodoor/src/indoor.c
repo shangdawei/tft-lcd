@@ -8,49 +8,59 @@
 //	Revisions:		Year-Month-Day  SVN-Author  Modification
 //
 
-#include "iccard.h"
+#include "indoor.h"
+#include "config.h"
 #include "trd.h"
+#include "net.h"
 
+NET_INFO gInNet;
 
-static void icCardProcess(void *arg);
+static void inDoorProcess(void);
 
 //////////////////////////////////////////////////////////////////////////
 ///
-///     icCardInit
+///     inDoorInit
 ///     @author     xuliang<gxuliang@gmail.com>
-///     @date       2010-09-26
+///     @date       2010-09-28
 //////////////////////////////////////////////////////////////////////////
-void icCardInit(void)
+void inDoorInit(void)
 {
-    pthread_t trd_iccard;
-
+    TRD_t trd_indoor;
     
-    trd_create(&trd_iccard, (void *)&icCardProcess);
-
+    memset(&gInNet, 0, sizeof(NET_INFO));
+    
+    ///此处监听网络端口，用于传输消息
+    net_init(gInNet.conn, gInNet.serv);
+    trd_create(&trd_indoor, (void *)&inDoorProcess);
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 ///
-///     icCardProcess
+///     net_svr_proc
 ///     @author     xuliang<gxuliang@gmail.com>
 ///     @date       2010-09-27
 //////////////////////////////////////////////////////////////////////////
-static void icCardProcess(void *arg)
+int doorAsk(NET_CONN_INFO *conn_info)
 {
+    int ret = 0;
 
+
+    return ret;
 }
+
 //////////////////////////////////////////////////////////////////////////
 ///
-///     doorNum2Ip
+///     inDoorProcess
 ///     @author     xuliang<gxuliang@gmail.com>
-///     @date       2010-09-27
+///     @date       2010-09-28
 //////////////////////////////////////////////////////////////////////////
-DWORD doorNum2Ip(DWORD num)
+static void inDoorProcess(void)
 {
-    DWORD ip = 0;
 
-
-    return ip;
+    while(1)
+    {
+        net_process(&gInNet);
+    }
 }
+
 

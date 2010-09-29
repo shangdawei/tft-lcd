@@ -8,49 +8,58 @@
 //	Revisions:		Year-Month-Day  SVN-Author  Modification
 //
 
-#include "iccard.h"
+#include "outdoor.h"
+#include "net.h"
 #include "trd.h"
 
+NET_INFO gOutNet;
 
-static void icCardProcess(void *arg);
+static void outDoorProcess(void);
 
 //////////////////////////////////////////////////////////////////////////
 ///
-///     icCardInit
+///     outDoorInit
 ///     @author     xuliang<gxuliang@gmail.com>
-///     @date       2010-09-26
+///     @date       2010-09-27
 //////////////////////////////////////////////////////////////////////////
-void icCardInit(void)
+void outDoorInit(void)
 {
-    pthread_t trd_iccard;
-
+    TRD_t trd_outdoor;
+    memset(&gOutNet, 0, sizeof(NET_INFO));
     
-    trd_create(&trd_iccard, (void *)&icCardProcess);
+    ///此处监听网络端口，用于传输多媒体数据
+    net_init(gOutNet.conn, gOutNet.serv);
+    trd_create(&trd_outdoor, (void *)&outDoorProcess);
+}
+
+//////////////////////////////////////////////////////////////////////////
+///
+///     doorOpen
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-09-27
+//////////////////////////////////////////////////////////////////////////
+int doorOpen(void)
+{
+    int ret = 0;
+
+
+    return ret;
 
 }
 
 
 //////////////////////////////////////////////////////////////////////////
 ///
-///     icCardProcess
+///     outDoorProcess
 ///     @author     xuliang<gxuliang@gmail.com>
-///     @date       2010-09-27
+///     @date       2010-09-28
 //////////////////////////////////////////////////////////////////////////
-static void icCardProcess(void *arg)
+static void outDoorProcess(void)
 {
 
-}
-//////////////////////////////////////////////////////////////////////////
-///
-///     doorNum2Ip
-///     @author     xuliang<gxuliang@gmail.com>
-///     @date       2010-09-27
-//////////////////////////////////////////////////////////////////////////
-DWORD doorNum2Ip(DWORD num)
-{
-    DWORD ip = 0;
-
-
-    return ip;
+    while(1)
+    {
+        net_process(&gOutNet);
+    }
 }
 

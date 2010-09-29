@@ -18,13 +18,13 @@ bool initLog(const char *path)
     return InitDBLog(path);
 }
 
-bool writeLog(char* format, ...)
+bool writeLog(LOGlv lv, char* format, ...)
 {
     LOG log;
     va_list ap;
 
-    memset(&log,0,sizeof(LOG));
-    
+    memset(&log, 0, sizeof(LOG));
+
     sys_dhtime_get(&log.mTime);
 
     va_start ( ap, format );
@@ -38,32 +38,33 @@ int selectLog(DHTIME start, DHTIME end)
 {
     LOG_QUERY log_query;
 
-    memset(&log_query,0,sizeof(LOG_QUERY));
+    memset(&log_query, 0, sizeof(LOG_QUERY));
     log_query.start_time = start;
     log_query.end_time = end;
     log_query.Istime = true;
-    
+
     return QueryDBLog(&log_query);
-    
+
 }
 
 bool deleteLog(DHTIME start, DHTIME end)
 {
     LOG_QUERY log_query;
 
-    memset(&log_query,0,sizeof(LOG_QUERY));
+    memset(&log_query, 0, sizeof(LOG_QUERY));
     log_query.start_time = start;
     log_query.end_time = end;
     log_query.Istime = true;
-    
+
     return DeleteDBLog(&log_query);
 }
 
 LOG *getLog(int num)
 {
     static LOG log;
-    memset(&log,0,sizeof(LOG));
-    if(GetDBLog(&log,num))
+    memset(&log, 0, sizeof(LOG));
+
+    if (GetDBLog(&log, num))
     {
         return &log;
     }
