@@ -40,6 +40,7 @@ OBJS	=	$(OBJ)main.o		\
 			$(OBJ)net.o			\
 			$(OBJ)indoor.o		\
 			$(OBJ)outdoor.o		\
+			$(OBJ)ntp.o			\
 
 
 $(OBJ)%.o: $(SRC)%.c $(INC)*.h
@@ -48,6 +49,7 @@ default: $(OBJS) #$(INC)*.h
 ifeq ($(CROSS), arm-uclibc-linux-)
 #	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) -L$(LIB) -lxml2 -liconv -lpthread -lcrypt -lm 
 	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) $(LIB)libxml2.a $(LIB)libiconv.a $(LIB)libsqlite3.a $(LIB)libhienc.a $(LIB)libhiapi.a -lpthread -lcrypt -lm -static
+	cp $(EXEC_DIR)$(EXEC) ~/mnt
 else
 	$(CC) -O0 -o $(EXEC_DIR)$(EXEC) $(OBJS) -lpthread -lcrypt -liconv -lxml2 -lm $(LIB)libsqlite3_pc.a
 endif

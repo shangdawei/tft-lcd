@@ -13,12 +13,13 @@
 
 #include "globleinc.h"
 #include "support.h"
-
+#include "ntp.h"
 
 typedef enum    tagCONF_TYPE
 {
     TYPE_SYS   = 1,
     TYPE_NET,
+    TYPE_NTP,
 
     TYPE_ALL,
 } CONF_TYPE;
@@ -58,12 +59,14 @@ typedef struct tagCONF_DATA
 {
     CONFIG_SYS      con_sys;
     CONFIG_NET      con_net;
+    CONFIG_NTP      con_ntp;
 } CONF_DATA;
 
 typedef union tagCONF_UNION
 {
     CONFIG_SYS      con_sys;
     CONFIG_NET      con_net;
+    CONFIG_NTP      con_ntp;
 } CONF_UNION;
 
 /////////////////////////////////////////////////
