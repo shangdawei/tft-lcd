@@ -39,6 +39,7 @@ int sys_config_load(CONF_TYPE load_type)
     case TYPE_ALL:
         get_xml_sys(&config->con_sys);
         get_xml_net(&config->con_net);
+        get_xml_ntp(&config->con_ntp);
         break;
     case TYPE_SYS:
         get_xml_sys(&config->con_sys);
@@ -46,6 +47,8 @@ int sys_config_load(CONF_TYPE load_type)
     case TYPE_NET:
         get_xml_net(&config->con_net);
         break;
+    case TYPE_NTP:
+        get_xml_ntp(&config->con_ntp);
     default:
         break;
     }

@@ -18,6 +18,7 @@
 #include "config.h"
 #include "print.h"
 #include "system.h"
+#include "ntp.h"
 //////////////////////////////////////////////////////////////////////////
 ///
 ///     xml_open
@@ -606,6 +607,44 @@ int get_xml_net(CONFIG_NET* config)
 
     return 1;
 }
+
+//////////////////////////////////////////////////////////////////////////
+///
+///     get_xml_ntp
+///     @param *config
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-10-08
+//////////////////////////////////////////////////////////////////////////
+int get_xml_ntp(CONFIG_NTP *con_ntp)
+{
+    xmlXPathObjectPtr app_result ;
+    xmlDocPtr doc;
+    char lsbuf[64] = "";
+    doc = xml_open(CFG_FILE);
+    app_result = find_node(doc, XML_NTP);
+
+    if (app_result == NULL)
+    {
+        xml_close(doc);
+        return FALSE;
+    }
+
+
+    get_xml_str(app_result, "ntp_addr", lsbuf, sizeof(lsbuf));
+    //con_ntp->ntp_addr = sys_str2ip(lsbuf);
+    con_ntp->ntp_addr = sys_str2ip(lsbuf);
+    bzero(lsbuf, sizeof(lsbuf));
+    con_ntp->ntp_port = get_xml_val(app_result, "ntp_port", NULL, NULL);
+    con_ntp->enable = get_xml_val(app_result, "enable", NULL, NULL);
+    con_ntp->cycle_min = get_xml_val(app_result, "cycle_min", NULL, NULL);
+
+
+
+    close_node(app_result);
+    xml_close(doc);
+    return TRUE;
+}
+
 //////////////////////////////////////////////////////////////////////////
 ///
 ///     update_xml_sys
@@ -686,6 +725,43 @@ int update_xml_net(CONFIG_NET* config)
 
 //////////////////////////////////////////////////////////////////////////
 ///
+///     update_xml_ntp
+///     @param *config
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-10-08
+//////////////////////////////////////////////////////////////////////////
+int update_xml_ntp(const CONFIG_NTP *con_ntp)
+{
+    xmlXPathObjectPtr app_result ;
+    xmlDocPtr doc;
+
+    if (con_ntp == NULL)
+        return FALSE;
+
+    doc = xml_open(CFG_FILE);
+    app_result = find_node(doc, XML_NTP);
+
+    if (app_result == NULL)
+    {
+        xml_close(doc);
+        return FALSE;
+    }
+
+    set_xml_str(app_result, "ntp_addr", sys_ip2str_static(con_ntp->ntp_addr), NULL, NULL);
+    set_xml_val(app_result, "ntp_port", con_ntp->ntp_port, NULL, NULL);
+    set_xml_val(app_result, "enable", con_ntp->enable, NULL, NULL);
+    set_xml_val(app_result, "cycle_min", con_ntp->cycle_min, NULL, NULL);
+
+
+
+    xml_save(CFG_FILE, doc);
+    close_node(app_result);
+    xml_close(doc);
+    return TRUE;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///
 ///     sys_config_add
 ///     @param *root_node
 ///     @author     xuliang<gxuliang@gmail.com>
@@ -748,6 +824,29 @@ void net_config_add(xmlNodePtr root_node)
 
 //////////////////////////////////////////////////////////////////////////
 ///
+///     ntp_config_add
+///     @param *root_node
+///     @author     xuliang<gxuliang@gmail.com>
+///     @date       2010-10-08
+//////////////////////////////////////////////////////////////////////////
+void ntp_config_add(xmlNodePtr root_node)
+{
+    xmlNodePtr net_node = NULL, node1 = NULL;
+
+    //creates a new node, which is "attached" as child node of root_node node.
+    net_node = xmlNewChild(root_node, NULL, BAD_CAST "Ntp", BAD_CAST NULL);
+
+    node1 = xmlNewChild(net_node, NULL, BAD_CAST "ntp_addr", BAD_CAST NULL);
+
+    node1 = xmlNewChild(net_node, NULL, BAD_CAST "ntp_port", BAD_CAST "0");
+    node1 = xmlNewChild(net_node, NULL, BAD_CAST "enable", BAD_CAST "0");
+    node1 = xmlNewChild(net_node, NULL, BAD_CAST "cycle_min", BAD_CAST "60");
+
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+///
 ///     conf_makedefault
 ///     @param *file_name
 ///     @return int 1
@@ -770,6 +869,7 @@ int	conf_makedefault(BYTE *file_name)
 
     sys_config_add(root_node);
     net_config_add(root_node);
+    ntp_config_add(root_node);
 
     //Dumping document to stdio or file
     xmlSaveFormatFileEnc(file_name, doc, "UTF-8", 1);

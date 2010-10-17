@@ -14,6 +14,7 @@
 #include "iccard.h"
 #include "dsp.h"
 #include "console.h"
+#include "ntp.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -28,17 +29,19 @@ int main(int argc, char* argv[])
     tracepoint();
     config_init();
     console_init();
+    ntp_init();
 
     ///门口机
     if (g_conf_info.con_sys.type == OUT_TP)
     {
+		sys_print(FUNC, INFO, "out door type!");
         icCardInit();
         dspEncInit();
     }
     ///室内机
     else
     {
-
+		sys_print(FUNC, INFO, "in door type!");
     }
 
     while (1)
